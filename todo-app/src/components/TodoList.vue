@@ -1,14 +1,12 @@
 <template>
   <div class="container mx-auto px-70 text-center">
-    <header class="relative">
-      <h1 class="block m-10 text-4xl font-semibold">Todo List</h1>
-      <button
-        @click="clearTodos"
-        class="absolute top-0 right-0 p-4 rounded-full bg-gray-300"
-      >
-        Clear all
-      </button>
-    </header>
+    <TodoHeader />
+    <button
+      @click="clearTodos"
+      class="absolute top-0 right-0 p-4 rounded-full bg-gray-300"
+    >
+      Clear all
+    </button>
     <form @submit.prevent="addTodo">
       <input
         v-model="newTodo"
@@ -37,6 +35,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import TodoHeader from "./TodoHeader.vue";
 
 const todos = ref<string[]>([]);
 const newTodo = ref<string>("");

@@ -6,14 +6,14 @@
         class="w-12 h-12 bg-emerald-400 rounded-full flex items-center justify-center ml-4"
         @click="addNewTodo"
       >
-      <AddTodoSvg/>
+        <PlusIcon />
       </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import AddTodoSvg from './svgs/AddTodoSvg.vue'
+import PlusIcon from "./icons/PlusIcon.vue";
 
 const emit = defineEmits(["addTodo"]);
 

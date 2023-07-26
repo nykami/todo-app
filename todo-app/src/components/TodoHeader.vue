@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex items-center justify-between px-4 py-6 sm:w-[38rem] w-[19rem] sm:m-[2.6rem]"
+    class="flex items-center justify-between py-6 sm:w-[38rem] w-[19rem]"
   >
     <div class="text-black sm:text-7xl text-2xl font-semibold ">
       To do list

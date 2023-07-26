@@ -1,6 +1,5 @@
 <template>
   <div class="flex flex-col items-center justify-center h-screen">
-    <TodoHeader @addTodo="addTodo" />
     <button
       class="absolute top-0 right-0 p-4 rounded-full bg-gray-300"
       @click="clearTodos"
@@ -31,13 +30,8 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import TodoHeader from "./TodoHeader.vue";
 
 const todos = ref<string[]>([]);
-
-function addTodo(todo: string) {
-  todos.value.push(todo);
-}
 
 function removeTodo(index: number) {
   todos.value.splice(index, 1);

@@ -1,16 +1,22 @@
 <template>
   <div class="flex flex-row sm:flex-col justify-between items-center">
-    <div class="flex flex-row sm:justify-between sm:w-full">
-      <div class="font-semibold text-lg sm:text-4xl">
-        {{ todo.title }}
-      </div>
-      <div
-        class="w-2 h-2 ml-2 mt-3 sm:w-32 sm:h-10 rounded-full flex items-center justify-center"
-        :class="colorMap[todo.importance]"
-      >
-        <div class="hidden sm:block text-lg font-semibold text-white">
-          {{ todo.importance }}
+    <div class="flex flex-col">
+      <div class="flex flex-row sm:justify-between sm:w-38rem">
+        <div class="font-semibold text-lg sm:text-4xl">
+          {{ todo.title }}
         </div>
+        <div
+          class="w-2 h-2 ml-2 mt-3 sm:w-32 sm:h-10 rounded-full flex items-center justify-center"
+          :class="colorMap[todo.importance]"
+        >
+          <div class="hidden sm:block text-lg font-semibold text-white">
+            {{ todo.importance }}
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center w-full text-zinc-800 text-xs font-normal">
+        <CalendarIcon class="mr-1 hidden sm:block" />
+        {{ todo.date }}
       </div>
     </div>
     <div
@@ -37,6 +43,7 @@ import { ColorMap } from "../types/ColorMap.vue";
 import GreenCheckIcon from "./icons/GreenCheckIcon.vue";
 import GreenEllipseIcon from "./icons/GreenEllipseIcon.vue";
 import BlackEllipseIcon from "./icons/BlackEllipseIcon.vue";
+import CalendarIcon from "./icons/CalendarIcon.vue";
 import { Todo } from "../types/Todo.vue";
 
 interface Props {

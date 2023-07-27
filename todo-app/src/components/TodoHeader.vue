@@ -21,9 +21,10 @@ const emit = defineEmits(["addTodo"]);
 
 function addNewTodo() {
   const defaultTodo = {
-    title: "",
-    content: "",
+    title: "Title",
+    content: "Description",
     importance: "Medium",
+    date: new Date().toLocaleDateString()
   };
   emit("addTodo", defaultTodo);
 }

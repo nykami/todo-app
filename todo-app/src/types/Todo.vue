@@ -4,6 +4,7 @@ export interface Todo {
   title: string;
   content: string;
   importance: string;
+  date: string;
   isChecked: boolean;
 }
 </script>

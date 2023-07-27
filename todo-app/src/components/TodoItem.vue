@@ -41,7 +41,6 @@ import { Todo } from "../types/Todo.vue";
 
 interface Props {
   todo: Todo;
-  index: number;
 }
 defineProps<Props>();
 

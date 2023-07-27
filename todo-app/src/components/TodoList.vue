@@ -1,49 +1,24 @@
 <template>
-  <div class="flex flex-col items-center justify-center h-screen">
-    <TodoHeader @addTodo="addTodo" />
-    <button
-      class="absolute top-0 right-0 p-4 rounded-full bg-gray-300"
-      @click="clearTodos"
-    >
-      Clear all
-    </button>
-    <!-- <form >
-      <input
-        class="m-4 p-4 rounded-lg border-solid border-2 w-96"
-        type="text"
-        placeholder="Enter your task"
-      />
-    </form> -->
-    <ul class="w-[610px] h-[317px]">
+  <div class="flex flex-col items-center">
+    <ul class="w-72 h-12 sm:w-full sm:h-40">
       <li
-        class="flex justify-between border-2 p-2 rounded-lg mb-4"
+        class="flex flex-col text-center border border-black p-4 rounded-lg mb-4 sm:mb-10"
         v-for="(todo, index) in todos"
         :key="index"
       >
-        {{ todo }}
-        <button class="p-4 rounded-full bg-gray-300" @click="removeTodo(index)">
-          Delete
-        </button>
+        <TodoItem :todo="todo" :index="index" />
       </li>
     </ul>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import TodoHeader from "./TodoHeader.vue";
+import TodoItem from "./TodoItem.vue";
+import { Todo } from "../types/Todo.vue";
 
-const todos = ref<string[]>([]);
-
-function addTodo(todo: string) {
-  todos.value.push(todo);
+interface Props {
+  todos: Todo[];
 }
 
-function removeTodo(index: number) {
-  todos.value.splice(index, 1);
-}
-
-function clearTodos() {
-  todos.value = [];
-}
+defineProps<Props>();
 </script>

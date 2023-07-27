@@ -1,14 +1,16 @@
 <template>
-  <div class="container text-center">
-    <div class="flex items-center mb-8 justify-center mr-8 space-x-20">
-      <div class="text-black text-7xl font-semibold mb-8">To do list</div>
-      <button
-        class="w-12 h-12 bg-emerald-400 rounded-full flex items-center justify-center ml-4"
-        @click="addNewTodo"
-      >
-        <PlusIcon />
-      </button>
+  <div
+    class="flex items-center justify-between py-6 sm:w-38rem w-72"
+  >
+    <div class="text-black sm:text-7xl text-2xl font-semibold ">
+      To do list
     </div>
+    <button
+      class="sm:w-14 sm:h-14 bg-emerald-400 rounded-full flex items-center justify-center w-8 h-8"
+      @click="addNewTodo"
+    >
+      <PlusIcon class=" w-4 h-4 sm:w-7 sm:h-auto"/>
+    </button>
   </div>
 </template>
 
@@ -18,6 +20,11 @@ import PlusIcon from "./icons/PlusIcon.vue";
 const emit = defineEmits(["addTodo"]);
 
 function addNewTodo() {
-  emit("addTodo", "New Task");
+  const defaultTodo = {
+    title: "Title",
+    content: "Cras placerat proin.",
+    importance: "Medium",
+  };
+  emit("addTodo", defaultTodo);
 }
 </script>

@@ -21,8 +21,8 @@ const emit = defineEmits(["addTodo"]);
 
 function addNewTodo() {
   const defaultTodo = {
-    title: "Title",
-    content: "Cras placerat proin.",
+    title: "",
+    content: "",
     importance: "Medium",
   };
   emit("addTodo", defaultTodo);

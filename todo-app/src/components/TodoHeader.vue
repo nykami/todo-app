@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex items-center justify-between py-6 sm:w-[38rem] w-[19rem]"
+    class="flex items-center justify-between py-6 sm:w-38rem w-72"
   >
     <div class="text-black sm:text-7xl text-2xl font-semibold ">
       To do list
@@ -9,7 +9,7 @@
       class="sm:w-14 sm:h-14 bg-emerald-400 rounded-full flex items-center justify-center w-8 h-8"
       @click="addNewTodo"
     >
-      <PlusIcon class=" w-4 h-4 sm:w-[1.75rem] sm:h-auto"/>
+      <PlusIcon class=" w-4 h-4 sm:w-7 sm:h-auto"/>
     </button>
   </div>
 </template>

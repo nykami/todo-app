@@ -4,9 +4,8 @@
         Welcome to the app
     </div>
     <div
-      class="w-[3rem] h-[3rem] border border-neutral-200 sm:w-[7rem] sm:h-[3rem] font-semibold sm:text-lg sm:bg-neutral-200 rounded-2xl flex items-center justify-center"
+      class="w-12 h-12 border border-neutral-200 sm:w-28 sm:h-12 font-semibold sm:text-lg sm:bg-neutral-200 rounded-2xl flex items-center justify-center"
     >
-      <!-- Add "flex items-center justify-center" classes to center the content -->
       <button class="hidden sm:block">
         Log in
     </button>

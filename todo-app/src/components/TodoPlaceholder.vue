@@ -1,8 +1,8 @@
 <template>
   <div class="items-center flex flex-col">
-    <PlaceholderIcon class="w-[12rem] h-[14rem] sm:w-[17rem] sm:h-[19.6rem] sm:mt-[3rem] my-[1.5rem] " />
+    <PlaceholderIcon class="w-48 h-56 sm:w-64 sm:h-80 sm:mt-12 my-6 " />
     <div
-      class="text-neutral-500 font-semibold text-[1.5rem] sm:mt-6 sm:text-[2.6rem]"
+      class="text-neutral-500 font-semibold text-6 sm:mt-6 sm:text-4xl"
     >
       You have no todos yet
     </div>

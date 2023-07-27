@@ -1,16 +1,11 @@
 <template>
   <div class="flex flex-col justify-center items-center">
     <div>
-      <!-- <button
-      class="absolute top-0 right-0 p-4 rounded-full bg-gray-300"
-      @click="clearTodos"
-    >
-      Clear all
-    </button> -->
       <TodoLogin />
       <TodoHeader @addTodo="addTodo" />
       <TodoPlaceholder v-if="!todos.length" />
       <TodoList
+        v-else
         :todos="todos"
         @removeTodo="removeTodo"
         @clearTodos="clearTodos"
@@ -25,16 +20,10 @@ import TodoHeader from "./components/TodoHeader.vue";
 import TodoList from "./components/TodoList.vue";
 import TodoPlaceholder from "./components/TodoPlaceholder.vue";
 import TodoLogin from "./components/TodoLogin.vue";
-
-interface Todo {
-  id: number;
-  title: string;
-  content: string;
-  importance: string;
-}
+import { Todo } from "./types/ITodoItem.vue";
 
 const todos = ref<Todo[]>([]);
-let idCounter = ref<number>(0);
+const idCounter = ref<number>(0);
 
 function removeTodo(index: number) {
   todos.value.splice(index, 1);
@@ -45,8 +34,6 @@ function clearTodos() {
 }
 
 function addTodo(defaultTodo: Todo) {
-  console.log(todos.value);
-
   defaultTodo.id = idCounter.value++;
   todos.value.push(defaultTodo);
 }

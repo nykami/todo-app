@@ -20,7 +20,7 @@ import TodoHeader from "./components/TodoHeader.vue";
 import TodoList from "./components/TodoList.vue";
 import TodoPlaceholder from "./components/TodoPlaceholder.vue";
 import TodoLogin from "./components/TodoLogin.vue";
-import { Todo } from "./types/ITodoItem.vue";
+import { Todo } from "./types/Todo.vue";
 
 const todos = ref<Todo[]>([]);
 const idCounter = ref<number>(0);

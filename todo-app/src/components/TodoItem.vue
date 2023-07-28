@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row sm:flex-col justify-between items-center">
+  <div class="flex flex-row sm:flex-col justify-between items-center" @click="todo.isEdited = true">
     <div class="flex flex-col">
       <div class="flex flex-row sm:justify-between sm:w-38rem">
         <div class="font-semibold text-lg sm:text-4xl">
@@ -19,13 +19,14 @@
         {{ todo.date }}
       </div>
     </div>
+
     <div
       class="flex flex-col sm:flex-row justify-between sm:pt-6 sm:mt-6 sm:w-full"
     >
       <div class="text-neutral-500 hidden sm:block sm:text-2xl font-semibold">
         {{ todo.content }}
       </div>
-      <button class="relative" @click="handleCheckClick(todo)">
+      <button class="relative" @click="toggleTodoCheckedState(todo)">
         <template v-if="todo.isChecked">
           <GreenEllipseIcon class="w-6 sm:w-10" />
           <GreenCheckIcon
@@ -57,7 +58,7 @@ const colorMap: ColorMap = {
   Low: "bg-teal-400 border-teal-400",
 };
 
-function handleCheckClick(todo: Todo) {
+function toggleTodoCheckedState(todo: Todo) {
   todo.isChecked = !todo.isChecked;
 }
 </script>

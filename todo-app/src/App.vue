@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-center items-center">
+  <div class="flex flex-col justify-center items-center h-full">
     <div>
       <TodoLogin />
       <TodoHeader @addTodo="addTodo" />
@@ -7,8 +7,6 @@
       <TodoList
         v-else
         :todos="todos"
-        @removeTodo="removeTodo"
-        @clearTodos="clearTodos"
       />
     </div>
   </div>
@@ -22,16 +20,9 @@ import TodoPlaceholder from "./components/TodoPlaceholder.vue";
 import TodoLogin from "./components/TodoLogin.vue";
 import { Todo } from "./types/Todo.vue";
 
+
 const todos = ref<Todo[]>([]);
 const idCounter = ref<number>(0);
-
-function removeTodo(index: number) {
-  todos.value.splice(index, 1);
-}
-
-function clearTodos() {
-  todos.value = [];
-}
 
 function addTodo(defaultTodo: Todo) {
   defaultTodo.id = idCounter.value++;

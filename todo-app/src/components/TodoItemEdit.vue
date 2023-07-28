@@ -9,12 +9,32 @@
         >
           {{ todo.title }}
         </div>
-        <div
-          class="w-2 h-2 ml-2 mt-3 sm:w-32 sm:h-10 rounded-full flex items-center justify-center"
-          :class="colorMap[todo.importance]"
-        >
-          <div class="hidden sm:block text-lg font-semibold text-white">
-            {{ todo.importance }}
+        <div class="flex flex-col items-end">
+          <div
+            class="w-2 h-2 ml-2 mt-3 sm:w-32 sm:h-10 rounded-full flex items-center justify-center"
+            :class="colorMap[todo.importance]"
+            @click="showOptions = !showOptions"
+          >
+            <div
+              class="sm:flex sm:flex-row hidden sm:items-center text-lg font-semibold text-white"
+            >
+              {{ todo.importance }}
+
+              <OptionsIcon class="ml-2" />
+            </div>
+          </div>
+          <div
+            v-if="showOptions"
+            class="border-black border rounded-xl w-32 h-28 mt-2 flex flex-col justify-center items-start pl-6"
+          >
+            <div
+              v-for="(_, levelOfImportance) in colorMap"
+              @click="handleImportanceChangeClick"
+            >
+              <div class="text-lg font-semibold">
+                {{ levelOfImportance }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -53,6 +73,7 @@ import { ref } from "vue";
 import { ColorMap } from "../types/ColorMap.vue";
 import CalendarIcon from "./icons/CalendarIcon.vue";
 import { Todo } from "../types/Todo.vue";
+import OptionsIcon from "./icons/OptionsIcon.vue";
 
 interface Props {
   todo: Todo;
@@ -60,6 +81,7 @@ interface Props {
 const props = defineProps<Props>();
 const isEditable = ref(props.todo.isEdited);
 const editedTodo = props.todo;
+let showOptions = ref<boolean>(false);
 
 const colorMap: ColorMap = {
   High: "bg-orange-600 border-orange-600",
@@ -78,7 +100,13 @@ function handleContentInputChange(event: Event) {
 function handleSaveButtonClick() {
   props.todo.title = editedTodo.title;
   props.todo.content = editedTodo.content;
+  props.todo.importance = editedTodo.importance;
   props.todo.isEdited = false;
+}
+
+function handleImportanceChangeClick(event: Event) {
+  editedTodo.importance = (event.target as HTMLDivElement).innerText;
+  showOptions.value = false;
 }
 
 const emit = defineEmits(["removeTodo"]);

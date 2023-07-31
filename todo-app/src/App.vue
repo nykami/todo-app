@@ -14,11 +14,11 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import TodoHeader from "./components/TodoHeader.vue";
-import TodoList from "./components/TodoList.vue";
+import TodoLogin from "./components/header/TodoLogin.vue";
+import TodoHeader from "./components/header/TodoHeader.vue";
 import TodoPlaceholder from "./components/TodoPlaceholder.vue";
-import TodoLogin from "./components/TodoLogin.vue";
-import { Todo } from "./types/Todo.vue";
+import TodoList from "./components/TodoList.vue";
+import { Todo } from "./components/types/Todo.vue";
 
 
 const todos = ref<Todo[]>([]);

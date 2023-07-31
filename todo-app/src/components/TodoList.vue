@@ -19,10 +19,10 @@
 </template>
 
 <script setup lang="ts">
-import TodoItem from "./TodoItem.vue";
-import { Todo } from "../types/Todo.vue";
-import TodoItemEdit from "./TodoItemEdit.vue";
 import { computed } from "vue";
+import TodoItem from "./todo/TodoItem.vue";
+import TodoItemEdit from "./TodoItemEdit.vue";
+import { Todo } from "./types/Todo.vue";
 
 interface Props {
   todos: Todo[];

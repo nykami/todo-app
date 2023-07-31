@@ -22,12 +22,14 @@
                 <OptionsIcon v-if="todo.isEdited" class="ml-2" />
               </div>
               <div class="sm:hidden flex ml-[6.5rem]">
-                  <div
-                    class="rounded-full w-2 h-2 -ml-6"
-                    v-for="(_, importance) in colorMap"
-                    :class="colorMap[importance]"
-                    @click="handleImportanceChangeClickMobile(importance as string)"
-                  ></div>
+                <div
+                  class="rounded-full w-2 h-2 -ml-6"
+                  v-for="(_, importance) in colorMap"
+                  :class="colorMap[importance]"
+                  @click="
+                    handleImportanceChangeClickMobile(importance as string)
+                  "
+                ></div>
               </div>
             </div>
             <TodoImportance
@@ -46,7 +48,7 @@
         class="hidden sm:text-2xl font-semibold w-38rem h-[8rem] sm:flex sm:justify-between items-start"
       >
         <div
-          class="text-black w-[28rem] sm:h-28 text-start "
+          class="text-black w-[28rem] sm:h-28 text-start"
           :contenteditable="isEditable"
           @input="handleContentInputChange"
         >
@@ -148,8 +150,8 @@ function handleSaveButtonClick() {
   props.todo.isEdited = false;
 }
 
-function handleImportanceChangeClickMobile(importance: string){
-  editedTodo.importance = importance
+function handleImportanceChangeClickMobile(importance: string) {
+  editedTodo.importance = importance;
   showOptions.value = false;
 }
 
@@ -158,7 +160,9 @@ function handleImportanceChangeClick(event: Event) {
   showOptions.value = false;
 }
 
-function handleDeleteButtonClick(todoId: number) {
-  emit("removeTodo", todoId);
+async function handleDeleteButtonClick(todoId: number) {
+  if (confirm("Are you sure you want to delete this todo?")) {
+    emit("removeTodo", todoId);
+  }
 }
 </script>

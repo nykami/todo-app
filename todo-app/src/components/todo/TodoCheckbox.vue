@@ -1,5 +1,5 @@
 <template>
-  <button class="relative" @click.stop="handleCheckboxClick">
+  <button class="relative" @click="handleCheckboxClick">
     <template v-if="todo.isChecked">
       <GreenEllipseIcon class="w-6 sm:w-10" />
       <GreenCheckIcon

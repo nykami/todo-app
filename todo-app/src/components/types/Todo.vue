@@ -6,6 +6,6 @@ export interface Todo {
   importance: string;
   date: string;
   isChecked: boolean;
-  isEdited: boolean;
+  isEditing: boolean;
 }
 </script>

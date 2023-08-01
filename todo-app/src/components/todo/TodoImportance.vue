@@ -7,7 +7,7 @@
       class="sm:flex sm: items-center hidden text-lg font-semibold text-white"
     >
       {{ todo.importance }}
-      <OptionsIcon v-if="todo.isEdited" class="ml-2" />
+      <OptionsIcon v-if="todo.isEditing" class="ml-2" />
     </div>
   </div>
 </template>

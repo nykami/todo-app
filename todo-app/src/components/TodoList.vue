@@ -3,15 +3,19 @@
     <ul class="w-72 h-12 sm:w-full sm:h-full">
       <li
         class="flex flex-col text-center border border-black p-4 rounded-lg mb-4 sm:mb-10"
-        v-for="(todo, index) in reversedTodos"
-        :key="index"
+        v-for="(todo, id) in reversedTodos"
+        :key="id"
       >
-        <TodoItem v-if="!todo.isEdited" :todo="todo" :index="index" />
+        <TodoItem
+          v-if="!todo.isEditing"
+          :todo="todo"
+          @setIsEditingTrue="setIsEditingTrue(todo)"
+        />
         <TodoItemEdit
           v-else
           :todo="todo"
-          :index="index"
-          @removeTodo="removeTodo(todo)"
+          @handleDeleteButtonClick="deleteTodo"
+          @handleSaveButtonClick="saveChanges"
         />
       </li>
     </ul>
@@ -19,22 +23,26 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
 import TodoItem from "./todo/TodoItem.vue";
-import TodoItemEdit from "./TodoItemEdit.vue";
+import TodoItemEdit from "./todo/TodoItemEdit.vue";
 import { Todo } from "./types/Todo.vue";
 
 interface Props {
-  todos: Todo[];
+  reversedTodos: Todo[];
 }
-const props = defineProps<Props>();
+defineProps<Props>();
 
-const reversedTodos = computed(() => {
-  return props.todos.slice().reverse();
-});
+const emit = defineEmits(["deleteTodo", "updateTodo", "setIsEditingTrue"]);
 
-function removeTodo(todo: Todo) {
-  const indexToRemoveFrom = props.todos.indexOf(todo);
-  props.todos.splice(indexToRemoveFrom, 1);
+function deleteTodo(todoId: number) {
+  emit("deleteTodo", todoId);
+}
+
+function saveChanges(editedTodo: Todo, todoId: number) {
+  emit("updateTodo", editedTodo, todoId);
+}
+
+function setIsEditingTrue(todo: Todo) {
+  emit("setIsEditingTrue", todo.id);
 }
 </script>

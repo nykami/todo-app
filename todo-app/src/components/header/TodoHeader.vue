@@ -25,7 +25,7 @@ function addNewTodo() {
     content: "Description",
     importance: "Medium",
     date: new Date().toLocaleDateString(),
-    isEdited: false,
+    isEditing: false,
   };
   emit("addTodo", defaultTodo);
 }

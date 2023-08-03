@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex items-center justify-between py-6 sm:w-38rem w-72"
+    class="flex items-center justify-between py-6 sm:w-[40rem] w-72"
   >
     <div class="text-black sm:text-7xl text-2xl font-semibold ">
       To do list
@@ -15,15 +15,18 @@
 </template>
 
 <script setup lang="ts">
-import PlusIcon from "./icons/PlusIcon.vue";
+import PlusIcon from "../icons/PlusIcon.vue";
 
 const emit = defineEmits(["addTodo"]);
 
 function addNewTodo() {
   const defaultTodo = {
     title: "Title",
-    content: "Cras placerat proin.",
+    content: "Description",
     importance: "Medium",
+    date: new Date().toLocaleDateString(),
+    isEditing: false,
+    isChecked: false,
   };
   emit("addTodo", defaultTodo);
 }

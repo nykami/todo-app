@@ -10,7 +10,7 @@
         @deleteTodo="deleteTodo"
         @updateTodo="updateTodo"
         @setIsEditingTrue="setIsEditingTrue"
-        @toggleTodoCheckedState="toggleTodoCheckedState"
+        @handleCheckboxClick="handleCheckboxClick"
       />
     </div>
   </div>
@@ -51,19 +51,34 @@ function deleteTodo(todoId: number) {
 }
 
 function updateTodo(newTodo: Todo, todoId: number) {
-  const indexToUpdateAt = todos.value.findIndex((obj) => obj.id === todoId);
-  todos.value[indexToUpdateAt].content = newTodo.content;
-  todos.value[indexToUpdateAt].title = newTodo.title;
-  todos.value[indexToUpdateAt].importance = newTodo.importance;
-  todos.value[indexToUpdateAt].isEditing = false;
+  const indexToUpdateAt = todos.value.findIndex((todo) => todo.id === todoId);
+  const todoToUpdate = todos.value[indexToUpdateAt];
+  todoToUpdate.content = newTodo.content;
+  todoToUpdate.title = newTodo.title;
+  todoToUpdate.importance = newTodo.importance;
+  todoToUpdate.isEditing = false;
 }
 
-function setIsEditingTrue(todoId: number){
+function setIsEditingTrue(todoId: number) {
   const indexToUpdateAt = todos.value.findIndex((obj) => obj.id === todoId);
   todos.value[indexToUpdateAt].isEditing = true;
 }
 
-function toggleTodoCheckedState(todo: Todo) {
-  todo.isChecked = !todo.isChecked;
+function handleCheckboxClick(todoId: number) {
+  const indexToUpdateAt = todos.value.findIndex((todo) => todo.id === todoId);
+  const todoToMakeFloat = todos.value[indexToUpdateAt];
+  todoToMakeFloat.isChecked = !todoToMakeFloat.isChecked;
+  setTimeout(() => {
+    if (todoToMakeFloat.isChecked === true) {
+      todos.value.splice(indexToUpdateAt, 1);
+      todos.value.unshift(todoToMakeFloat);
+    } else {
+      const index = todos.value.findIndex(
+        (todo) => todo.id === todoToMakeFloat.id
+      );
+      todos.value.splice(index, 1);
+      todos.value.push(todoToMakeFloat);
+    }
+  }, 600);
 }
 </script>

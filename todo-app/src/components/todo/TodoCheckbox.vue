@@ -25,8 +25,6 @@ const emit = defineEmits(["toggleTodoCheckedState"]);
 
 function handleCheckboxClick(event: Event) {
   event.stopPropagation();
-  console.log("0");
-  
   emit("toggleTodoCheckedState");
 }
 </script>

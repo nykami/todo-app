@@ -1,17 +1,17 @@
 <template>
-  <div
+  <p
     v-if="todoIsEditing"
     class="text-black sm:w-[28rem] sm:h-28 text-start h-32 w-64"
     @input="handleContentInputChange"
   >
     {{ todoContent }}
-  </div>
-  <div
+  </p>
+  <p
     v-else
     class="text-neutral-500 hidden sm:block sm:text-2xl font-semibold fit"
   >
     {{ todoContent }}
-  </div>
+  </p>
 </template>
 
 <script setup lang="ts">

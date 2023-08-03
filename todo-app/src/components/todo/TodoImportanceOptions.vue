@@ -5,8 +5,8 @@
     <div
       class="sm:flex sm:flex-row hidden sm:items-center text-lg font-semibold text-black"
     >
-      {{ todo.importance }}
-      <OptionsIcon v-if="todo.isEditing" class="ml-2" />
+      {{ todoImportance }}
+      <OptionsIcon v-if="todoIsEditing" class="ml-2" />
     </div>
     <div class="sm:hidden flex ml-[6.5rem]">
       <div
@@ -20,12 +20,12 @@
 </template>
 
 <script setup lang="ts">
-import { Todo } from "../types/Todo.vue";
 import { ColorMap } from "../types/ColorMap.vue";
 import OptionsIcon from "../icons/OptionsIcon.vue";
 
 interface Props {
-  todo: Todo;
+  todoImportance: string;
+  todoIsEditing: boolean;
   colorMap: ColorMap;
 }
 

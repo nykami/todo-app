@@ -10,6 +10,7 @@
         @deleteTodo="deleteTodo"
         @updateTodo="updateTodo"
         @setIsEditingTrue="setIsEditingTrue"
+        @toggleTodoCheckedState="toggleTodoCheckedState"
       />
     </div>
   </div>
@@ -60,5 +61,9 @@ function updateTodo(newTodo: Todo, todoId: number) {
 function setIsEditingTrue(todoId: number){
   const indexToUpdateAt = todos.value.findIndex((obj) => obj.id === todoId);
   todos.value[indexToUpdateAt].isEditing = true;
+}
+
+function toggleTodoCheckedState(todo: Todo) {
+  todo.isChecked = !todo.isChecked;
 }
 </script>

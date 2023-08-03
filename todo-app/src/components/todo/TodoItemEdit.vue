@@ -5,31 +5,34 @@
         <div class="flex flex-row sm:justify-between sm:w-38rem">
           <TodoTitle
             :contenteditable="isEditable"
-            :todo="todo"
+            :todoTitle="todo.title"
             @handleTitleInputChange="changeTitle"
           ></TodoTitle>
           <div class="flex flex-col items-end">
             <TodoImportanceOptions
-              :colorMap="colorMap"
-              :todo="todo"
               v-if="isShowingOptions"
+              :colorMap="colorMap"
+              :todoImportance="todo.importance"
+              :todoIsEditing="todo.isEditing"
               @handleImportanceChangeClickMobile="changeImportance"
             />
             <TodoImportance
               v-else
-              :todo="todo"
+              :todoImportance="todo.importance"
+              :todoIsEditing="todo.isEditing"
               @click="toggleIsShowingOptions"
             />
           </div>
         </div>
-        <TodoDate :todo="todo" />
+        <TodoDate :todoDate="todo.date" />
       </div>
       <div
         class="hidden sm:text-2xl font-semibold w-38rem h-[8rem] sm:flex sm:justify-between items-start"
       >
         <TodoContent
           :contenteditable="isEditable"
-          :todo="todo"
+          :todoContent="todo.content"
+          :todoIsEditing="todo.isEditing"
           @handleContentInputChange="changeContent"
         />
         <div
@@ -56,8 +59,9 @@
       class="text-neutral-500 pt-4 flex flex-col sm:hidden font-semibold h-32 items-start"
     >
       <TodoContent
-        :todo="todo"
         :contenteditable="isEditable"
+        :todoContent="todo.content"
+        :todoIsEditing="todo.isEditing"
         @handleContentInputChange="changeContent"
       />
       <TodoButtons
@@ -69,7 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { reactive, ref } from "vue";
 import TodoTitle from "./TodoTitle.vue";
 import TodoContent from "./TodoContent.vue";
 import TodoImportance from "../todo/TodoImportance.vue";
@@ -92,7 +96,7 @@ const props = defineProps<Props>();
 const emit = defineEmits(["handleDeleteButtonClick", "handleSaveButtonClick"]);
 
 const isEditable = ref(props.todo.isEditing);
-const editedTodo = props.todo;
+const editedTodo = reactive(props.todo);
 const isShowingOptions = ref(false);
 
 function changeTitle(newTitle: string) {
@@ -113,7 +117,7 @@ function handleImportanceChangeClick(event: Event) {
   isShowingOptions.value = false;
 }
 
-function toggleIsShowingOptions(){
+function toggleIsShowingOptions() {
   isShowingOptions.value = !isShowingOptions.value;
 }
 

@@ -1,17 +1,12 @@
 <template>
-  <div
-    class="font-semibold text-lg sm:text-4xl"
-    @input="handleTitleInputChange"
-  >
-    {{ todo.title }}
-  </div>
+  <p class="font-semibold text-lg sm:text-4xl" @input="handleTitleInputChange">
+    {{ todoTitle }}
+  </p>
 </template>
 
 <script setup lang="ts">
-import { Todo } from "../types/Todo.vue";
-
 interface Props {
-  todo: Todo;
+  todoTitle: string;
 }
 
 defineProps<Props>();

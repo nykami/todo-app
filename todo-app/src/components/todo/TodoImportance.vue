@@ -1,24 +1,24 @@
 <template>
   <div
     class="w-2 h-2 ml-2 mt-3 sm:w-32 sm:h-10 rounded-full flex items-center justify-center"
-    :class="colorMap[todo.importance]"
+    :class="colorMap[todoImportance]"
   >
     <div
       class="sm:flex sm: items-center hidden text-lg font-semibold text-white"
     >
-      {{ todo.importance }}
-      <OptionsIcon v-if="todo.isEditing" class="ml-2" />
+      {{ todoImportance }}
+      <OptionsIcon v-if="todoIsEditing" class="ml-2" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import OptionsIcon from "../icons/OptionsIcon.vue";
-import { Todo } from "../types/Todo.vue";
 import { ColorMap } from "../types/ColorMap.vue";
 
 interface Props {
-  todo: Todo;
+  todoImportance: string;
+  todoIsEditing: boolean;
 }
 
 defineProps<Props>();

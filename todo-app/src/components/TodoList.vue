@@ -10,6 +10,7 @@
           v-if="!todo.isEditing"
           :todo="todo"
           @setIsEditingTrue="setIsEditingTrue(todo)"
+          @toggleTodoCheckedState="toggleTodoCheckedState(todo)"
         />
         <TodoItemEdit
           v-else
@@ -32,7 +33,7 @@ interface Props {
 }
 defineProps<Props>();
 
-const emit = defineEmits(["deleteTodo", "updateTodo", "setIsEditingTrue"]);
+const emit = defineEmits(["deleteTodo", "updateTodo", "setIsEditingTrue", "toggleTodoCheckedState"]);
 
 function deleteTodo(todoId: number) {
   emit("deleteTodo", todoId);
@@ -44,5 +45,9 @@ function saveChanges(editedTodo: Todo, todoId: number) {
 
 function setIsEditingTrue(todo: Todo) {
   emit("setIsEditingTrue", todo.id);
+}
+
+function toggleTodoCheckedState(todo: Todo) {
+  emit("toggleTodoCheckedState", todo);
 }
 </script>

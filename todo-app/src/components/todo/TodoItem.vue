@@ -5,17 +5,17 @@
   >
     <div class="flex flex-col">
       <div class="flex flex-row sm:justify-between sm:w-38rem">
-        <TodoTitle :todo="todo" />
-        <TodoImportance :todo="todo" />
+        <TodoTitle :todoTitle="todo.title" />
+        <TodoImportance :todoImportance="todo.importance" :todoIsEditing="todo.isEditing"/>
       </div>
-      <TodoDate :todo="todo" />
+      <TodoDate :todoDate="todo.date" />
     </div>
 
     <div
       class="flex flex-col sm:flex-row justify-between sm:pt-6 sm:mt-6 sm:w-full"
     >
-      <TodoContent :todo="todo" />
-      <TodoCheckbox :todo="todo" />
+      <TodoContent :todoContent="todo.content" :todoIsEditing="todo.isEditing" />
+      <TodoCheckbox :todoIsChecked="todo.isChecked" @toggleTodoCheckedState="toggleTodoCheckedState"/>
     </div>
   </div>
 </template>
@@ -33,9 +33,15 @@ interface Props {
 }
 defineProps<Props>();
 
-const emit = defineEmits(["setIsEditingTrue"]);
+const emit = defineEmits(["setIsEditingTrue", "toggleTodoCheckedState"]);
 
 function setIsEditingTrue(){
   emit("setIsEditingTrue")
+}
+
+function toggleTodoCheckedState() {
+  console.log("1");
+  
+  emit("toggleTodoCheckedState")
 }
 </script>

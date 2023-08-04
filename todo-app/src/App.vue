@@ -3,11 +3,11 @@
     <div>
       <TodoLogin />
       <TodoHeader @addTodo="addTodo" />
-      <SearchBar />
+      <SearchBar @filterTodos="filterTodos" />
       <TodoPlaceholder v-if="!todos.length" />
       <TodoList
         v-else
-        :reversedTodos="reversedTodos"
+        :reversedTodos="filteredTodos.slice().reverse()"
         @deleteTodo="deleteTodo"
         @updateTodo="updateTodo"
         @setIsEditingTrue="setIsEditingTrue"
@@ -27,9 +27,17 @@ import SearchBar from "./components/SearchBar.vue";
 import { Todo } from "./components/types/Todo.vue";
 
 const todos = ref<Todo[]>([]);
+const searchText = ref<string>("");
 
-const reversedTodos = computed(() => {
-  return todos.value.slice().reverse();
+const filteredTodos = computed(() => {
+  if (!searchText.value) {
+    return todos.value;
+  }
+  return todos.value.filter(
+    (todo) =>
+      todo.title.toLowerCase().includes(searchText.value) ||
+      todo.content.toLowerCase().includes(searchText.value)
+  );
 });
 
 function findNextId(): number {
@@ -79,5 +87,9 @@ function handleCheckboxClick(todoId: number) {
       todos.value.push(todoToMakeFloat);
     }
   }, 600);
+}
+
+function filterTodos(searchInput: string) {
+  searchText.value = searchInput.toLowerCase();
 }
 </script>

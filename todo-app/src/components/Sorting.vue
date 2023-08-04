@@ -5,6 +5,7 @@
     <div class="flex mb-3 sm:mb-0">
       <button
         class="w-fit px-3 sm:px-4 h-8 mr-2 sm:mr-3 rounded-lg border border-emerald-400 bg-emerald-400 text-white text-xs sm:text-sm font-semibold"
+        @click="handleSortByTitle"
       >
         Title
       </button>
@@ -42,4 +43,10 @@
 <script setup lang="ts">
 import UpArrow from './icons/UpArrow.vue';
 import DownArrow from './icons/DownArrow.vue';
+
+const emit = defineEmits(['handleSortByTitle']);
+
+function handleSortByTitle() {
+  emit('handleSortByTitle');
+}
 </script>

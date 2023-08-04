@@ -4,7 +4,7 @@
       <TodoLogin />
       <TodoHeader @addTodo="addTodo" />
       <SearchBar @filterTodos="filterTodos" />
-      <Sorting />
+      <Sorting @handleSortByTitle="sortByTitle" />
       <TodoPlaceholder v-if="!todos.length" />
       <TodoList
         v-else
@@ -97,5 +97,19 @@ function handleCheckboxClick(todoId: number) {
 
 function filterTodos(searchInput: string) {
   searchText.value = searchInput.toLowerCase();
+}
+
+function sortByTitle() {
+  todos.value.sort((a, b) => {
+    const titleA = a.title.toLowerCase();
+    const titleB = b.title.toLowerCase();
+    if (titleA > titleB) {
+      return -1;
+    }
+    if (titleA < titleB) {
+      return 1;
+    }
+    return 0;
+  });
 }
 </script>

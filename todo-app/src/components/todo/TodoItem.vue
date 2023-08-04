@@ -40,6 +40,7 @@ import { Todo } from "../types/Todo.vue";
 interface Props {
   todo: Todo;
 }
+
 defineProps<Props>();
 
 const emit = defineEmits(["setIsEditingTrue", "handleCheckboxClick"]);

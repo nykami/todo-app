@@ -73,10 +73,7 @@ function handleCheckboxClick(todoId: number) {
       todos.value.splice(indexToUpdateAt, 1);
       todos.value.unshift(todoToMakeFloat);
     } else {
-      const index = todos.value.findIndex(
-        (todo) => todo.id === todoToMakeFloat.id
-      );
-      todos.value.splice(index, 1);
+      todos.value.splice(indexToUpdateAt, 1);
       todos.value.push(todoToMakeFloat);
     }
   }, 600);

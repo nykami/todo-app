@@ -7,7 +7,7 @@
       <TodoPlaceholder v-if="!todos.length" />
       <TodoList
         v-else
-        :reversedTodos="filteredTodos.slice().reverse()"
+        :reversedTodos="reversedTodos"
         @deleteTodo="deleteTodo"
         @updateTodo="updateTodo"
         @setIsEditingTrue="setIsEditingTrue"
@@ -38,6 +38,10 @@ const filteredTodos = computed(() => {
       todo.title.toLowerCase().includes(searchText.value) ||
       todo.content.toLowerCase().includes(searchText.value)
   );
+});
+
+const reversedTodos = computed(() => {
+  return filteredTodos.value.slice().reverse();
 });
 
 function findNextId(): number {

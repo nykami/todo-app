@@ -1,9 +1,10 @@
 <template>
-  <div class="flex flex-col justify-center items-center ">
+  <div class="flex flex-col justify-center items-center">
     <div class="max-w-screen-sm h-full">
       <TodoLogin />
       <TodoHeader @addTodo="addTodo" />
       <SearchBar @filterTodos="filterTodos" />
+      <Sorting />
       <TodoPlaceholder v-if="!todos.length" />
       <TodoList
         v-else
@@ -17,13 +18,14 @@
   </div>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
 import { computed, ref } from 'vue';
 import TodoLogin from './components/header/TodoLogin.vue';
 import TodoHeader from './components/header/TodoHeader.vue';
 import TodoPlaceholder from './components/TodoPlaceholder.vue';
 import TodoList from './components/TodoList.vue';
 import SearchBar from './components/SearchBar.vue';
+import Sorting from './components/Sorting.vue';
 import { Todo } from './components/types/Todo.vue';
 
 const todos = ref<Todo[]>([]);

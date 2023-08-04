@@ -3,6 +3,7 @@
     <div>
       <TodoLogin />
       <TodoHeader @addTodo="addTodo" />
+      <SearchBar />
       <TodoPlaceholder v-if="!todos.length" />
       <TodoList
         v-else
@@ -22,6 +23,7 @@ import TodoLogin from "./components/header/TodoLogin.vue";
 import TodoHeader from "./components/header/TodoHeader.vue";
 import TodoPlaceholder from "./components/TodoPlaceholder.vue";
 import TodoList from "./components/TodoList.vue";
+import SearchBar from "./components/SearchBar.vue";
 import { Todo } from "./components/types/Todo.vue";
 
 const todos = ref<Todo[]>([]);

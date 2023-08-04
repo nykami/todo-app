@@ -69,7 +69,7 @@ function handleCheckboxClick(todoId: number) {
   const todoToMakeFloat = todos.value[indexToUpdateAt];
   todoToMakeFloat.isChecked = !todoToMakeFloat.isChecked;
   setTimeout(() => {
-    if (todoToMakeFloat.isChecked === true) {
+    if (todoToMakeFloat.isChecked) {
       todos.value.splice(indexToUpdateAt, 1);
       todos.value.unshift(todoToMakeFloat);
     } else {

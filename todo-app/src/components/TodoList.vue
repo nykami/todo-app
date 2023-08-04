@@ -23,31 +23,31 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import TodoItem from "./todo/TodoItem.vue";
-import TodoItemEdit from "./todo/TodoItemEdit.vue";
-import { Todo } from "./types/Todo.vue";
+<script setup lang='ts'>
+import TodoItem from './todo/TodoItem.vue';
+import TodoItemEdit from './todo/TodoItemEdit.vue';
+import { Todo } from './types/Todo.vue';
 
 interface Props {
   reversedTodos: Todo[];
 }
 defineProps<Props>();
 
-const emit = defineEmits(["deleteTodo", "updateTodo", "setIsEditingTrue", "handleCheckboxClick"]);
+const emit = defineEmits(['deleteTodo', 'updateTodo', 'setIsEditingTrue', 'handleCheckboxClick']);
 
 function deleteTodo(todoId: number) {
-  emit("deleteTodo", todoId);
+  emit('deleteTodo', todoId);
 }
 
 function saveChanges(editedTodo: Todo, todoId: number) {
-  emit("updateTodo", editedTodo, todoId);
+  emit('updateTodo', editedTodo, todoId);
 }
 
 function setIsEditingTrue(todo: Todo) {
-  emit("setIsEditingTrue", todo.id);
+  emit('setIsEditingTrue', todo.id);
 }
 
 function handleCheckboxClick(todoId: number){
-  emit("handleCheckboxClick", todoId);
+  emit('handleCheckboxClick', todoId);
 }
 </script>

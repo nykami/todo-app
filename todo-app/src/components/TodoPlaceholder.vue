@@ -9,6 +9,6 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import PlaceholderIcon from "./icons/PlaceholderIcon.vue";
+<script setup lang='ts'>
+import PlaceholderIcon from './icons/PlaceholderIcon.vue';
 </script>

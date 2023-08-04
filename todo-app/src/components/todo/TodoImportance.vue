@@ -12,9 +12,9 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import OptionsIcon from "../icons/OptionsIcon.vue";
-import { ColorMap } from "../types/ColorMap.vue";
+<script setup lang='ts'>
+import OptionsIcon from '../icons/OptionsIcon.vue';
+import { ColorMap } from '../types/ColorMap.vue';
 
 interface Props {
   todoImportance: string;
@@ -24,8 +24,8 @@ interface Props {
 defineProps<Props>();
 
 const colorMap: ColorMap = {
-  High: "bg-orange-600 border-orange-600",
-  Medium: "bg-amber-500 border-amber-500",
-  Low: "bg-teal-400 border-teal-400",
+  High: 'bg-orange-600 border-orange-600',
+  Medium: 'bg-amber-500 border-amber-500',
+  Low: 'bg-teal-400 border-teal-400',
 };
 </script>

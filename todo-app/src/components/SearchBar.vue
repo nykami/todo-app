@@ -22,19 +22,19 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from "vue";
-import SearchIcon from "./icons/SearchIcon.vue";
+<script setup lang='ts'>
+import { ref } from 'vue';
+import SearchIcon from './icons/SearchIcon.vue';
 
-const searchText = ref<string>("");
+const searchText = ref<string>('');
 
-const emit = defineEmits(["filterTodos"]);
+const emit = defineEmits(['filterTodos']);
 
 function handleSearchInput(event: Event) {
   searchText.value = (event.target as HTMLInputElement).value;
 }
 
 function handleSearchButtonClick() {
-  emit("filterTodos", searchText.value);
+  emit('filterTodos', searchText.value);
 }
 </script>

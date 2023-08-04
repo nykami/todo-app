@@ -21,10 +21,10 @@ interface Props {
 
 defineProps<Props>();
 
-const emit = defineEmits(["handleCheckboxClick"]);
+const emit = defineEmits(['handleCheckboxClick']);
 
 function handleCheckboxClick(event: Event) {
   event.stopPropagation();
-  emit("handleCheckboxClick");
+  emit('handleCheckboxClick');
 }
 </script>

@@ -14,7 +14,7 @@
   </p>
 </template>
 
-<script setup lang="ts">
+<script setup lang='ts'>
 interface Props {
   todoContent: string;
   todoIsEditing: boolean;
@@ -22,9 +22,9 @@ interface Props {
 
 defineProps<Props>();
 
-const emit = defineEmits(["handleContentInputChange"]);
+const emit = defineEmits(['handleContentInputChange']);
 function handleContentInputChange(event: Event) {
   const newContent = (event.target as HTMLDivElement).innerText;
-  emit("handleContentInputChange", newContent);
+  emit('handleContentInputChange', newContent);
 }
 </script>

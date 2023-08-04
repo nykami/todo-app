@@ -15,6 +15,6 @@
   <hr />
 </template>
 
-<script setup lang="ts">
+<script setup lang='ts'>
 import RightArrowIcon from '../icons/RightArrowIcon.vue';
 </script>

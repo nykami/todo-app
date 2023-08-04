@@ -19,9 +19,9 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ColorMap } from "../types/ColorMap.vue";
-import OptionsIcon from "../icons/OptionsIcon.vue";
+<script setup lang='ts'>
+import { ColorMap } from '../types/ColorMap.vue';
+import OptionsIcon from '../icons/OptionsIcon.vue';
 
 interface Props {
   todoImportance: string;
@@ -29,11 +29,11 @@ interface Props {
   colorMap: ColorMap;
 }
 
-const emit = defineEmits(["handleImportanceChangeClickMobile"]);
+const emit = defineEmits(['handleImportanceChangeClickMobile']);
 
 defineProps<Props>();
 
 function handleImportanceChangeClickMobile(importance: string) {
-  emit("handleImportanceChangeClickMobile", importance);
+  emit('handleImportanceChangeClickMobile', importance);
 }
 </script>

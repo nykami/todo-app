@@ -27,7 +27,7 @@
         <TodoDate :todoDate="todo.date" />
       </div>
       <div
-        class="hidden sm:text-2xl font-semibold w-38rem h-[8rem] sm:flex sm:justify-between items-start"
+        class="hidden sm:text-2xl font-semibold w-38rem h-32 sm:flex sm:justify-between items-start"
       >
         <TodoContent
           :contenteditable="isEditable"

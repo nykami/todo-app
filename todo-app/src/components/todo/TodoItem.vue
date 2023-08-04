@@ -23,7 +23,7 @@
       />
       <TodoCheckbox
         :todoIsChecked="todo.isChecked"
-        @toggleTodoCheckedState="toggleTodoCheckedState"
+        @handleCheckboxClick="handleCheckboxClick"
       />
     </div>
   </div>
@@ -40,15 +40,16 @@ import { Todo } from "../types/Todo.vue";
 interface Props {
   todo: Todo;
 }
+
 defineProps<Props>();
 
-const emit = defineEmits(["setIsEditingTrue", "toggleTodoCheckedState"]);
+const emit = defineEmits(["setIsEditingTrue", "handleCheckboxClick"]);
 
 function setIsEditingTrue() {
   emit("setIsEditingTrue");
 }
 
-function toggleTodoCheckedState() {
-  emit("toggleTodoCheckedState");
+function handleCheckboxClick() {
+  emit("handleCheckboxClick");
 }
 </script>

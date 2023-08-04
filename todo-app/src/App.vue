@@ -1,8 +1,9 @@
 <template>
-  <div class="flex flex-col justify-center items-center h-full">
-    <div>
+  <div class="flex flex-col justify-center items-center ">
+    <div class="max-w-screen-sm h-full">
       <TodoLogin />
       <TodoHeader @addTodo="addTodo" />
+      <SearchBar @filterTodos="filterTodos" />
       <TodoPlaceholder v-if="!todos.length" />
       <TodoList
         v-else
@@ -16,18 +17,31 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { computed, ref } from "vue";
-import TodoLogin from "./components/header/TodoLogin.vue";
-import TodoHeader from "./components/header/TodoHeader.vue";
-import TodoPlaceholder from "./components/TodoPlaceholder.vue";
-import TodoList from "./components/TodoList.vue";
-import { Todo } from "./components/types/Todo.vue";
+<script setup lang='ts'>
+import { computed, ref } from 'vue';
+import TodoLogin from './components/header/TodoLogin.vue';
+import TodoHeader from './components/header/TodoHeader.vue';
+import TodoPlaceholder from './components/TodoPlaceholder.vue';
+import TodoList from './components/TodoList.vue';
+import SearchBar from './components/SearchBar.vue';
+import { Todo } from './components/types/Todo.vue';
 
 const todos = ref<Todo[]>([]);
+const searchText = ref<string>('');
+
+const filteredTodos = computed(() => {
+  if (!searchText.value) {
+    return todos.value;
+  }
+  return todos.value.filter(
+    (todo) =>
+      todo.title.toLowerCase().includes(searchText.value) ||
+      todo.content.toLowerCase().includes(searchText.value)
+  );
+});
 
 const reversedTodos = computed(() => {
-  return todos.value.slice().reverse();
+  return filteredTodos.value.slice().reverse();
 });
 
 function findNextId(): number {
@@ -77,5 +91,9 @@ function handleCheckboxClick(todoId: number) {
       todos.value.push(todoToMakeFloat);
     }
   }, 600);
+}
+
+function filterTodos(searchInput: string) {
+  searchText.value = searchInput.toLowerCase();
 }
 </script>

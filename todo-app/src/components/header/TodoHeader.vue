@@ -14,20 +14,20 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import PlusIcon from "../icons/PlusIcon.vue";
+<script setup lang='ts'>
+import PlusIcon from '../icons/PlusIcon.vue';
 
-const emit = defineEmits(["addTodo"]);
+const emit = defineEmits(['addTodo']);
 
 function addNewTodo() {
   const defaultTodo = {
-    title: "Title",
-    content: "Description",
-    importance: "Medium",
+    title: 'Title',
+    content: 'Description',
+    importance: 'Medium',
     date: new Date().toLocaleDateString(),
     isEditing: true,
     isChecked: false,
   };
-  emit("addTodo", defaultTodo);
+  emit('addTodo', defaultTodo);
 }
 </script>

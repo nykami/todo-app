@@ -27,7 +27,7 @@
         <TodoDate :todoDate="todo.date" />
       </div>
       <div
-        class="hidden sm:text-2xl font-semibold w-38rem h-[8rem] sm:flex sm:justify-between items-start"
+        class="hidden sm:text-2xl font-semibold w-38rem h-32 sm:flex sm:justify-between items-start"
       >
         <TodoContent
           :contenteditable="isEditable"
@@ -72,28 +72,28 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { reactive, ref } from "vue";
-import TodoTitle from "./TodoTitle.vue";
-import TodoContent from "./TodoContent.vue";
-import TodoImportance from "../todo/TodoImportance.vue";
-import TodoImportanceOptions from "./TodoImportanceOptions.vue";
-import TodoButtons from "./TodoButtons.vue";
-import TodoDate from "./TodoDate.vue";
-import { Todo } from "../types/Todo.vue";
-import { ColorMap } from "../types/ColorMap.vue";
+<script setup lang='ts'>
+import { reactive, ref } from 'vue';
+import TodoTitle from './TodoTitle.vue';
+import TodoContent from './TodoContent.vue';
+import TodoImportance from '../todo/TodoImportance.vue';
+import TodoImportanceOptions from './TodoImportanceOptions.vue';
+import TodoButtons from './TodoButtons.vue';
+import TodoDate from './TodoDate.vue';
+import { Todo } from '../types/Todo.vue';
+import { ColorMap } from '../types/ColorMap.vue';
 
 const colorMap: ColorMap = {
-  High: "bg-orange-600 border-orange-600",
-  Medium: "bg-amber-500 border-amber-500",
-  Low: "bg-teal-400 border-teal-400",
+  High: 'bg-orange-600 border-orange-600',
+  Medium: 'bg-amber-500 border-amber-500',
+  Low: 'bg-teal-400 border-teal-400',
 };
 
 interface Props {
   todo: Todo;
 }
 const props = defineProps<Props>();
-const emit = defineEmits(["handleDeleteButtonClick", "handleSaveButtonClick"]);
+const emit = defineEmits(['handleDeleteButtonClick', 'handleSaveButtonClick']);
 
 const isEditable = ref(props.todo.isEditing);
 const editedTodo = reactive(props.todo);
@@ -122,10 +122,10 @@ function toggleIsShowingOptions() {
 }
 
 function handleSaveButtonClick() {
-  emit("handleSaveButtonClick", editedTodo, props.todo.id);
+  emit('handleSaveButtonClick', editedTodo, props.todo.id);
 }
 
 function handleDeleteButtonClick() {
-  emit("handleDeleteButtonClick", props.todo.id);
+  emit('handleDeleteButtonClick', props.todo.id);
 }
 </script>

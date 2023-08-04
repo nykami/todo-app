@@ -15,17 +15,17 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang='ts'>
 
-const emit = defineEmits(["handleSaveButtonClick", "handleDeleteButtonClick"]);
+const emit = defineEmits(['handleSaveButtonClick', 'handleDeleteButtonClick']);
 
 function handleSaveButtonClick() {
-  emit("handleSaveButtonClick");
+  emit('handleSaveButtonClick');
 }
 
 function handleDeleteButtonClick() {
-  if (confirm("Are you sure you want to delete this todo?")) {
-    emit("handleDeleteButtonClick");
+  if (confirm('Are you sure you want to delete this todo?')) {
+    emit('handleDeleteButtonClick');
   }
 }
 </script>

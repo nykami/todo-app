@@ -29,13 +29,13 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import TodoTitle from "./TodoTitle.vue";
-import TodoContent from "./TodoContent.vue";
-import TodoDate from "./TodoDate.vue";
-import TodoCheckbox from "./TodoCheckbox.vue";
-import TodoImportance from "./TodoImportance.vue";
-import { Todo } from "../types/Todo.vue";
+<script setup lang='ts'>
+import TodoTitle from './TodoTitle.vue';
+import TodoContent from './TodoContent.vue';
+import TodoDate from './TodoDate.vue';
+import TodoCheckbox from './TodoCheckbox.vue';
+import TodoImportance from './TodoImportance.vue';
+import { Todo } from '../types/Todo.vue';
 
 interface Props {
   todo: Todo;
@@ -43,13 +43,13 @@ interface Props {
 
 defineProps<Props>();
 
-const emit = defineEmits(["setIsEditingTrue", "handleCheckboxClick"]);
+const emit = defineEmits(['setIsEditingTrue', 'handleCheckboxClick']);
 
 function setIsEditingTrue() {
-  emit("setIsEditingTrue");
+  emit('setIsEditingTrue');
 }
 
 function handleCheckboxClick() {
-  emit("handleCheckboxClick");
+  emit('handleCheckboxClick');
 }
 </script>

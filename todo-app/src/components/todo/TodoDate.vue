@@ -7,8 +7,8 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import CalendarIcon from "../icons/CalendarIcon.vue";
+<script setup lang='ts'>
+import CalendarIcon from '../icons/CalendarIcon.vue';
 
 interface Props {
   todoDate: string;

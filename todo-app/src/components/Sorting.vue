@@ -21,6 +21,7 @@
       </button>
       <button
         class="w-fit px-3 sm:px-4 h-8 rounded-lg border border-black text-xs sm:text-sm font-semibold"
+        @click="handleSortByDate"
       >
         Date
       </button>
@@ -44,9 +45,13 @@
 import UpArrow from './icons/UpArrow.vue';
 import DownArrow from './icons/DownArrow.vue';
 
-const emit = defineEmits(['handleSortByTitle']);
+const emit = defineEmits(['handleSortByTitle', 'handleSortByDate']);
 
 function handleSortByTitle() {
   emit('handleSortByTitle');
+}
+
+function handleSortByDate() {
+  emit('handleSortByDate');
 }
 </script>

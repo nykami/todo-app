@@ -24,7 +24,11 @@
             />
           </div>
         </div>
-        <TodoDate :todoDate="todo.date" />
+        <TodoDate
+          :todoDate="todo.date"
+          :todoIsEditing="todo.isEditing"
+          @dateSelected="changeDate"
+        />
       </div>
       <div
         class="hidden sm:text-2xl font-semibold w-38rem h-32 sm:flex sm:justify-between items-start"
@@ -72,7 +76,7 @@
   </div>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
 import { reactive, ref } from 'vue';
 import TodoTitle from './TodoTitle.vue';
 import TodoContent from './TodoContent.vue';
@@ -127,5 +131,9 @@ function handleSaveButtonClick() {
 
 function handleDeleteButtonClick() {
   emit('handleDeleteButtonClick', props.todo.id);
+}
+
+function changeDate(newDate: Date) {
+  editedTodo.date = newDate.toLocaleDateString('en-GB');
 }
 </script>

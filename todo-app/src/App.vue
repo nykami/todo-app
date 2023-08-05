@@ -4,7 +4,10 @@
       <TodoLogin />
       <TodoHeader @addTodo="addTodo" />
       <SearchBar @filterTodos="filterTodos" />
-      <Sorting @handleSortByTitle="sortByTitle" />
+      <Sorting
+        @handleSortByTitle="sortByTitle"
+        @handleSortByDate="sortByDate"
+      />
       <TodoPlaceholder v-if="!todos.length" />
       <TodoList
         v-else
@@ -110,6 +113,35 @@ function sortByTitle() {
       return 1;
     }
     return 0;
+  });
+}
+
+function compareDateComponents(componentA: string, componentB: string) {
+  if (componentA === componentB) {
+    return 0;
+  }
+  return componentA < componentB ? -1 : 1;
+}
+
+function sortByDate() {
+  todos.value.sort((a, b) => {
+    const dateA = a.date;
+    const dateB = b.date;
+
+    const [dayA, monthA, yearA] = dateA.split('/');
+    const [dayB, monthB, yearB] = dateB.split('/');
+
+    const yearComparison = compareDateComponents(yearA, yearB);
+    if (yearComparison !== 0) {
+      return yearComparison;
+    }
+
+    const monthComparison = compareDateComponents(monthA, monthB);
+    if (monthComparison !== 0) {
+      return monthComparison;
+    }
+
+    return compareDateComponents(dayA, dayB);
   });
 }
 </script>

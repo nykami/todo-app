@@ -161,6 +161,16 @@ function sortByPriority() {
   });
 }
 
+function sortByDescription() {
+  todos.value.sort((a, b) => {
+    const descA = a.content.toLowerCase();
+    const descB = b.content.toLowerCase();
+    return sortType.value === 'desc'
+      ? descB.localeCompare(descA)
+      : descA.localeCompare(descB);
+  });
+}
+
 function applySortBy(field: string) {
   sortByField.value = field;
   switch (field) {
@@ -174,6 +184,10 @@ function applySortBy(field: string) {
     }
     case 'importance': {
       sortByPriority();
+      break;
+    }
+    case 'description': {
+      sortByDescription();
       break;
     }
   }

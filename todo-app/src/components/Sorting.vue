@@ -4,24 +4,29 @@
   >
     <div class="flex mb-3 sm:mb-0">
       <button
-        class="w-fit px-3 sm:px-4 h-8 mr-2 sm:mr-3 rounded-lg border border-emerald-400 bg-emerald-400 text-white text-xs sm:text-sm font-semibold"
+        class="w-fit px-3 sm:px-4 h-8 mr-2 sm:mr-3 rounded-lg border border-black text-xs sm:text-sm font-semibold"
+        :class="getColorBySortType('title')"
         @click="handleClick('title')"
       >
         Title
       </button>
       <button
-        class="w-fit px-2 sm:px-4 h-8 mr-2 sm:mr-3 rounded-lg border border-black bg-black text-white text-xs sm:text-sm font-semibold"
+        class="w-fit px-2 sm:px-4 h-8 mr-2 sm:mr-3 rounded-lg border border-black text-xs sm:text-sm font-semibold"
+        :class="getColorBySortType('description')"
+        @click="handleClick('description')"
       >
         Description
       </button>
       <button
         class="w-fit px-3 sm:px-4 h-8 mr-2 sm:mr-3 rounded-lg border border-black text-xs sm:text-sm font-semibold"
+        :class="getColorBySortType('importance')"
         @click="handleClick('importance')"
       >
         Priority
       </button>
       <button
         class="w-fit px-3 sm:px-4 h-8 rounded-lg border border-black text-xs sm:text-sm font-semibold"
+        :class="getColorBySortType('date')"
         @click="handleClick('date')"
       >
         Date
@@ -53,7 +58,7 @@ interface Props {
   sortByField: string;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const emit = defineEmits(['handleSort', 'toggleSortType']);
 
@@ -63,5 +68,13 @@ function handleClick(sortBy: string) {
 
 function toggleSortType(sortType: string) {
   emit('toggleSortType', sortType);
+}
+
+function getColorBySortType(sortByField: string) {
+  if (props.sortType === 'asc' && props.sortByField === sortByField)
+    return 'border-emerald-400 bg-emerald-400 text-white';
+  else if (props.sortType === 'desc' && props.sortByField === sortByField)
+    return 'border-black bg-black text-white';
+  else return '';
 }
 </script>

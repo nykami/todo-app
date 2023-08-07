@@ -7,6 +7,7 @@
       <Sorting
         @handleSortByTitle="sortByTitle"
         @handleSortByDate="sortByDate"
+        @handleSortByPriority="sortByPriority"
       />
       <TodoPlaceholder v-if="!todos.length" />
       <TodoList
@@ -142,6 +143,19 @@ function sortByDate() {
     }
 
     return compareDateComponents(dayA, dayB);
+  });
+}
+
+function sortByPriority() {
+  const priorityValues: Record<string, number> = {
+    High: 3,
+    Medium: 2,
+    Low: 1,
+  };
+  todos.value.sort((a, b) => {
+    const priorityA = priorityValues[a.importance];
+    const priorityB = priorityValues[b.importance];
+    return priorityA - priorityB;
   });
 }
 </script>

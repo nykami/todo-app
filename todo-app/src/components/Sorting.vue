@@ -16,6 +16,7 @@
       </button>
       <button
         class="w-fit px-3 sm:px-4 h-8 mr-2 sm:mr-3 rounded-lg border border-black text-xs sm:text-sm font-semibold"
+        @click="handleSortByPriority"
       >
         Priority
       </button>
@@ -45,7 +46,11 @@
 import UpArrow from './icons/UpArrow.vue';
 import DownArrow from './icons/DownArrow.vue';
 
-const emit = defineEmits(['handleSortByTitle', 'handleSortByDate']);
+const emit = defineEmits([
+  'handleSortByTitle',
+  'handleSortByDate',
+  'handleSortByPriority',
+]);
 
 function handleSortByTitle() {
   emit('handleSortByTitle');
@@ -53,5 +58,9 @@ function handleSortByTitle() {
 
 function handleSortByDate() {
   emit('handleSortByDate');
+}
+
+function handleSortByPriority() {
+  emit('handleSortByPriority');
 }
 </script>

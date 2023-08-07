@@ -134,6 +134,10 @@ function handleDeleteButtonClick() {
 }
 
 function changeDate(newDate: Date) {
-  editedTodo.date = newDate.toLocaleDateString('en-GB');
+  editedTodo.date = formattedDate(newDate);
+}
+
+function formattedDate(date: Date) {
+  return date.toLocaleDateString('en-GB').replace(/\//g, '.');
 }
 </script>

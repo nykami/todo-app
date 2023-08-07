@@ -5,9 +5,10 @@
       <TodoHeader @addTodo="addTodo" />
       <SearchBar @filterTodos="filterTodos" />
       <Sorting
-        @handleSortByTitle="sortByTitle"
-        @handleSortByDate="sortByDate"
-        @handleSortByPriority="sortByPriority"
+        :sortType="sortType"
+        :sortByField="sortByField"
+        @handleSort="applySortBy"
+        @toggleSortType="changeSortType"
       />
       <TodoPlaceholder v-if="!todos.length" />
       <TodoList
@@ -34,6 +35,8 @@ import { Todo } from './components/types/Todo.vue';
 
 const todos = ref<Todo[]>([]);
 const searchText = ref<string>('');
+const sortType = ref<string>('desc');
+const sortByField = ref<string>('');
 
 const filteredTodos = computed(() => {
   if (!searchText.value) {
@@ -77,6 +80,7 @@ function updateTodo(newTodo: Todo, todoId: number) {
   todoToUpdate.title = newTodo.title;
   todoToUpdate.importance = newTodo.importance;
   todoToUpdate.isEditing = false;
+  todoToUpdate.date = newTodo.date;
 }
 
 function setIsEditingTrue(todoId: number) {
@@ -107,21 +111,16 @@ function sortByTitle() {
   todos.value.sort((a, b) => {
     const titleA = a.title.toLowerCase();
     const titleB = b.title.toLowerCase();
-    if (titleA > titleB) {
-      return -1;
-    }
-    if (titleA < titleB) {
-      return 1;
-    }
-    return 0;
+    return sortType.value === 'desc'
+      ? titleB.localeCompare(titleA)
+      : titleA.localeCompare(titleB);
   });
 }
 
 function compareDateComponents(componentA: string, componentB: string) {
-  if (componentA === componentB) {
-    return 0;
-  }
-  return componentA < componentB ? -1 : 1;
+  return sortType.value === 'desc'
+    ? componentB.localeCompare(componentA)
+    : componentA.localeCompare(componentB);
 }
 
 function sortByDate() {
@@ -129,8 +128,8 @@ function sortByDate() {
     const dateA = a.date;
     const dateB = b.date;
 
-    const [dayA, monthA, yearA] = dateA.split('/');
-    const [dayB, monthB, yearB] = dateB.split('/');
+    const [dayA, monthA, yearA] = dateA.split('.');
+    const [dayB, monthB, yearB] = dateB.split('.');
 
     const yearComparison = compareDateComponents(yearA, yearB);
     if (yearComparison !== 0) {
@@ -152,10 +151,36 @@ function sortByPriority() {
     Medium: 2,
     Low: 1,
   };
+
   todos.value.sort((a, b) => {
     const priorityA = priorityValues[a.importance];
     const priorityB = priorityValues[b.importance];
-    return priorityA - priorityB;
+    return sortType.value === 'desc'
+      ? priorityB - priorityA
+      : priorityA - priorityB;
   });
+}
+
+function applySortBy(field: string) {
+  sortByField.value = field;
+  switch (field) {
+    case 'title': {
+      sortByTitle();
+      break;
+    }
+    case 'date': {
+      sortByDate();
+      break;
+    }
+    case 'importance': {
+      sortByPriority();
+      break;
+    }
+  }
+}
+
+function changeSortType(newType: string) {
+  sortType.value = newType;
+  applySortBy(sortByField.value);
 }
 </script>

@@ -2,7 +2,7 @@
   <div class="flex items-center w-full text-zinc-800 text-xs font-normal">
     <DatePicker
       v-if="todoIsEditing"
-      v-model="dateinput"
+      v-model="dateInput"
       @update:modelValue="dateSelected"
     />
     <div v-else class="flex">
@@ -22,13 +22,17 @@ interface Props {
   todoIsEditing: boolean;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const emit = defineEmits(['dateSelected']);
-const dateinput = ref(new Date());
 
-function dateSelected(payload: Date): void {
-  dateinput.value = payload;
-  emit('dateSelected', dateinput.value);
+const dateParts = props.todoDate.split('.');
+const day = parseInt(dateParts[0], 10);
+const month = parseInt(dateParts[1], 10) - 1;
+const year = parseInt(dateParts[2], 10);
+const dateInput = ref(new Date(year, month, day));
+
+function dateSelected(selectedDate: Date): void {
+  emit('dateSelected', selectedDate);
 }
 </script>

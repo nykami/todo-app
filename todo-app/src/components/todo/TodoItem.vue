@@ -11,7 +11,7 @@
           :todoIsEditing="todo.isEditing"
         />
       </div>
-      <TodoDate :todoDate="todo.date" />
+      <TodoDate :todoDate="todo.date" :todoIsEditing="todo.isEditing" />
     </div>
 
     <div
@@ -29,7 +29,7 @@
   </div>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
 import TodoTitle from './TodoTitle.vue';
 import TodoContent from './TodoContent.vue';
 import TodoDate from './TodoDate.vue';

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div ref="todoEditRef">
     <div class="flex flex-row sm:flex-col justify-between items-center">
       <div class="flex flex-col">
         <div class="flex flex-row sm:justify-between sm:w-38rem">
@@ -24,7 +24,11 @@
             />
           </div>
         </div>
-        <TodoDate :todoDate="todo.date" />
+        <TodoDate
+          :todoDate="todo.date"
+          :todoIsEditing="todo.isEditing"
+          @dateSelected="changeDate"
+        />
       </div>
       <div
         class="hidden sm:text-2xl font-semibold w-38rem h-32 sm:flex sm:justify-between items-start"
@@ -72,8 +76,9 @@
   </div>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
 import { reactive, ref } from 'vue';
+import { onClickOutside } from '@vueuse/core';
 import TodoTitle from './TodoTitle.vue';
 import TodoContent from './TodoContent.vue';
 import TodoImportance from '../todo/TodoImportance.vue';
@@ -93,11 +98,22 @@ interface Props {
   todo: Todo;
 }
 const props = defineProps<Props>();
-const emit = defineEmits(['handleDeleteButtonClick', 'handleSaveButtonClick']);
+
+const emit = defineEmits([
+  'handleDeleteButtonClick',
+  'handleSaveButtonClick',
+  'setIsEditingFalse',
+]);
+
+const todoEditRef = ref(null);
 
 const isEditable = ref(props.todo.isEditing);
 const editedTodo = reactive(props.todo);
 const isShowingOptions = ref(false);
+
+onClickOutside(todoEditRef, () => {
+  emit('setIsEditingFalse');
+});
 
 function changeTitle(newTitle: string) {
   editedTodo.title = newTitle;
@@ -127,5 +143,13 @@ function handleSaveButtonClick() {
 
 function handleDeleteButtonClick() {
   emit('handleDeleteButtonClick', props.todo.id);
+}
+
+function changeDate(newDate: Date) {
+  editedTodo.date = formattedDate(newDate);
+}
+
+function formattedDate(date: Date) {
+  return date.toLocaleDateString('en-GB').replace(/\//g, '.');
 }
 </script>

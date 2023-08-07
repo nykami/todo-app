@@ -71,10 +71,9 @@ function toggleSortType(sortType: string) {
 }
 
 function getColorBySortType(sortByField: string) {
-  if (props.sortType === 'asc' && props.sortByField === sortByField)
-    return 'border-emerald-400 bg-emerald-400 text-white';
-  else if (props.sortType === 'desc' && props.sortByField === sortByField)
-    return 'border-black bg-black text-white';
-  else return '';
+  if (sortByField !== props.sortByField) return '';
+  return props.sortType === 'asc'
+    ? 'border-emerald-400 bg-emerald-400 text-white'
+    : 'border-black bg-black text-white';
 }
 </script>

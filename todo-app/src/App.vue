@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col justify-center items-center">
-    <div class="max-w-screen-sm h-full">
+    <div class="max-w-screen-sm">
       <TodoLogin />
       <TodoHeader @addTodo="addTodo" />
       <SearchBar @filterTodos="filterTodos" />
@@ -19,6 +19,7 @@
         @setEditState="setEditState"
         @handleCheckboxClick="handleCheckboxClick"
       />
+      <div v-if="!filteredTodos.length && todos.length" class="text-center">No todos found</div>
     </div>
   </div>
 </template>

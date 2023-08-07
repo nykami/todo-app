@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex sm:flex-row flex-col justify-between sm:items-center items-start w-72 h-12 sm:w-full sm:h-full"
+    class="flex sm:flex-row flex-col justify-between sm:items-center items-start w-72 h-12 sm:w-full sm:h-full mb-10"
   >
     <div class="flex mb-3 sm:mb-0">
       <button

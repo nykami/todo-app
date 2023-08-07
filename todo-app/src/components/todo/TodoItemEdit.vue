@@ -102,7 +102,7 @@ const props = defineProps<Props>();
 const emit = defineEmits([
   'handleDeleteButtonClick',
   'handleSaveButtonClick',
-  'toggleIsEditing',
+  'setIsEditingFalse',
 ]);
 
 const todoEditRef = ref(null);
@@ -112,7 +112,7 @@ const editedTodo = reactive(props.todo);
 const isShowingOptions = ref(false);
 
 onClickOutside(todoEditRef, () => {
-  emit('toggleIsEditing');
+  emit('setIsEditingFalse');
 });
 
 function changeTitle(newTitle: string) {

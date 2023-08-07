@@ -16,8 +16,7 @@
         :reversedTodos="reversedTodos"
         @deleteTodo="deleteTodo"
         @updateTodo="updateTodo"
-        @setIsEditingTrue="setIsEditingTrue"
-        @setIsEditingFalse="setIsEditingFalse"
+        @setEditState="setEditState"
         @handleCheckboxClick="handleCheckboxClick"
       />
     </div>
@@ -84,14 +83,9 @@ function updateTodo(newTodo: Todo, todoId: number) {
   todoToUpdate.date = newTodo.date;
 }
 
-function setIsEditingTrue(todoId: number) {
+function setEditState(todoId: number, value: boolean) {
   const indexToUpdateAt = todos.value.findIndex((obj) => obj.id === todoId);
-  todos.value[indexToUpdateAt].isEditing = true;
-}
-
-function setIsEditingFalse(todoId: number) {
-  const indexToUpdateAt = todos.value.findIndex((obj) => obj.id === todoId);
-  todos.value[indexToUpdateAt].isEditing = false;
+  todos.value[indexToUpdateAt].isEditing = value;
 }
 
 function handleCheckboxClick(todoId: number) {

@@ -9,7 +9,7 @@
         <TodoItem
           v-if="!todo.isEditing"
           :todo="todo"
-          @setIsEditingTrue="setIsEditingTrue(todo.id)"
+          @setIsEditingTrue="setEditState(todo.id, true)"
           @handleCheckboxClick="handleCheckboxClick(todo.id)"
         />
         <TodoItemEdit
@@ -17,7 +17,7 @@
           :todo="todo"
           @handleDeleteButtonClick="deleteTodo"
           @handleSaveButtonClick="saveChanges"
-          @toggleIsEditing="setIsEditingFalse(todo.id)"
+          @setIsEditingFalse="setEditState(todo.id, false)"
         />
       </li>
     </ul>
@@ -37,9 +37,8 @@ defineProps<Props>();
 const emit = defineEmits([
   'deleteTodo',
   'updateTodo',
-  'setIsEditingTrue',
+  'setEditState',
   'handleCheckboxClick',
-  'setIsEditingFalse',
 ]);
 
 function deleteTodo(todoId: number) {
@@ -50,15 +49,11 @@ function saveChanges(editedTodo: Todo, todoId: number) {
   emit('updateTodo', editedTodo, todoId);
 }
 
-function setIsEditingTrue(todoId: number) {
-  emit('setIsEditingTrue', todoId);
+function setEditState(todoId: number, value: boolean) {
+  emit('setEditState', todoId, value);
 }
 
 function handleCheckboxClick(todoId: number) {
   emit('handleCheckboxClick', todoId);
-}
-
-function setIsEditingFalse(todoId: number) {
-  emit('setIsEditingFalse', todoId);
 }
 </script>

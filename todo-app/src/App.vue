@@ -17,6 +17,7 @@
         @deleteTodo="deleteTodo"
         @updateTodo="updateTodo"
         @setIsEditingTrue="setIsEditingTrue"
+        @setIsEditingFalse="setIsEditingFalse"
         @handleCheckboxClick="handleCheckboxClick"
       />
     </div>
@@ -86,6 +87,11 @@ function updateTodo(newTodo: Todo, todoId: number) {
 function setIsEditingTrue(todoId: number) {
   const indexToUpdateAt = todos.value.findIndex((obj) => obj.id === todoId);
   todos.value[indexToUpdateAt].isEditing = true;
+}
+
+function setIsEditingFalse(todoId: number) {
+  const indexToUpdateAt = todos.value.findIndex((obj) => obj.id === todoId);
+  todos.value[indexToUpdateAt].isEditing = false;
 }
 
 function handleCheckboxClick(todoId: number) {

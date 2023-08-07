@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div ref="todoEditRef">
     <div class="flex flex-row sm:flex-col justify-between items-center">
       <div class="flex flex-col">
         <div class="flex flex-row sm:justify-between sm:w-38rem">
@@ -78,6 +78,7 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
+import { onClickOutside } from '@vueuse/core';
 import TodoTitle from './TodoTitle.vue';
 import TodoContent from './TodoContent.vue';
 import TodoImportance from '../todo/TodoImportance.vue';
@@ -97,11 +98,22 @@ interface Props {
   todo: Todo;
 }
 const props = defineProps<Props>();
-const emit = defineEmits(['handleDeleteButtonClick', 'handleSaveButtonClick']);
+
+const emit = defineEmits([
+  'handleDeleteButtonClick',
+  'handleSaveButtonClick',
+  'toggleIsEditing',
+]);
+
+const todoEditRef = ref(null);
 
 const isEditable = ref(props.todo.isEditing);
 const editedTodo = reactive(props.todo);
 const isShowingOptions = ref(false);
+
+onClickOutside(todoEditRef, () => {
+  emit('toggleIsEditing');
+});
 
 function changeTitle(newTitle: string) {
   editedTodo.title = newTitle;

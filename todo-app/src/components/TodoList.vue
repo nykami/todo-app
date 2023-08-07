@@ -9,7 +9,7 @@
         <TodoItem
           v-if="!todo.isEditing"
           :todo="todo"
-          @setIsEditingTrue="setIsEditingTrue(todo)"
+          @setIsEditingTrue="setIsEditingTrue(todo.id)"
           @handleCheckboxClick="handleCheckboxClick(todo.id)"
         />
         <TodoItemEdit
@@ -17,13 +17,14 @@
           :todo="todo"
           @handleDeleteButtonClick="deleteTodo"
           @handleSaveButtonClick="saveChanges"
+          @toggleIsEditing="setIsEditingFalse(todo.id)"
         />
       </li>
     </ul>
   </div>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
 import TodoItem from './todo/TodoItem.vue';
 import TodoItemEdit from './todo/TodoItemEdit.vue';
 import { Todo } from './types/Todo.vue';
@@ -33,7 +34,13 @@ interface Props {
 }
 defineProps<Props>();
 
-const emit = defineEmits(['deleteTodo', 'updateTodo', 'setIsEditingTrue', 'handleCheckboxClick']);
+const emit = defineEmits([
+  'deleteTodo',
+  'updateTodo',
+  'setIsEditingTrue',
+  'handleCheckboxClick',
+  'setIsEditingFalse',
+]);
 
 function deleteTodo(todoId: number) {
   emit('deleteTodo', todoId);
@@ -43,11 +50,15 @@ function saveChanges(editedTodo: Todo, todoId: number) {
   emit('updateTodo', editedTodo, todoId);
 }
 
-function setIsEditingTrue(todo: Todo) {
-  emit('setIsEditingTrue', todo.id);
+function setIsEditingTrue(todoId: number) {
+  emit('setIsEditingTrue', todoId);
 }
 
-function handleCheckboxClick(todoId: number){
+function handleCheckboxClick(todoId: number) {
   emit('handleCheckboxClick', todoId);
+}
+
+function setIsEditingFalse(todoId: number) {
+  emit('setIsEditingFalse', todoId);
 }
 </script>

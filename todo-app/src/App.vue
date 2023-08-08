@@ -19,13 +19,15 @@
         @setEditState="setEditState"
         @handleCheckboxClick="handleCheckboxClick"
       />
-      <div v-if="!filteredTodos.length && todos.length" class="text-center">No todos found</div>
+      <div v-if="!filteredTodos.length && todos.length" class="text-center">
+        No todos found
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import TodoLogin from './components/header/TodoLogin.vue';
 import TodoHeader from './components/header/TodoHeader.vue';
 import TodoPlaceholder from './components/TodoPlaceholder.vue';
@@ -34,7 +36,7 @@ import SearchBar from './components/SearchBar.vue';
 import Sorting from './components/Sorting.vue';
 import { Todo } from './components/types/Todo.vue';
 
-const todos = ref<Todo[]>([]);
+const todos = ref<Todo[]>(getFromLocalStorage());
 const searchText = ref<string>('');
 const sortType = ref<string>('desc');
 const sortByField = ref<string>('');
@@ -54,6 +56,15 @@ const reversedTodos = computed(() => {
   return filteredTodos.value.slice().reverse();
 });
 
+function saveToLocalStorage() {
+  localStorage.setItem('todos', JSON.stringify(todos.value));
+}
+
+function getFromLocalStorage() {
+  const savedTodos = localStorage.getItem('todos');
+  return savedTodos ? JSON.parse(savedTodos) : [];
+}
+
 function findNextId(): number {
   let maxId = -1;
   todos.value.forEach((todo) => {
@@ -67,21 +78,32 @@ function findNextId(): number {
 function addTodo(defaultTodo: Todo) {
   defaultTodo.id = findNextId();
   todos.value.push(defaultTodo);
+  saveToLocalStorage();
 }
 
 function deleteTodo(todoId: number) {
   const indexToRemoveFrom = todos.value.findIndex((obj) => obj.id === todoId);
   todos.value.splice(indexToRemoveFrom, 1);
+  saveToLocalStorage();
 }
 
 function updateTodo(newTodo: Todo, todoId: number) {
   const indexToUpdateAt = todos.value.findIndex((todo) => todo.id === todoId);
   const todoToUpdate = todos.value[indexToUpdateAt];
-  todoToUpdate.content = newTodo.content;
-  todoToUpdate.title = newTodo.title;
+  if (newTodo.title) {
+    todoToUpdate.title = newTodo.title;
+  } else {
+    todoToUpdate.title = 'Title';
+  }
+  if (newTodo.content) {
+    todoToUpdate.content = newTodo.content;
+  } else {
+    todoToUpdate.content = 'Description';
+  }
   todoToUpdate.importance = newTodo.importance;
   todoToUpdate.isEditing = false;
   todoToUpdate.date = newTodo.date;
+  saveToLocalStorage();
 }
 
 function setEditState(todoId: number, value: boolean) {
@@ -198,4 +220,8 @@ function changeSortType(newType: string) {
   sortType.value = newType;
   applySortBy(sortByField.value);
 }
+
+watch(todos, () => {
+  saveToLocalStorage();
+});
 </script>

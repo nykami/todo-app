@@ -1,7 +1,7 @@
 <template>
   <p
     v-if="todoIsEditing"
-    class="text-black sm:w-[28rem] sm:h-28 text-start h-32 w-64"
+    class="text-black sm:w-[28rem] sm:h-28 text-start h-28 w-64 mb-2"
     @input="handleContentInputChange"
   >
     {{ todoContent }}
@@ -14,7 +14,7 @@
   </p>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
 interface Props {
   todoContent: string;
   todoIsEditing: boolean;
@@ -28,3 +28,9 @@ function handleContentInputChange(event: Event) {
   emit('handleContentInputChange', newContent);
 }
 </script>
+
+<style>
+[contenteditable] {
+  outline: 0px solid transparent;
+}
+</style>

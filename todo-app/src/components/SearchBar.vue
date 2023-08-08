@@ -14,7 +14,7 @@
     </div>
 
     <button
-      class="sm:ml-2 sm:px-4 sm:py-2 bg-black text-white text-xs rounded-lg w-16 h-8 sm:w-20 sm:h-8 items-center font-semibold sm:hover:bg-gray-800"
+      class="sm:ml-2 sm:px-4 sm:py-2 bg-black text-white text-xs rounded-lg w-16 h-8 sm:w-20 sm:h-8 font-semibold sm:hover:bg-gray-800"
       @click="handleSearchButtonClick"
     >
       Search

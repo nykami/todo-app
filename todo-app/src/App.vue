@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-center items-center">
+  <div class="flex flex-col justify-center items-center font-custom">
     <div class="max-w-screen-sm">
       <TodoLogin />
       <TodoHeader @addTodo="addTodo" />
@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import TodoLogin from './components/header/TodoLogin.vue';
 import TodoHeader from './components/header/TodoHeader.vue';
 import TodoPlaceholder from './components/TodoPlaceholder.vue';
@@ -220,8 +220,4 @@ function changeSortType(newType: string) {
   sortType.value = newType;
   applySortBy(sortByField.value);
 }
-
-watch(todos, () => {
-  saveToLocalStorage();
-});
 </script>

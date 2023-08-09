@@ -8,7 +8,10 @@ export default {
     extend: {
       width: {
         '38rem': '38rem',
-      }
+      },
+      fontFamily: {
+        custom: ['Neue Haas Grotesk Display Pro', 'sans-serif']
+      },
     },
   },
   plugins: [],

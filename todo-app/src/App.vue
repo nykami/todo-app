@@ -3,8 +3,9 @@
     <div class="max-w-screen-sm">
       <TodoLogin />
       <TodoHeader @addTodo="addTodo" />
-      <SearchBar @filterTodos="filterTodos" />
+      <SearchBar v-if="todos.length" @filterTodos="filterTodos" />
       <Sorting
+      v-if="todos.length"
         :sortType="sortType"
         :sortByField="sortByField"
         @handleSort="applySortBy"
@@ -36,10 +37,11 @@ import SearchBar from './components/SearchBar.vue';
 import Sorting from './components/Sorting.vue';
 import { Todo } from './components/types/Todo.vue';
 
-const todos = ref<Todo[]>(getFromLocalStorage());
+const todos = ref<Todo[]>([]);
 const searchText = ref<string>('');
 const sortType = ref<string>('desc');
 const sortByField = ref<string>('');
+const isSortingApplied = ref(false);
 
 const filteredTodos = computed(() => {
   if (!searchText.value) {
@@ -56,15 +58,6 @@ const reversedTodos = computed(() => {
   return filteredTodos.value.slice().reverse();
 });
 
-function saveToLocalStorage() {
-  localStorage.setItem('todos', JSON.stringify(todos.value));
-}
-
-function getFromLocalStorage() {
-  const savedTodos = localStorage.getItem('todos');
-  return savedTodos ? JSON.parse(savedTodos) : [];
-}
-
 function findNextId(): number {
   let maxId = -1;
   todos.value.forEach((todo) => {
@@ -75,16 +68,16 @@ function findNextId(): number {
   return maxId + 1;
 }
 
+const todoCopy = ref<Todo[]>([]);
+
 function addTodo(defaultTodo: Todo) {
   defaultTodo.id = findNextId();
   todos.value.push(defaultTodo);
-  saveToLocalStorage();
 }
 
 function deleteTodo(todoId: number) {
   const indexToRemoveFrom = todos.value.findIndex((obj) => obj.id === todoId);
   todos.value.splice(indexToRemoveFrom, 1);
-  saveToLocalStorage();
 }
 
 function updateTodo(newTodo: Todo, todoId: number) {
@@ -103,7 +96,10 @@ function updateTodo(newTodo: Todo, todoId: number) {
   todoToUpdate.importance = newTodo.importance;
   todoToUpdate.isEditing = false;
   todoToUpdate.date = newTodo.date;
-  saveToLocalStorage();
+
+  todoCopy.value = todos.value;
+
+  applySortBy(sortByField.value);
 }
 
 function setEditState(todoId: number, value: boolean) {
@@ -112,17 +108,20 @@ function setEditState(todoId: number, value: boolean) {
 }
 
 function handleCheckboxClick(todoId: number) {
-  const indexToUpdateAt = todos.value.findIndex((todo) => todo.id === todoId);
-  const todoToMakeFloat = todos.value[indexToUpdateAt];
+  const indexToUpdateAt = filteredTodos.value.findIndex(
+    (todo) => todo.id === todoId
+  );
+  const todoToMakeFloat = filteredTodos.value[indexToUpdateAt];
   todoToMakeFloat.isChecked = !todoToMakeFloat.isChecked;
   setTimeout(() => {
     if (todoToMakeFloat.isChecked) {
-      todos.value.splice(indexToUpdateAt, 1);
-      todos.value.unshift(todoToMakeFloat);
+      filteredTodos.value.splice(indexToUpdateAt, 1);
+      filteredTodos.value.unshift(todoToMakeFloat);
     } else {
-      todos.value.splice(indexToUpdateAt, 1);
-      todos.value.push(todoToMakeFloat);
+      filteredTodos.value.splice(indexToUpdateAt, 1);
+      filteredTodos.value.push(todoToMakeFloat);
     }
+    applySortBy(sortByField.value);
   }, 600);
 }
 
@@ -131,6 +130,7 @@ function filterTodos(searchInput: string) {
 }
 
 function sortByTitle() {
+  isSortingApplied.value = true;
   todos.value.sort((a, b) => {
     const titleA = a.title.toLowerCase();
     const titleB = b.title.toLowerCase();
@@ -147,6 +147,7 @@ function compareDateComponents(componentA: string, componentB: string) {
 }
 
 function sortByDate() {
+  isSortingApplied.value = true;
   todos.value.sort((a, b) => {
     const dateA = a.date;
     const dateB = b.date;
@@ -169,6 +170,7 @@ function sortByDate() {
 }
 
 function sortByPriority() {
+  isSortingApplied.value = true;
   const priorityValues: Record<string, number> = {
     High: 3,
     Medium: 2,
@@ -185,6 +187,7 @@ function sortByPriority() {
 }
 
 function sortByDescription() {
+  isSortingApplied.value = true;
   todos.value.sort((a, b) => {
     const descA = a.content.toLowerCase();
     const descB = b.content.toLowerCase();
@@ -194,26 +197,38 @@ function sortByDescription() {
   });
 }
 
+function stopSort(){
+  console.log("stopping sort..");
+  console.log(todos.value);
+  todos.value = todoCopy.value;
+  console.log(todos.value);
+  
+}
+
 function applySortBy(field: string) {
-  sortByField.value = field;
-  switch (field) {
-    case 'title': {
-      sortByTitle();
-      break;
+    sortByField.value = field;
+    if(sortByField.value === ''){
+      stopSort();
+      return;
     }
-    case 'date': {
-      sortByDate();
-      break;
+    switch (field) {
+      case 'title': {
+        sortByTitle();
+        break;
+      }
+      case 'date': {
+        sortByDate();
+        break;
+      }
+      case 'importance': {
+        sortByPriority();
+        break;
+      }
+      case 'description': {
+        sortByDescription();
+        break;
+      }
     }
-    case 'importance': {
-      sortByPriority();
-      break;
-    }
-    case 'description': {
-      sortByDescription();
-      break;
-    }
-  }
 }
 
 function changeSortType(newType: string) {

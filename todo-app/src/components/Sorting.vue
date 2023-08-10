@@ -50,6 +50,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import UpArrow from './icons/UpArrow.vue';
 import DownArrow from './icons/DownArrow.vue';
 
@@ -62,8 +63,21 @@ const props = defineProps<Props>();
 
 const emit = defineEmits(['handleSort', 'toggleSortType']);
 
+const clickCounter = ref<{ [key: string]: number }>({
+  title: 0,
+  description: 0,
+  importance: 0,
+  date: 0,
+});
+
 function handleClick(sortBy: string) {
-  emit('handleSort', sortBy);
+  clickCounter.value[sortBy]++;
+  if (clickCounter.value[sortBy] % 2 === 1) {
+    emit('handleSort', sortBy);
+  } else {
+    clickCounter.value[sortBy] = 0;
+    emit('handleSort', '');
+  }
 }
 
 function toggleSortType(sortType: string) {

@@ -10,7 +10,7 @@
     >
       <div>
         <div
-          class="flex flex-col justify-between w-[12rem] h-[8rem] sm:w-[20rem] sm:h-[10rem] bg-white rounded-lg shadow-2xl p-5 modal-container"
+          class="flex flex-col justify-between w-48 h-32 sm:w-80 sm:h-40 bg-white rounded-lg shadow-2xl p-5 modal-container"
         >
           <div class="text-sm sm:text-lg text-gray-700 modal-body">
             Are you sure you want to delete this todo?

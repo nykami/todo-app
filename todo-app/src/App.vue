@@ -5,7 +5,7 @@
       <TodoHeader @addTodo="addTodo" />
       <SearchBar v-if="todos.length" @filterTodos="filterTodos" />
       <Sorting
-      v-if="todos.length"
+        v-if="todos.length"
         :sortType="sortType"
         :sortByField="sortByField"
         @handleSort="applySortBy"
@@ -68,8 +68,6 @@ function findNextId(): number {
   return maxId + 1;
 }
 
-const todoCopy = ref<Todo[]>([]);
-
 function addTodo(defaultTodo: Todo) {
   defaultTodo.id = findNextId();
   todos.value.push(defaultTodo);
@@ -97,9 +95,7 @@ function updateTodo(newTodo: Todo, todoId: number) {
   todoToUpdate.isEditing = false;
   todoToUpdate.date = newTodo.date;
 
-  todoCopy.value = todos.value;
-
-  applySortBy(sortByField.value);
+  if (isSortingApplied) applySortBy(sortByField.value);
 }
 
 function setEditState(todoId: number, value: boolean) {
@@ -108,21 +104,22 @@ function setEditState(todoId: number, value: boolean) {
 }
 
 function handleCheckboxClick(todoId: number) {
-  const indexToUpdateAt = filteredTodos.value.findIndex(
-    (todo) => todo.id === todoId
-  );
-  const todoToMakeFloat = filteredTodos.value[indexToUpdateAt];
+  const indexToUpdateAt = todos.value.findIndex((todo) => todo.id === todoId);
+  const todoToMakeFloat = todos.value[indexToUpdateAt];
   todoToMakeFloat.isChecked = !todoToMakeFloat.isChecked;
-  setTimeout(() => {
-    if (todoToMakeFloat.isChecked) {
-      filteredTodos.value.splice(indexToUpdateAt, 1);
-      filteredTodos.value.unshift(todoToMakeFloat);
-    } else {
-      filteredTodos.value.splice(indexToUpdateAt, 1);
-      filteredTodos.value.push(todoToMakeFloat);
-    }
-    applySortBy(sortByField.value);
-  }, 600);
+  if (isSortingApplied.value) {
+    return;
+  } else {
+    setTimeout(() => {
+      if (todoToMakeFloat.isChecked) {
+        todos.value.splice(indexToUpdateAt, 1);
+        todos.value.unshift(todoToMakeFloat);
+      } else {
+        todos.value.splice(indexToUpdateAt, 1);
+        todos.value.push(todoToMakeFloat);
+      }
+    }, 500);
+  }
 }
 
 function filterTodos(searchInput: string) {
@@ -130,7 +127,6 @@ function filterTodos(searchInput: string) {
 }
 
 function sortByTitle() {
-  isSortingApplied.value = true;
   todos.value.sort((a, b) => {
     const titleA = a.title.toLowerCase();
     const titleB = b.title.toLowerCase();
@@ -147,7 +143,6 @@ function compareDateComponents(componentA: string, componentB: string) {
 }
 
 function sortByDate() {
-  isSortingApplied.value = true;
   todos.value.sort((a, b) => {
     const dateA = a.date;
     const dateB = b.date;
@@ -170,7 +165,6 @@ function sortByDate() {
 }
 
 function sortByPriority() {
-  isSortingApplied.value = true;
   const priorityValues: Record<string, number> = {
     High: 3,
     Medium: 2,
@@ -187,7 +181,6 @@ function sortByPriority() {
 }
 
 function sortByDescription() {
-  isSortingApplied.value = true;
   todos.value.sort((a, b) => {
     const descA = a.content.toLowerCase();
     const descB = b.content.toLowerCase();
@@ -197,42 +190,48 @@ function sortByDescription() {
   });
 }
 
-function stopSort(){
-  console.log("stopping sort..");
-  console.log(todos.value);
-  todos.value = todoCopy.value;
-  console.log(todos.value);
-  
+function stopSort() {
+  isSortingApplied.value = false;
+  filteredTodos.value.forEach((todo) => {
+    setTimeout(() => {
+      if (todo.isChecked) {
+        todo.isChecked = false;
+        handleCheckboxClick(todo.id);
+      }
+    }, 300);
+  });
 }
 
 function applySortBy(field: string) {
-    sortByField.value = field;
-    if(sortByField.value === ''){
-      stopSort();
-      return;
+  sortByField.value = field;
+  if (sortByField.value === '') {
+    stopSort();
+    return;
+  }
+  isSortingApplied.value = true;
+  switch (field) {
+    case 'title': {
+      sortByTitle();
+      break;
     }
-    switch (field) {
-      case 'title': {
-        sortByTitle();
-        break;
-      }
-      case 'date': {
-        sortByDate();
-        break;
-      }
-      case 'importance': {
-        sortByPriority();
-        break;
-      }
-      case 'description': {
-        sortByDescription();
-        break;
-      }
+    case 'date': {
+      sortByDate();
+      break;
     }
+    case 'importance': {
+      sortByPriority();
+      break;
+    }
+    case 'description': {
+      sortByDescription();
+      break;
+    }
+  }
 }
 
 function changeSortType(newType: string) {
   sortType.value = newType;
+
   applySortBy(sortByField.value);
 }
 </script>

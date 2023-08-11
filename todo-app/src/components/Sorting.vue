@@ -1,31 +1,31 @@
 <template>
   <div
-    class="flex sm:flex-row flex-col justify-between sm:items-center items-start w-72 h-12 sm:w-full sm:h-full mb-10"
+    class="mb-10 flex h-12 w-72 flex-col items-start justify-between sm:h-full sm:w-full sm:flex-row sm:items-center"
   >
-    <div class="flex mb-3 sm:mb-0">
+    <div class="mb-3 flex sm:mb-0">
       <button
-        class="w-fit px-3 sm:px-4 h-8 mr-2 sm:mr-3 rounded-lg border border-black text-xs sm:text-sm font-semibold"
+        class="mr-2 h-8 w-fit rounded-lg border border-black px-3 text-xs font-semibold sm:mr-3 sm:px-4 sm:text-sm"
         :class="getColorBySortType('title')"
         @click="handleClick('title')"
       >
         Title
       </button>
       <button
-        class="w-fit px-2 sm:px-4 h-8 mr-2 sm:mr-3 rounded-lg border border-black text-xs sm:text-sm font-semibold"
+        class="mr-2 h-8 w-fit rounded-lg border border-black px-2 text-xs font-semibold sm:mr-3 sm:px-4 sm:text-sm"
         :class="getColorBySortType('description')"
         @click="handleClick('description')"
       >
         Description
       </button>
       <button
-        class="w-fit px-3 sm:px-4 h-8 mr-2 sm:mr-3 rounded-lg border border-black text-xs sm:text-sm font-semibold"
+        class="mr-2 h-8 w-fit rounded-lg border border-black px-3 text-xs font-semibold sm:mr-3 sm:px-4 sm:text-sm"
         :class="getColorBySortType('importance')"
         @click="handleClick('importance')"
       >
         Priority
       </button>
       <button
-        class="w-fit px-3 sm:px-4 h-8 rounded-lg border border-black text-xs sm:text-sm font-semibold"
+        class="h-8 w-fit rounded-lg border border-black px-3 text-xs font-semibold sm:px-4 sm:text-sm"
         :class="getColorBySortType('date')"
         @click="handleClick('date')"
       >
@@ -34,16 +34,16 @@
     </div>
     <div class="flex">
       <button
-        class="sm:w-8 sm:h-8 bg-emerald-400 rounded-lg flex items-center justify-center w-8 h-8 m-1"
+        class="m-1 flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-400 sm:h-8 sm:w-8"
         @click="toggleSortType('asc')"
       >
-        <UpArrow class="w-4 h-4 sm:w-6 sm:h-auto" />
+        <UpArrow class="h-4 w-4 sm:h-auto sm:w-6" />
       </button>
       <button
-        class="sm:w-8 sm:h-8 bg-black rounded-lg flex items-center justify-center w-8 h-8 m-1"
+        class="m-1 flex h-8 w-8 items-center justify-center rounded-lg bg-black sm:h-8 sm:w-8"
         @click="toggleSortType('desc')"
       >
-        <DownArrow class="w-4 h-4 sm:w-6 sm:h-auto" />
+        <DownArrow class="h-4 w-4 sm:h-auto sm:w-6" />
       </button>
     </div>
   </div>

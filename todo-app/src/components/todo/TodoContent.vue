@@ -1,14 +1,14 @@
 <template>
   <p
     v-if="todoIsEditing"
-    class="text-black sm:w-[28rem] sm:h-28 text-start h-28 w-64 mb-2"
+    class="mb-2 h-28 w-64 text-start text-black sm:h-28 sm:w-[28rem]"
     @input="handleContentInputChange"
   >
     {{ todoContent }}
   </p>
   <p
     v-else
-    class="text-neutral-500 hidden sm:block sm:text-2xl font-semibold fit"
+    class="fit hidden font-semibold text-neutral-500 sm:block sm:text-2xl"
   >
     {{ todoContent }}
   </p>

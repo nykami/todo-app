@@ -1,11 +1,11 @@
 <template>
-  <div class="flex items-center justify-between py-6 sm:w-[40rem] w-72">
-    <div class="text-black sm:text-7xl text-2xl font-semibold">To do list</div>
+  <div class="flex w-72 items-center justify-between py-6 sm:w-[40rem]">
+    <div class="text-2xl font-semibold text-black sm:text-7xl">To do list</div>
     <button
-      class="sm:w-14 sm:h-14 bg-emerald-400 rounded-full flex items-center justify-center w-8 h-8 sm:hover:bg-emerald-500"
+      class="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-400 sm:h-14 sm:w-14 sm:hover:bg-emerald-500"
       @click="addNewTodo"
     >
-      <PlusIcon class="w-4 h-4 sm:w-7 sm:h-auto" />
+      <PlusIcon class="h-4 w-4 sm:h-auto sm:w-7" />
     </button>
   </div>
 </template>

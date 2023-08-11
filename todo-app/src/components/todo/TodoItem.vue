@@ -1,10 +1,10 @@
 <template>
   <div
-    class="flex flex-row sm:flex-col justify-between items-center"
+    class="flex flex-row items-center justify-between sm:flex-col"
     @click="setIsEditingTrue"
   >
     <div class="flex flex-col">
-      <div class="flex flex-row sm:justify-between sm:w-38rem">
+      <div class="flex flex-row sm:w-38rem sm:justify-between">
         <TodoTitle :todoTitle="todo.title" />
         <TodoImportance
           :todoImportance="todo.importance"
@@ -15,7 +15,7 @@
     </div>
 
     <div
-      class="flex flex-col sm:flex-row justify-between sm:pt-6 sm:mt-6 sm:w-full"
+      class="flex flex-col justify-between sm:mt-6 sm:w-full sm:flex-row sm:pt-6"
     >
       <TodoContent
         :todoContent="todo.content"

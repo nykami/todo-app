@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center w-full text-zinc-800 text-xs font-normal">
+  <div class="flex w-full items-center text-xs font-normal text-zinc-800">
     <DatePicker
       v-if="todoIsEditing"
       v-model="dateInput"

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-center items-center font-custom">
+  <div class="flex flex-col items-center justify-center font-custom">
     <div class="max-w-screen-sm">
       <TodoLogin />
       <TodoHeader @addTodo="addTodo" />
@@ -50,7 +50,7 @@ const filteredTodos = computed(() => {
   return todos.value.filter(
     (todo) =>
       todo.title.toLowerCase().includes(searchText.value) ||
-      todo.content.toLowerCase().includes(searchText.value)
+      todo.content.toLowerCase().includes(searchText.value),
   );
 });
 

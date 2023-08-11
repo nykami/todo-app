@@ -1,20 +1,20 @@
 <template>
   <div
-    class="flex items-center justify-between border border-black p-4 rounded-xl mb-10 w-72 h-12 sm:w-full sm:h-full"
+    class="mb-10 flex h-12 w-72 items-center justify-between rounded-xl border border-black p-4 sm:h-full sm:w-full"
   >
     <div class="flex items-center">
-      <SearchIcon class="w-5 h-5 sm:w-6 sm:h-6" />
+      <SearchIcon class="h-5 w-5 sm:h-6 sm:w-6" />
       <input
         v-model="searchText"
         type="text"
-        class="rounded-lg text-sm font-medium sm:text-lg sm:font-semibold text-black ml-4 py-2 px-1 w-32 h-6 sm:h-8 sm:w-full"
+        class="ml-4 h-6 w-32 rounded-lg px-1 py-2 text-sm font-medium text-black sm:h-8 sm:w-full sm:text-lg sm:font-semibold"
         placeholder="Search todos..."
         @input="handleSearchInput"
       />
     </div>
 
     <button
-      class="sm:ml-2 sm:px-4 sm:py-2 bg-black text-white text-xs rounded-lg w-16 h-8 sm:w-20 sm:h-8 font-semibold sm:hover:bg-gray-800"
+      class="h-8 w-16 rounded-lg bg-black text-xs font-semibold text-white sm:ml-2 sm:h-8 sm:w-20 sm:px-4 sm:py-2 sm:hover:bg-gray-800"
       @click="handleSearchButtonClick"
     >
       Search
@@ -22,7 +22,7 @@
   </div>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
 import { ref } from 'vue';
 import SearchIcon from './icons/SearchIcon.vue';
 

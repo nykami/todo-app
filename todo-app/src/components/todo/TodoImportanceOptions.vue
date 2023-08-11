@@ -1,16 +1,16 @@
 <template>
   <div
-    class="w-2 h-2 ml-2 mt-3 sm:w-32 sm:h-10 rounded-full flex items-center justify-center border border-black"
+    class="ml-2 mt-3 flex h-2 w-2 items-center justify-center rounded-full border border-black sm:h-10 sm:w-32"
   >
     <div
-      class="sm:flex sm:flex-row hidden sm:items-center text-lg font-semibold text-black"
+      class="hidden text-lg font-semibold text-black sm:flex sm:flex-row sm:items-center"
     >
       {{ todoImportance }}
       <OptionsIcon v-if="todoIsEditing" class="ml-2" />
     </div>
-    <div class="sm:hidden flex ml-[6.5rem]">
+    <div class="ml-[6.5rem] flex sm:hidden">
       <div
-        class="rounded-full w-2 h-2 -ml-6"
+        class="-ml-6 h-2 w-2 rounded-full"
         v-for="(_, importance) in colorMap"
         :class="colorMap[importance]"
         @click="handleImportanceChangeClickMobile(importance as string)"
@@ -19,7 +19,7 @@
   </div>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
 import { ColorMap } from '../types/ColorMap.vue';
 import OptionsIcon from '../icons/OptionsIcon.vue';
 

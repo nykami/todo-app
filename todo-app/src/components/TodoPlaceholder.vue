@@ -1,14 +1,12 @@
 <template>
-  <div class="items-center flex flex-col mb-12">
-    <PlaceholderIcon class="w-48 h-56 sm:w-64 sm:h-80 sm:mt-12 my-6" />
-    <div
-      class="text-neutral-500 font-semibold text-6 sm:mt-6 sm:text-4xl"
-    >
+  <div class="mb-12 flex flex-col items-center">
+    <PlaceholderIcon class="my-6 h-56 w-48 sm:mt-12 sm:h-80 sm:w-64" />
+    <div class="text-6 font-semibold text-neutral-500 sm:mt-6 sm:text-4xl">
       You have no todos yet
     </div>
   </div>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
 import PlaceholderIcon from './icons/PlaceholderIcon.vue';
 </script>

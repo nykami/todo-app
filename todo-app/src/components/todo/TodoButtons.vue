@@ -1,13 +1,13 @@
 <template>
-  <div class="flex w-full items-start sm:w-full sm:flex sm:items-start">
+  <div class="flex w-full items-start sm:flex sm:w-full sm:items-start">
     <button
-      class="w-16 h-7 border border-emerald-200 sm:w-28 sm:h-12 font-semibold text-sm sm:text-lg bg-emerald-400 sm:hover:bg-emerald-500 rounded-lg sm:rounded-2xl flex items-center justify-center text-white mr-2 sm:mr-4"
+      class="mr-2 flex h-7 w-16 items-center justify-center rounded-lg border border-emerald-200 bg-emerald-400 text-sm font-semibold text-white sm:mr-4 sm:h-12 sm:w-28 sm:rounded-2xl sm:text-lg sm:hover:bg-emerald-500"
       @click="handleSaveButtonClick"
     >
       Save
     </button>
     <button
-      class="w-16 h-7 border border-neutral-200 sm:w-28 sm:h-12 font-semibold text-sm sm:text-lg bg-neutral-200 sm:hover:bg-neutral-300 rounded-lg sm:rounded-2xl flex items-center justify-center text-black"
+      class="flex h-7 w-16 items-center justify-center rounded-lg border border-neutral-200 bg-neutral-200 text-sm font-semibold text-black sm:h-12 sm:w-28 sm:rounded-2xl sm:text-lg sm:hover:bg-neutral-300"
       @click="showPopup()"
     >
       Delete

@@ -1,10 +1,11 @@
 <template>
-  <div class="flex flex-col justify-center items-center font-custom">
+  <div class="flex flex-col items-center justify-center font-custom">
     <div class="max-w-screen-sm">
       <TodoLogin />
       <TodoHeader @addTodo="addTodo" />
-      <SearchBar @filterTodos="filterTodos" />
+      <SearchBar v-if="todos.length" @filterTodos="filterTodos" />
       <Sorting
+        v-if="todos.length"
         :sortType="sortType"
         :sortByField="sortByField"
         @handleSort="applySortBy"
@@ -36,10 +37,11 @@ import SearchBar from './components/SearchBar.vue';
 import Sorting from './components/Sorting.vue';
 import { Todo } from './components/types/Todo.vue';
 
-const todos = ref<Todo[]>(getFromLocalStorage());
+const todos = ref<Todo[]>([]);
 const searchText = ref<string>('');
 const sortType = ref<string>('desc');
 const sortByField = ref<string>('');
+const isSortingApplied = ref(false);
 
 const filteredTodos = computed(() => {
   if (!searchText.value) {
@@ -48,22 +50,13 @@ const filteredTodos = computed(() => {
   return todos.value.filter(
     (todo) =>
       todo.title.toLowerCase().includes(searchText.value) ||
-      todo.content.toLowerCase().includes(searchText.value)
+      todo.content.toLowerCase().includes(searchText.value),
   );
 });
 
 const reversedTodos = computed(() => {
   return filteredTodos.value.slice().reverse();
 });
-
-function saveToLocalStorage() {
-  localStorage.setItem('todos', JSON.stringify(todos.value));
-}
-
-function getFromLocalStorage() {
-  const savedTodos = localStorage.getItem('todos');
-  return savedTodos ? JSON.parse(savedTodos) : [];
-}
 
 function findNextId(): number {
   let maxId = -1;
@@ -78,13 +71,11 @@ function findNextId(): number {
 function addTodo(defaultTodo: Todo) {
   defaultTodo.id = findNextId();
   todos.value.push(defaultTodo);
-  saveToLocalStorage();
 }
 
 function deleteTodo(todoId: number) {
   const indexToRemoveFrom = todos.value.findIndex((obj) => obj.id === todoId);
   todos.value.splice(indexToRemoveFrom, 1);
-  saveToLocalStorage();
 }
 
 function updateTodo(newTodo: Todo, todoId: number) {
@@ -103,7 +94,8 @@ function updateTodo(newTodo: Todo, todoId: number) {
   todoToUpdate.importance = newTodo.importance;
   todoToUpdate.isEditing = false;
   todoToUpdate.date = newTodo.date;
-  saveToLocalStorage();
+
+  if (isSortingApplied) applySortBy(sortByField.value);
 }
 
 function setEditState(todoId: number, value: boolean) {
@@ -115,15 +107,19 @@ function handleCheckboxClick(todoId: number) {
   const indexToUpdateAt = todos.value.findIndex((todo) => todo.id === todoId);
   const todoToMakeFloat = todos.value[indexToUpdateAt];
   todoToMakeFloat.isChecked = !todoToMakeFloat.isChecked;
-  setTimeout(() => {
-    if (todoToMakeFloat.isChecked) {
-      todos.value.splice(indexToUpdateAt, 1);
-      todos.value.unshift(todoToMakeFloat);
-    } else {
-      todos.value.splice(indexToUpdateAt, 1);
-      todos.value.push(todoToMakeFloat);
-    }
-  }, 600);
+  if (isSortingApplied.value) {
+    return;
+  } else {
+    setTimeout(() => {
+      if (todoToMakeFloat.isChecked) {
+        todos.value.splice(indexToUpdateAt, 1);
+        todos.value.unshift(todoToMakeFloat);
+      } else {
+        todos.value.splice(indexToUpdateAt, 1);
+        todos.value.push(todoToMakeFloat);
+      }
+    }, 500);
+  }
 }
 
 function filterTodos(searchInput: string) {
@@ -194,8 +190,25 @@ function sortByDescription() {
   });
 }
 
+function stopSort() {
+  isSortingApplied.value = false;
+  filteredTodos.value.forEach((todo) => {
+    setTimeout(() => {
+      if (todo.isChecked) {
+        todo.isChecked = false;
+        handleCheckboxClick(todo.id);
+      }
+    }, 300);
+  });
+}
+
 function applySortBy(field: string) {
   sortByField.value = field;
+  if (sortByField.value === '') {
+    stopSort();
+    return;
+  }
+  isSortingApplied.value = true;
   switch (field) {
     case 'title': {
       sortByTitle();
@@ -218,6 +231,7 @@ function applySortBy(field: string) {
 
 function changeSortType(newType: string) {
   sortType.value = newType;
+
   applySortBy(sortByField.value);
 }
 </script>

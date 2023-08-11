@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-col items-center">
-    <ul class="w-72 h-12 sm:w-full sm:h-full">
+    <ul class="h-12 w-72 sm:h-full sm:w-full">
       <li
-        class="flex flex-col text-center border border-black p-4 rounded-lg mb-4 sm:mb-10 transform hover:scale-105 ease-out duration-300"
+        class="mb-4 flex transform flex-col rounded-lg border border-black p-4 text-center duration-300 ease-out hover:scale-105 sm:mb-10"
         v-for="(todo, id) in reversedTodos"
         :key="id"
       >

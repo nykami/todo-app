@@ -30,7 +30,7 @@
             />
           </div>
           <div class="flex flex-col">
-            <router-link to="/todos">
+            <router-link to="/dashboard">
               <button
                 class="w-full rounded-lg bg-teal-400 px-6 py-2 font-semibold text-white"
                 type="submit"

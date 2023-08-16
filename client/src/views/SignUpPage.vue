@@ -7,7 +7,7 @@
       <div
         class="w-64 rounded-xl border-2 bg-neutral-200 bg-opacity-60 p-7 shadow-lg sm:mb-10 sm:mr-60 sm:w-max sm:p-14"
       >
-        <form name="login-form" class="sm:w-[16rem]">
+        <form name="login-form" class="sm:w-64">
           <div class="mb-3 flex flex-col justify-between">
             <label for="first-name" class="text-xs font-semibold sm:text-sm"
               >First name</label
@@ -77,7 +77,7 @@
           </div>
         </form>
       </div>
-      <PlaceholderIcon class="w-48 sm:absolute sm:ml-[20rem] sm:mt-0 sm:w-64" />
+      <PlaceholderIcon class="w-48 sm:absolute sm:ml-80 sm:mt-0 sm:w-64" />
     </div>
   </div>
 </template>

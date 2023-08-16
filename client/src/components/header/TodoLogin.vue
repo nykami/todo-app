@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-8 mt-20 flex w-72 items-center justify-between sm:w-[40rem]">
+  <div class="mb-8 mt-20 flex w-72 items-center justify-between sm:w-40rem">
     <div class="text-sm font-medium sm:text-2xl">Welcome to the app</div>
     <router-link
       :to="path"

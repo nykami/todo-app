@@ -2,7 +2,7 @@
   <div ref="todoEditRef">
     <div class="flex flex-row items-center justify-between sm:flex-col">
       <div class="flex flex-col">
-        <div class="flex flex-row sm:w-38rem sm:justify-between">
+        <div class="flex flex-row sm:w-162 sm:justify-between">
           <TodoTitle
             :contenteditable="isEditable"
             :todoTitle="todo.title"
@@ -31,7 +31,7 @@
         />
       </div>
       <div
-        class="hidden h-32 w-38rem items-start font-semibold sm:flex sm:justify-between sm:text-2xl"
+        class="hidden h-32 w-152 items-start font-semibold sm:flex sm:justify-between sm:text-2xl"
       >
         <TodoContent
           :contenteditable="isEditable"

@@ -4,10 +4,12 @@ export default {
   theme: {
     extend: {
       width: {
-        '38rem': '38rem',
-        '40rem': '40rem',
-        '28rem': '28rem',
-        '6.5rem': '6.5rem'
+        '152': '38rem',
+        '160': '40rem',
+        '112': '28rem',
+      },
+      margin: {
+        '26': '6.5rem'
       },
       fontFamily: {
         custom: ['Neue Haas Grotesk Display Pro', 'sans-serif'],

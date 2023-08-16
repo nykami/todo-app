@@ -8,7 +8,7 @@
       {{ todoImportance }}
       <OptionsIcon v-if="todoIsEditing" class="ml-2" />
     </div>
-    <div class="ml-6.5rem flex sm:hidden">
+    <div class="ml-26 flex sm:hidden">
       <div
         class="-ml-6 h-2 w-2 rounded-full"
         v-for="(_, importance) in colorMap"

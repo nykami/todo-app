@@ -8,9 +8,6 @@ export default {
         '160': '40rem',
         '112': '28rem',
       },
-      margin: {
-        '26': '6.5rem'
-      },
       fontFamily: {
         custom: ['Neue Haas Grotesk Display Pro', 'sans-serif'],
       },

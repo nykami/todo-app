@@ -12,67 +12,55 @@
             <label for="first-name" class="text-xs font-semibold sm:text-sm"
               >First name</label
             >
-            <input
-              type="text"
+            <InputField
+              inputType="text"
               id="first-name"
-              class="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-xs text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:p-2.5 sm:text-sm"
-              placeholder="Ana"
+              inputPlaceholder="Ana"
             />
           </div>
           <div class="mb-3 flex flex-col justify-between">
             <label for="last-name" class="text-xs font-semibold sm:text-sm"
               >Last name</label
             >
-            <input
-              type="text"
+            <InputField
+              inputType="text"
               id="last-name"
-              class="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-xs text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:p-2.5 sm:text-sm"
-              placeholder="Banana"
+              inputPlaceholder="Banana"
             />
           </div>
           <div class="mb-3 flex flex-col justify-between">
             <label for="username" class="text-xs font-semibold sm:text-sm"
               >Username</label
             >
-            <input
-              type="text"
+            <InputField
+              inputType="text"
               id="email"
-              class="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-xs text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:p-2.5 sm:text-sm"
-              placeholder="anabanana"
+              inputPlaceholder="anabanana"
             />
           </div>
           <div class="mb-3 flex flex-col justify-between">
             <label for="email" class="text-xs font-semibold sm:text-sm"
               >Email</label
             >
-            <input
-              type="email"
-              name="email"
+            <InputField
+              inputType="email"
               id="email"
-              class="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-xs text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:p-2.5 sm:text-sm"
-              placeholder="name@company.com"
+              inputPlaceholder="name@company.com"
             />
           </div>
           <div class="mb-4 flex flex-col justify-between sm:mb-8">
             <label for="password" class="text-xs font-semibold sm:text-sm"
               >Password</label
             >
-            <input
-              type="password"
-              name="password"
+            <InputField
+              inputType="password"
               id="password"
-              placeholder="••••••••"
-              class="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-xs text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:p-2.5 sm:text-sm"
+              inputPlaceholder="••••••••"
             />
           </div>
           <div class="flex flex-col">
             <router-link to="/login">
-              <button
-                class="sm:text-md w-full rounded-lg bg-teal-400 px-6 py-1.5 text-sm font-semibold text-white sm:py-2"
-                type="submit"
-              >
-                Sign up
-              </button>
+              <AuthButton buttonText="Sign up" />
             </router-link>
           </div>
         </form>
@@ -85,4 +73,6 @@
 <script setup lang="ts">
 import PlaceholderIcon from '../components/icons/PlaceholderIcon.vue';
 import TodoLogin from '../components/header/TodoLogin.vue';
+import InputField from '../components/base-components/InputField.vue';
+import AuthButton from '../components/base-components/AuthButton.vue';
 </script>

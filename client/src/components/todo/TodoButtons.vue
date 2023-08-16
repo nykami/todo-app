@@ -1,17 +1,17 @@
 <template>
   <div class="flex w-full items-start sm:flex sm:w-full sm:items-start">
-    <button
-      class="mr-2 flex h-7 w-16 items-center justify-center rounded-lg border border-emerald-200 bg-emerald-400 text-sm font-semibold text-white sm:mr-4 sm:h-12 sm:w-28 sm:rounded-2xl sm:text-lg sm:hover:bg-emerald-500"
+    <Button
+      class="mr-2 border-emerald-200 bg-emerald-400 text-white sm:mr-4 sm:hover:bg-emerald-500"
       @click="handleSaveButtonClick"
+      buttonText="Save"
     >
-      Save
-    </button>
-    <button
-      class="flex h-7 w-16 items-center justify-center rounded-lg border border-neutral-200 bg-neutral-200 text-sm font-semibold text-black sm:h-12 sm:w-28 sm:rounded-2xl sm:text-lg sm:hover:bg-neutral-300"
+    </Button>
+    <Button
+      class="border-neutral-200 bg-neutral-200 text-black sm:hover:bg-neutral-300"
       @click="showPopup()"
+      buttonText="Delete"
     >
-      Delete
-    </button>
+    </Button>
     <DeletePopup
       :isShowingPopup="isShowingPopup"
       @handlePopupButtonClick="handlePopupButtonClick"
@@ -22,6 +22,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import DeletePopup from '../DeletePopup.vue';
+import Button from '../base-components/Button.vue';
 
 const emit = defineEmits(['handleSaveButtonClick', 'handleDeleteButtonClick']);
 

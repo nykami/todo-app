@@ -41,7 +41,7 @@
         />
         <div
           v-if="isShowingOptions"
-          class="flex h-28 w-32 flex-col items-start justify-center rounded-xl border border-black pl-6"
+          class="flex h-28 w-32 flex-col items-start justify-center rounded-xl border border-black pl-6 mr-3"
         >
           <div
             v-for="(_, levelOfImportance) in colorMap"

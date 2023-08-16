@@ -1,36 +1,32 @@
 <template>
   <div
-    class="mb-10 flex h-12 w-72 flex-col items-start justify-between sm:h-full sm:w-160 sm:flex-row sm:items-center"
+    class="mb-14 flex h-12 w-72 flex-col items-start justify-between sm:h-full sm:w-160 sm:flex-row sm:items-center"
   >
     <div class="mb-3 flex sm:mb-0">
-      <button
-        class="mr-2 h-8 w-fit rounded-lg border border-black px-3 text-xs font-semibold sm:mr-3 sm:px-4 sm:text-sm"
+      <SortButton
         :class="getColorBySortType('title')"
         @click="handleClick('title')"
+        buttonText="Title"
       >
-        Title
-      </button>
-      <button
-        class="mr-2 h-8 w-fit rounded-lg border border-black px-2 text-xs font-semibold sm:mr-3 sm:px-4 sm:text-sm"
+      </SortButton>
+      <SortButton
         :class="getColorBySortType('description')"
         @click="handleClick('description')"
+        buttonText="Description"
       >
-        Description
-      </button>
-      <button
-        class="mr-2 h-8 w-fit rounded-lg border border-black px-3 text-xs font-semibold sm:mr-3 sm:px-4 sm:text-sm"
+      </SortButton>
+      <SortButton
         :class="getColorBySortType('importance')"
         @click="handleClick('importance')"
+        buttonText="Priority"
       >
-        Priority
-      </button>
-      <button
-        class="h-8 w-fit rounded-lg border border-black px-3 text-xs font-semibold sm:px-4 sm:text-sm"
+      </SortButton>
+      <SortButton
         :class="getColorBySortType('date')"
         @click="handleClick('date')"
+        buttonText="Date"
       >
-        Date
-      </button>
+      </SortButton>
     </div>
     <div class="flex">
       <button
@@ -51,6 +47,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import SortButton from './base-components/SortButton.vue';
 import UpArrow from './icons/UpArrow.vue';
 import DownArrow from './icons/DownArrow.vue';
 

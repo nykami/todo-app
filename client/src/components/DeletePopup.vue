@@ -10,25 +10,25 @@
     >
       <div>
         <div
-          class="modal-container flex h-32 w-48 flex-col justify-between rounded-lg bg-white p-5 shadow-2xl sm:h-40 sm:w-80"
+          class="modal-container flex w-48 flex-col justify-between rounded-lg bg-white p-5 shadow-2xl sm:h-40 sm:w-80"
         >
-          <div class="modal-body text-sm text-gray-700 sm:text-lg">
+          <div class="modal-body mb-4 text-sm text-gray-700 sm:text-lg">
             Are you sure you want to delete this todo?
           </div>
           <div class="modal-footer">
             <div class="flex items-center justify-between">
-              <button
-                class="modal-default-button mt-2 rounded-md bg-neutral-300 px-3 py-1 text-xs font-semibold text-black sm:rounded-xl sm:px-4 sm:py-2 sm:text-lg"
+              <Button
+                class="bg-neutral-300 text-black"
                 @click="handleCancerButtonClick"
+                buttonText="Cancel"
               >
-                Cancel
-              </button>
-              <button
-                class="modal-default-button mt-2 rounded-md bg-orange-700 px-3 py-1 text-xs font-semibold text-white sm:rounded-xl sm:px-4 sm:py-2 sm:text-lg"
+              </Button>
+              <Button
+                class="bg-orange-700 text-white"
                 @click="handleDeleteButtonClick"
+                buttonText="Delete"
               >
-                Delete
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -38,6 +38,8 @@
 </template>
 
 <script setup lang="ts">
+import Button from './base-components/Button.vue';
+
 interface Props {
   isShowingPopup: Boolean;
 }

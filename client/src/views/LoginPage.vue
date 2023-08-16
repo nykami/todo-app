@@ -12,32 +12,25 @@
             <label for="username" class="text-xs font-semibold sm:text-sm"
               >Username</label
             >
-            <input
-              type="text"
+            <InputField
+              inputType="text"
               id="username"
-              placeholder="username"
-              class="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-xs text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:p-2.5 sm:text-sm"
+              inputPlaceholder="username"
             />
           </div>
           <div class="mb-4 flex flex-col justify-between sm:mb-8">
             <label for="password" class="text-xs font-semibold sm:text-sm"
               >Password</label
             >
-            <input
-              type="password"
+            <InputField
+              inputType="password"
               id="password"
-              placeholder="••••••••"
-              class="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-xs text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:p-2.5 sm:text-sm"
+              inputPlaceholder="••••••••"
             />
           </div>
           <div class="flex flex-col">
             <router-link to="/dashboard">
-              <button
-                class="sm:text-md w-full rounded-lg bg-teal-400 px-6 py-1.5 text-sm font-semibold text-white sm:py-2"
-                type="submit"
-              >
-                Log in
-              </button>
+              <AuthButton buttonText="Log in" />
             </router-link>
             <hr class="my-4 border-gray-400" />
             <div class="flex justify-between">
@@ -60,4 +53,6 @@
 <script setup lang="ts">
 import PlaceholderIcon from '../components/icons/PlaceholderIcon.vue';
 import TodoLogin from '../components/header/TodoLogin.vue';
+import InputField from '../components/base-components/InputField.vue';
+import AuthButton from '../components/base-components/AuthButton.vue';
 </script>

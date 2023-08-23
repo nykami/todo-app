@@ -4,7 +4,9 @@ export default {
   theme: {
     extend: {
       width: {
-        '38rem': '38rem',
+        '152': '38rem',
+        '160': '40rem',
+        '112': '28rem',
       },
       fontFamily: {
         custom: ['Neue Haas Grotesk Display Pro', 'sans-serif'],

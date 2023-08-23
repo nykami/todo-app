@@ -4,7 +4,7 @@
     @click="setIsEditingTrue"
   >
     <div class="flex flex-col">
-      <div class="flex flex-row sm:w-38rem sm:justify-between">
+      <div class="flex flex-row sm:w-152 sm:justify-between">
         <TodoTitle :todoTitle="todo.title" />
         <TodoImportance
           :todoImportance="todo.importance"

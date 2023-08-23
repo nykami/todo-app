@@ -1,7 +1,7 @@
 <template>
   <p
     v-if="todoIsEditing"
-    class="mb-2 h-28 w-64 text-start text-black sm:h-28 sm:w-[28rem]"
+    class="mb-2 h-28 w-64 text-start text-black sm:h-28 sm:w-112"
     @input="handleContentInputChange"
   >
     {{ todoContent }}

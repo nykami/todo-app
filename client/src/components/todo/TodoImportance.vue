@@ -1,10 +1,10 @@
 <template>
   <div
-    class="ml-2 mt-3 flex h-2 w-2 items-center justify-center rounded-full sm:h-10 sm:w-32"
+    class="ml-1 mt-2 flex h-3 w-3 items-center justify-center rounded-full sm:h-10 sm:w-32"
     :class="colorMap[todoImportance]"
   >
     <div
-      class="sm: hidden items-center text-lg font-semibold text-white sm:flex"
+      class="hidden items-center text-lg font-semibold text-white sm:flex"
     >
       {{ todoImportance }}
       <OptionsIcon v-if="todoIsEditing" class="ml-2" />

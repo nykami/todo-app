@@ -1,6 +1,6 @@
 <template>
   <div
-    class="mb-10 flex h-12 w-72 items-center justify-between rounded-xl border border-black p-4 sm:h-full sm:w-full"
+    class="mb-6 flex h-12 w-72 items-center justify-between rounded-xl border border-black p-4 sm:h-full sm:w-160"
   >
     <div class="flex items-center">
       <SearchIcon class="h-5 w-5 sm:h-6 sm:w-6" />

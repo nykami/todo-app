@@ -2,7 +2,7 @@
   <div ref="todoEditRef">
     <div class="flex flex-row items-center justify-between sm:flex-col">
       <div class="flex flex-col">
-        <div class="flex flex-row sm:w-38rem sm:justify-between">
+        <div class="flex flex-row sm:w-162 sm:justify-between">
           <TodoTitle
             :contenteditable="isEditable"
             :todoTitle="todo.title"
@@ -31,7 +31,7 @@
         />
       </div>
       <div
-        class="hidden h-32 w-38rem items-start font-semibold sm:flex sm:justify-between sm:text-2xl"
+        class="hidden h-32 w-152 items-start font-semibold sm:flex sm:justify-between sm:text-2xl"
       >
         <TodoContent
           :contenteditable="isEditable"
@@ -41,7 +41,7 @@
         />
         <div
           v-if="isShowingOptions"
-          class="flex h-28 w-32 flex-col items-start justify-center rounded-xl border border-black pl-6"
+          class="flex h-28 w-32 flex-col items-start justify-center rounded-xl border border-black pl-6 mr-3"
         >
           <div
             v-for="(_, levelOfImportance) in colorMap"

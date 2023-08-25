@@ -10,7 +10,7 @@ interface ITodo extends Document {
   title: string;
   description: string;
   priority: string;
-  date: string;
+  date: Date;
   isChecked: boolean;
   user: Types.ObjectId;
 }
@@ -24,8 +24,8 @@ const todoSchema: Schema = new Schema({
     default: TodoPriority.Medium,
   },
   date: {
-    type: String,
-    default: new Date().toLocaleDateString('en-GB'),
+    type: Date,
+    default: new Date(),
   },
   isChecked: { type: Boolean, default: false },
   isEditing: { type: Boolean, default: false },

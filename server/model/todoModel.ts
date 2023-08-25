@@ -16,22 +16,20 @@ interface ITodo extends Document {
 }
 
 const todoSchema: Schema = new Schema({
-  title: { type: String, default: 'Title', required: true },
-  description: { type: String, default: 'Description', required: true },
+  title: { type: String, default: 'Title' },
+  description: { type: String, default: 'Description' },
   priority: {
     type: String,
-    required: true,
     enum: Object.values(TodoPriority),
     default: TodoPriority.Medium,
   },
   date: {
     type: String,
     default: new Date().toLocaleDateString('en-GB'),
-    required: true,
   },
   isChecked: { type: Boolean, default: false },
   isEditing: { type: Boolean, default: false },
-  user: { type: Types.ObjectId, ref: 'User', required: true },
+  userId: { type: Types.ObjectId, ref: 'User', required: true },
 });
 
 export const todoModel: Model<ITodo> = model<ITodo>('Todo', todoSchema);

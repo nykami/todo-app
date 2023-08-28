@@ -1,8 +1,7 @@
 import { todoModel } from '../model/todoModel';
 
 export const createTodo = (values: Record<string, any>) => {
-  const todo = new todoModel(values);
-  return todo.save();
+  return new todoModel(values).save();
 };
 
 export const getTodos = (userId: string) => todoModel.find({ userId: userId });

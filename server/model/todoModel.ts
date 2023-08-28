@@ -1,4 +1,4 @@
-import { Types, Schema, model, Model } from 'mongoose';
+import { Types, Schema, model, Model, Document } from 'mongoose';
 
 enum TodoPriority {
   High = 'High',
@@ -6,13 +6,13 @@ enum TodoPriority {
   Low = 'Low',
 }
 
-interface ITodo extends Document {
+export interface ITodo extends Document {
   title: string;
   description: string;
   priority: string;
   date: Date;
   isChecked: boolean;
-  user: Types.ObjectId;
+  userId: Types.ObjectId;
 }
 
 const todoSchema: Schema = new Schema({

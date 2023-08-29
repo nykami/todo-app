@@ -1,22 +1,22 @@
 <template>
   <p
     v-if="todoIsEditing"
-    class="mb-2 h-28 w-64 text-start text-black sm:h-28 sm:w-112"
+    class="fit my-2 w-64 break-all text-start text-black sm:block sm:w-[28rem]"
     @input="handleContentInputChange"
   >
-    {{ todoContent }}
+    {{ todoDescription }}
   </p>
   <p
     v-else
-    class="fit hidden font-semibold text-neutral-500 sm:block sm:text-2xl"
+    class="fit my-2 hidden break-all text-start font-semibold text-neutral-500 sm:block sm:w-[28rem] sm:text-2xl"
   >
-    {{ todoContent }}
+    {{ todoDescription }}
   </p>
 </template>
 
 <script setup lang="ts">
 interface Props {
-  todoContent: string;
+  todoDescription: string;
   todoIsEditing: boolean;
 }
 

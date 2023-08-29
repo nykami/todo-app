@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col items-center justify-center font-custom">
-    <TodoLogin path="/login" button-name="Log out" />
+    <TodoLogin :username="username" path="/login" button-name="Log out" />
     <TodoHeader @addTodo="addTodo" />
     <SearchBar v-if="todos.length" @filterTodos="filterTodos" />
     <Sorting
@@ -11,14 +11,20 @@
       @toggleSortType="changeSortType"
     />
     <TodoPlaceholder v-if="!todos.length" />
-    <TodoList
-      v-else
-      :reversedTodos="reversedTodos"
-      @deleteTodo="deleteTodo"
-      @updateTodo="updateTodo"
-      @setEditState="setEditState"
-      @handleCheckboxClick="handleCheckboxClick"
-    />
+    <Suspense v-if="todosLoaded">
+      <template #default>
+        <TodoList
+          :reversedTodos="reversedTodos"
+          @deleteTodo="deleteTodo"
+          @updateTodo="updateTodo"
+          @setEditState="setEditState"
+          @handleCheckboxClick="handleCheckboxClick"
+        />
+      </template>
+      <template #fallback>
+        <div>Loading...</div>
+      </template>
+    </Suspense>
     <div v-if="!filteredTodos.length && todos.length" class="text-center">
       No todos found
     </div>
@@ -26,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import TodoLogin from '../components/header/TodoLogin.vue';
 import TodoHeader from '../components/header/TodoHeader.vue';
 import TodoPlaceholder from '../components/TodoPlaceholder.vue';
@@ -34,75 +40,98 @@ import TodoList from '../components/TodoList.vue';
 import SearchBar from '../components/SearchBar.vue';
 import Sorting from '../components/Sorting.vue';
 import { Todo } from '../components/types/Todo.vue';
+import TodoService from '../service/TodoService';
+import UserService from '../service/UserService';
+import { useRoute } from 'vue-router';
 
-const todos = ref<Todo[]>([]);
 const searchText = ref<string>('');
 const sortType = ref<string>('desc');
 const sortByField = ref<string>('');
 const isSortingApplied = ref(false);
 
+const todoService = new TodoService();
+const userService = new UserService();
+const route = useRoute();
+const userId = route.params.userId.toString();
+const username = ref<string>('');
+
+const todosLoaded = ref(false);
+
+const todos = ref<Todo[]>([]);
+
+onMounted(async () => {
+  await todoService.getAllTodos(userId);
+  await userService.getUser(userId);
+
+  username.value = userService.getUsername();
+
+  todos.value = todoService.todos.value;
+  todos.value.forEach((todo: Todo) => {
+    todo.date = todo.date.slice(0, 10).replace(/\-/g, '.');
+  });
+  todosLoaded.value = true;
+});
+
 const filteredTodos = computed(() => {
   if (!searchText.value) {
-    return todos.value;
+    return todoService.get().value;
   }
-  return todos.value.filter(
-    (todo) =>
-      todo.title.toLowerCase().includes(searchText.value) ||
-      todo.content.toLowerCase().includes(searchText.value),
-  );
+  return todoService
+    .get()
+    .value.filter(
+      (todo) =>
+        todo.title.toLowerCase().includes(searchText.value) ||
+        todo.description.toLowerCase().includes(searchText.value),
+    );
 });
 
 const reversedTodos = computed(() => {
   return filteredTodos.value.slice().reverse();
 });
 
-function findNextId(): number {
-  let maxId = -1;
-  todos.value.forEach((todo) => {
-    if (todo.id > maxId) {
-      maxId = todo.id;
-    }
-  });
-  return maxId + 1;
+function updateTodosArray() {
+  todos.value = todoService.get().value;
 }
 
-function addTodo(defaultTodo: Todo) {
-  defaultTodo.id = findNextId();
-  todos.value.push(defaultTodo);
-}
-
-function deleteTodo(todoId: number) {
-  const indexToRemoveFrom = todos.value.findIndex((obj) => obj.id === todoId);
-  todos.value.splice(indexToRemoveFrom, 1);
-}
-
-function updateTodo(newTodo: Todo, todoId: number) {
-  const indexToUpdateAt = todos.value.findIndex((todo) => todo.id === todoId);
-  const todoToUpdate = todos.value[indexToUpdateAt];
-  if (newTodo.title) {
-    todoToUpdate.title = newTodo.title;
-  } else {
-    todoToUpdate.title = 'Title';
+async function addTodo() {
+  try {
+    await todoService.addTodo(userId);
+    updateTodosArray();
+  } catch (error) {
+    console.log(error);
   }
-  if (newTodo.content) {
-    todoToUpdate.content = newTodo.content;
-  } else {
-    todoToUpdate.content = 'Description';
-  }
-  todoToUpdate.importance = newTodo.importance;
-  todoToUpdate.isEditing = false;
-  todoToUpdate.date = newTodo.date;
-
-  if (isSortingApplied.value) applySortBy(sortByField.value);
 }
 
-function setEditState(todoId: number, value: boolean) {
-  const indexToUpdateAt = todos.value.findIndex((obj) => obj.id === todoId);
+async function deleteTodo(todoId: string) {
+  try {
+    await todoService.deleteTodo(todoId);
+    updateTodosArray();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function setEditState(todoId: string, value: boolean) {
+  const indexToUpdateAt = todos.value.findIndex((obj) => obj._id === todoId);
   todos.value[indexToUpdateAt].isEditing = value;
 }
 
+async function updateTodo(newTodo: Todo, todoId: string) {
+  try {
+    newTodo.isEditing = false;
+    await todoService.updateTodo(todoId, newTodo);
+    updateTodosArray();
+    setEditState(todoId, false);
+    if (isSortingApplied.value) applySortBy(sortByField.value);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function handleCheckboxClick(todoId: number) {
-  const indexToUpdateAt = todos.value.findIndex((todo) => todo.id === todoId);
+  const indexToUpdateAt = todos.value.findIndex(
+    (todo) => parseInt(todo._id) === todoId,
+  );
   const todoToMakeFloat = todos.value[indexToUpdateAt];
   todoToMakeFloat.isChecked = !todoToMakeFloat.isChecked;
   if (isSortingApplied.value) {
@@ -170,8 +199,8 @@ function sortByPriority() {
   };
 
   todos.value.sort((a, b) => {
-    const priorityA = priorityValues[a.importance];
-    const priorityB = priorityValues[b.importance];
+    const priorityA = priorityValues[a.priority];
+    const priorityB = priorityValues[b.priority];
     return sortType.value === 'desc'
       ? priorityB - priorityA
       : priorityA - priorityB;
@@ -180,8 +209,8 @@ function sortByPriority() {
 
 function sortByDescription() {
   todos.value.sort((a, b) => {
-    const descA = a.content.toLowerCase();
-    const descB = b.content.toLowerCase();
+    const descA = a.description.toLowerCase();
+    const descB = b.description.toLowerCase();
     return sortType.value === 'desc'
       ? descB.localeCompare(descA)
       : descA.localeCompare(descB);
@@ -194,7 +223,7 @@ function stopSort() {
     setTimeout(() => {
       if (todo.isChecked) {
         todo.isChecked = false;
-        handleCheckboxClick(todo.id);
+        handleCheckboxClick(parseInt(todo._id));
       }
     }, 300);
   });

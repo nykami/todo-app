@@ -16,7 +16,7 @@ const dateValue = ref(props.modelValue);
 function onDateInput(event: Event) {
   const inputElement = event.target as HTMLInputElement;
   const selectedDate = new Date(inputElement.value);
-  dateValue.value = selectedDate;
+  dateValue.value = selectedDate;  
   emit('update:modelValue', selectedDate);
 }
 

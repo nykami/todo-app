@@ -1,6 +1,6 @@
 <template>
   <p
-    class="mb-1 h-6 text-start text-lg font-semibold sm:h-10 sm:w-112 sm:text-4xl"
+    class="break-all text-start text-lg font-semibold sm:my-2 sm:w-112 sm:text-4xl"
     @input="handleTitleInputChange"
   >
     {{ todoTitle }}

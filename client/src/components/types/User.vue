@@ -1,0 +1,8 @@
+<script setup lang="ts">
+export interface User {
+  _id: string;
+  username: string;
+  email: string;
+  password: string;
+}
+</script>

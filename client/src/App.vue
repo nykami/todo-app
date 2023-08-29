@@ -1,7 +1,11 @@
 <template>
-  <div id="app" class="font-custom">
-    <router-view />
+  <div id="app">
+    <Suspense>
+      <RouterView />
+    </Suspense>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { Suspense } from 'vue';
+</script>

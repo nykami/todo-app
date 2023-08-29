@@ -32,7 +32,7 @@ const month = parseInt(dateParts[1], 10) - 1;
 const year = parseInt(dateParts[2], 10);
 const dateInput = ref(new Date(year, month, day));
 
-function dateSelected(selectedDate: Date): void {
+function dateSelected(selectedDate: Date): void {      
   emit('dateSelected', selectedDate);
 }
 </script>

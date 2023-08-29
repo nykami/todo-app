@@ -4,10 +4,10 @@
     @click="setIsEditingTrue"
   >
     <div class="flex flex-col">
-      <div class="flex flex-row sm:w-152 sm:justify-between">
+      <div class="flex flex-row w-56 sm:w-152 sm:justify-between">
         <TodoTitle :todoTitle="todo.title" />
-        <TodoImportance
-          :todoImportance="todo.importance"
+        <TodoPriority
+          :todoPriority="todo.priority"
           :todoIsEditing="todo.isEditing"
         />
       </div>
@@ -15,10 +15,10 @@
     </div>
 
     <div
-      class="flex flex-col justify-between sm:mt-6 sm:w-full sm:flex-row sm:pt-6"
+      class="flex flex-col justify-between items-end sm:w-full sm:flex-row sm:py-3"
     >
-      <TodoContent
-        :todoContent="todo.content"
+      <TodoDescription
+        :todoDescription="todo.description"
         :todoIsEditing="todo.isEditing"
       />
       <TodoCheckbox
@@ -31,11 +31,11 @@
 
 <script setup lang="ts">
 import TodoTitle from './TodoTitle.vue';
-import TodoContent from './TodoContent.vue';
 import TodoDate from './TodoDate.vue';
 import TodoCheckbox from './TodoCheckbox.vue';
-import TodoImportance from './TodoImportance.vue';
+import TodoPriority from './TodoPriority.vue';
 import { Todo } from '../types/Todo.vue';
+import TodoDescription from './TodoDescription.vue';
 
 interface Props {
   todo: Todo;

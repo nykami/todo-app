@@ -89,7 +89,7 @@ export const updateTodo = async (
   try {
     const todoId = req.params.todoId;
     const { title, description, priority, date } = req.body;
-
+    
     if (!title && !description && !priority && !date) {
       return sendErrorResponse(res, null, 'No fields to update.');
     }
@@ -102,7 +102,12 @@ export const updateTodo = async (
     if (title) todo.title = title;
     if (description) todo.description = description;
     if (priority) todo.priority = priority;
-    if (date) todo.date = date;
+    if (date) {
+      const eetStandardOffset = 7200000;
+      const utcDate = new Date(date);
+      const eetDate = new Date(utcDate.getTime() + eetStandardOffset);
+      todo.date = eetDate;      
+    }
 
     await todo.save();
 

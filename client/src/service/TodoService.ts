@@ -9,7 +9,12 @@ class TodoService {
     try {
       const response = await fetch(`http://localhost:8080/todos/${userId}`);
       const todoData = await response.json();
-      this.todos.value = todoData;
+      this.todos.value = todoData.map((todo: Todo) => {
+        return {
+          ...todo,
+          date: new Date(todo.date),
+        };
+      });
     } catch (error) {
       console.log(error);
     }
@@ -61,25 +66,9 @@ class TodoService {
     }
   }
 
-  fromStringToDate(dateStr: string) {
-    const [day, month, year] = dateStr.split('.').map(Number);
-    return new Date(year, month - 1, day);
-  }
-
-  formatDate(date: string) {
-    const [day, month, year] = date.split('.').map(String);
-  return `${year}.${month}.${day}`;
-  }
-
   async updateTodo(todoId: string, updatedTodo: Todo) {
     try {
       const todoToUpdate = this.todos.value.find((todo) => todo._id === todoId);
-      console.log('ToUPD: ', todoToUpdate?.date);
-      console.log('UPD: ', updatedTodo.date);
-
-      const newDate = this.fromStringToDate(updatedTodo.date);
-      console.log('NEWDATE: ', newDate);
-
       const requestOptions = {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -87,7 +76,7 @@ class TodoService {
           title: updatedTodo.title,
           description: updatedTodo.description,
           priority: updatedTodo.priority,
-          date: newDate,
+          date: updatedTodo.date,
           isEditing: updatedTodo.isEditing,
         }),
       };
@@ -101,8 +90,7 @@ class TodoService {
         todoToUpdate.title = updatedTodo.title;
         todoToUpdate.description = updatedTodo.description;
         todoToUpdate.priority = updatedTodo.priority;
-        const formattedDate = this.formatDate(updatedTodo.date);
-        todoToUpdate.date = formattedDate;
+        todoToUpdate.date = updatedTodo.date;
         todoToUpdate.isEditing = updatedTodo.isEditing;
       }
     } catch (error) {

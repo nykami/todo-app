@@ -103,10 +103,7 @@ export const updateTodo = async (
     if (description) todo.description = description;
     if (priority) todo.priority = priority;
     if (date) {
-      const eetStandardOffset = 7200000;
-      const utcDate = new Date(date);
-      const eetDate = new Date(utcDate.getTime() + eetStandardOffset);
-      todo.date = eetDate;      
+      todo.date = date;            
     }
 
     await todo.save();

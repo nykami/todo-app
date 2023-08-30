@@ -146,10 +146,6 @@ function handleDeleteButtonClick() {
 }
 
 function changeDate(newDate: Date) {
-  editedTodo.date = formattedDate(newDate);
-}
-
-function formattedDate(date: Date) {
-  return date.toLocaleDateString('en-GB').replace(/\//g, '.');
+  editedTodo.date = newDate;
 }
 </script>

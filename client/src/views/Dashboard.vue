@@ -62,13 +62,8 @@ const todos = ref<Todo[]>([]);
 onMounted(async () => {
   await todoService.getAllTodos(userId);
   await userService.getUser(userId);
-
   username.value = userService.getUsername();
-
   todos.value = todoService.todos.value;
-  todos.value.forEach((todo: Todo) => {
-    todo.date = todo.date.slice(0, 10).replace(/\-/g, '.');
-  });
   todosLoaded.value = true;
 });
 
@@ -171,11 +166,12 @@ function compareDateComponents(componentA: string, componentB: string) {
 
 function sortByDate() {
   todos.value.sort((a, b) => {
-    const dateA = a.date;
-    const dateB = b.date;
+    const dateA = a.date.toLocaleDateString();
+    
+    const dateB = b.date.toLocaleDateString();
 
-    const [dayA, monthA, yearA] = dateA.split('.');
-    const [dayB, monthB, yearB] = dateB.split('.');
+    const [dayA, monthA, yearA] = dateA.split('/');
+    const [dayB, monthB, yearB] = dateB.split('/');
 
     const yearComparison = compareDateComponents(yearA, yearB);
     if (yearComparison !== 0) {

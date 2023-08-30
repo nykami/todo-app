@@ -4,7 +4,7 @@ export interface Todo {
   title: string;
   description: string;
   priority: string;
-  date: string;
+  date: Date;
   isChecked: boolean;
   isEditing: boolean;
 }

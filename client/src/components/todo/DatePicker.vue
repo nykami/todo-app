@@ -16,15 +16,14 @@ const dateValue = ref(props.modelValue);
 function onDateInput(event: Event) {
   const inputElement = event.target as HTMLInputElement;
   const selectedDate = new Date(inputElement.value);
-  dateValue.value = selectedDate;  
+  dateValue.value = selectedDate;
   emit('update:modelValue', selectedDate);
 }
 
 const formattedDate = computed(() => {
-  const date = dateValue.value?.toLocaleDateString('en-GB');
-  const year = date?.split('/')[2];
-  const month = date?.split('/')[1];
-  const day = date?.split('/')[0];
-  return `${year}-${month}-${day}`;
+  if (dateValue.value) {
+    return dateValue.value.toISOString().slice(0, 10);
+  }
+  return '';
 });
 </script>

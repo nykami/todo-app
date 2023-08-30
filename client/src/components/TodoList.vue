@@ -45,7 +45,7 @@ function deleteTodo(todoId: string) {
   emit('deleteTodo', todoId);
 }
 
-function saveChanges(editedTodo: Todo, todoId: number) {  
+function saveChanges(editedTodo: Todo, todoId: number) {
   emit('updateTodo', editedTodo, todoId);
 }
 

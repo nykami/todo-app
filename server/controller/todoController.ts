@@ -35,7 +35,7 @@ export const createDefaultTodo = async (
     const todo = await createTodo({
       userId: userId,
     });
-
+    
     return sendSuccessResponse(res, todo, 201);
   } catch (error) {
     return sendErrorResponse(
@@ -72,7 +72,7 @@ export const deleteTodo = async (
     const todoId = req.params.todoId;
     const deletedTodo = await deleteTodoById(todoId);
 
-    return sendSuccessResponse(res, deletedTodo, 204);
+    return sendSuccessResponse(res, deletedTodo);
   } catch (error) {
     return sendErrorResponse(
       res,
@@ -89,7 +89,7 @@ export const updateTodo = async (
   try {
     const todoId = req.params.todoId;
     const { title, description, priority, date } = req.body;
-    
+
     if (!title && !description && !priority && !date) {
       return sendErrorResponse(res, null, 'No fields to update.');
     }
@@ -102,9 +102,7 @@ export const updateTodo = async (
     if (title) todo.title = title;
     if (description) todo.description = description;
     if (priority) todo.priority = priority;
-    if (date) {
-      todo.date = date;            
-    }
+    if (date) todo.date = new Date(date);
 
     await todo.save();
 

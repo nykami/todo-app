@@ -5,10 +5,8 @@ import cookieParser from 'cookie-parser';
 import http from 'http';
 import mongoose from 'mongoose';
 import router from './router';
+import "dotenv/config";
 
-const PORT = 8080;
-const MONGO_URL =
-  'mongodb+srv://emanueldrusu:Mongowebgurus22@wgclusterlearn.gr0pdlo.mongodb.net/?retryWrites=true&w=majority';
 const app = express();
 
 app.use(cors());
@@ -17,15 +15,17 @@ app.use(bodyParser.json());
 
 const server = http.createServer(app);
 
-server.listen(PORT, () =>
-  console.log('Server running on http://localhost:8080/')
+server.listen(process.env.PORT, () =>
+  console.log(
+    `Server running on http://${process.env.HOST}:${process.env.PORT}/`
+  )
 );
 
 mongoose.Promise = Promise;
 const connectOptions: mongoose.ConnectOptions = {
   dbName: 'todo_Nyitrai_Kamilla',
 };
-mongoose.connect(MONGO_URL, connectOptions);
+mongoose.connect(`${process.env.MONGO_URL}`, connectOptions);
 mongoose.connection.on('error', (error) => console.log(error));
 
 app.use('/', router());

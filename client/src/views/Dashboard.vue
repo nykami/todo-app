@@ -11,20 +11,13 @@
       @toggleSortType="changeSortType"
     />
     <TodoPlaceholder v-if="!todos.length" />
-    <Suspense v-if="todosLoaded">
-      <template #default>
-        <TodoList
-          :reversedTodos="reversedTodos"
-          @deleteTodo="deleteTodo"
-          @updateTodo="updateTodo"
-          @setEditState="setEditState"
-          @handleCheckboxClick="handleCheckboxClick"
-        />
-      </template>
-      <template #fallback>
-        <div>Loading...</div>
-      </template>
-    </Suspense>
+    <TodoList
+      :reversedTodos="reversedTodos"
+      @deleteTodo="deleteTodo"
+      @updateTodo="updateTodo"
+      @setEditState="setEditState"
+      @handleCheckboxClick="handleCheckboxClick"
+    />
     <div v-if="!filteredTodos.length && todos.length" class="text-center">
       No todos found
     </div>
@@ -53,45 +46,38 @@ const todoService = new TodoService();
 const userService = new UserService();
 const route = useRoute();
 const userId = route.params.userId.toString();
+
 const username = ref<string>('');
-
-const todosLoaded = ref(false);
-
 const todos = ref<Todo[]>([]);
 
 onMounted(async () => {
   await todoService.getAllTodos(userId);
-  await userService.getUser(userId);
-  username.value = userService.getUsername();
-  todos.value = todoService.todos.value;
-  todosLoaded.value = true;
+  const fetchedUsername = await userService.getUsername(userId);
+  if (fetchedUsername !== undefined) {
+    username.value = fetchedUsername;
+  }
+  todos.value = todoService.todos;
 });
 
 const filteredTodos = computed(() => {
   if (!searchText.value) {
-    return todoService.get().value;
+    return todos.value;
   }
-  return todoService
-    .get()
-    .value.filter(
-      (todo) =>
-        todo.title.toLowerCase().includes(searchText.value) ||
-        todo.description.toLowerCase().includes(searchText.value),
-    );
+  return todos.value.filter(
+    (todo) =>
+      todo.title.toLowerCase().includes(searchText.value) ||
+      todo.description.toLowerCase().includes(searchText.value),
+  );
 });
 
 const reversedTodos = computed(() => {
   return filteredTodos.value.slice().reverse();
 });
 
-function updateTodosArray() {
-  todos.value = todoService.get().value;
-}
-
 async function addTodo() {
   try {
-    await todoService.addTodo(userId);
-    updateTodosArray();
+    const todo = await todoService.addTodo(userId);        
+    todos.value.push(todo);                
   } catch (error) {
     console.log(error);
   }
@@ -99,8 +85,11 @@ async function addTodo() {
 
 async function deleteTodo(todoId: string) {
   try {
+    const todoIndex = todos.value.findIndex((todo) => todo._id === todoId);
+    if (todoIndex !== -1) {
+      todos.value.splice(todoIndex, 1);
+    }
     await todoService.deleteTodo(todoId);
-    updateTodosArray();
   } catch (error) {
     console.log(error);
   }
@@ -113,10 +102,8 @@ function setEditState(todoId: string, value: boolean) {
 
 async function updateTodo(newTodo: Todo, todoId: string) {
   try {
-    newTodo.isEditing = false;
-    await todoService.updateTodo(todoId, newTodo);
-    updateTodosArray();
     setEditState(todoId, false);
+    await todoService.updateTodo(todoId, newTodo);
     if (isSortingApplied.value) applySortBy(sortByField.value);
   } catch (error) {
     console.log(error);
@@ -167,7 +154,7 @@ function compareDateComponents(componentA: string, componentB: string) {
 function sortByDate() {
   todos.value.sort((a, b) => {
     const dateA = a.date.toLocaleDateString();
-    
+
     const dateB = b.date.toLocaleDateString();
 
     const [dayA, monthA, yearA] = dateA.split('/');

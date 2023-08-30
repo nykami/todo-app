@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import DatePicker from './DatePicker.vue';
 import CalendarIcon from '../icons/CalendarIcon.vue';
 
@@ -26,15 +26,20 @@ const props = defineProps<Props>();
 
 const emit = defineEmits(['dateSelected']);
 
-const dateInput = ref(props.todoDate);
+const now = new Date();
+const dateInput: Date = now;
 
 function dateSelected(selectedDate: Date): void {
   emit('dateSelected', selectedDate);
 }
 const formattedDate = computed(() => {
-  if (dateInput.value) {
-    return dateInput.value.toISOString().slice(0, 10).replace(/\-/g, '.');
+  let dateStr = '';
+  if (dateInput !== now) {
+    dateStr = dateInput.toLocaleDateString().slice(0, 10);
+  } else {
+    dateStr = props.todoDate.toLocaleDateString().slice(0, 10);
   }
-  return '';
+  const [day, month, year] = dateStr.split('/');
+  return `${year}.${month}.${day}.`;
 });
 </script>

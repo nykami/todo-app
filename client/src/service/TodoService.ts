@@ -1,15 +1,15 @@
-import { ref } from 'vue';
 import { Todo } from '../components/types/Todo.vue';
-import { User } from '../components/types/User.vue';
+import { deleteRequest, getRequest, postRequest, putRequest } from './requests';
+
+const baseUrl = import.meta.env.VITE_BASE_URL;
+
 class TodoService {
-  todos = ref<Todo[]>([]);
-  user = ref<User>();
+  todos: Todo[] = [];
 
   async getAllTodos(userId: string) {
     try {
-      const response = await fetch(`http://localhost:8080/todos/${userId}`);
-      const todoData = await response.json();
-      this.todos.value = todoData.map((todo: Todo) => {
+      const todoData = await getRequest(`${baseUrl}/todos/${userId}`);
+      this.todos = todoData.map((todo: Todo) => {
         return {
           ...todo,
           date: new Date(todo.date),
@@ -20,25 +20,11 @@ class TodoService {
     }
   }
 
-  get() {
-    return this.todos;
-  }
-
   async addTodo(userId: string) {
     try {
-      const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-      };
-      const response = await fetch(
-        `http://localhost:8080/todos/new/${userId}`,
-        requestOptions,
-      );
-
-      if (!response.ok) {
-        console.log('Failed to add todo');
-      }
-      await this.getAllTodos(userId);
+      const todo = await postRequest(`${baseUrl}/todos/new/${userId}`, {});
+      todo.date = new Date(todo.date);      
+      return todo;
     } catch (error) {
       console.log(error);
     }
@@ -46,21 +32,7 @@ class TodoService {
 
   async deleteTodo(todoId: string) {
     try {
-      const requestOptions = {
-        method: 'DELETE',
-      };
-      const response = await fetch(
-        `http://localhost:8080/todos/delete/${todoId}`,
-        requestOptions,
-      );
-
-      if (response.ok) {
-        this.todos.value = this.todos.value.filter(
-          (todo) => todo._id !== todoId,
-        );
-      } else {
-        console.log(`Failed to delete todo with id: ${todoId}`);
-      }
+      await deleteRequest(`${baseUrl}/todos/delete/${todoId}`);
     } catch (error) {
       console.log(error);
     }
@@ -68,7 +40,6 @@ class TodoService {
 
   async updateTodo(todoId: string, updatedTodo: Todo) {
     try {
-      const todoToUpdate = this.todos.value.find((todo) => todo._id === todoId);
       const requestOptions = {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -80,19 +51,7 @@ class TodoService {
           isEditing: updatedTodo.isEditing,
         }),
       };
-
-      await fetch(
-        `http://localhost:8080/todos/update/${todoId}`,
-        requestOptions,
-      );
-
-      if (todoToUpdate) {
-        todoToUpdate.title = updatedTodo.title;
-        todoToUpdate.description = updatedTodo.description;
-        todoToUpdate.priority = updatedTodo.priority;
-        todoToUpdate.date = updatedTodo.date;
-        todoToUpdate.isEditing = updatedTodo.isEditing;
-      }
+      await putRequest(`${baseUrl}/todos/update/${todoId}`, requestOptions);
     } catch (error) {
       console.log(error);
     }

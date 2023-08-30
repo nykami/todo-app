@@ -1,8 +1,9 @@
-import { ref } from 'vue';
 import { User } from '../components/types/User.vue';
-class UserService {
-  user = ref<User>();
+import { getRequest, postRequest } from './requests';
 
+const baseUrl = import.meta.env.VITE_BASE_URL;
+
+class UserService {
   async signup(
     firstName: string,
     lastName: string,
@@ -11,29 +12,15 @@ class UserService {
     password: string,
   ): Promise<User | null> {
     try {
-      const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          username,
-          email,
-          password,
-        }),
+      const payload = {
+        firstName,
+        lastName,
+        username,
+        email,
+        password,
       };
-
-      const response = await fetch(
-        `http://localhost:8080/auth/register`,
-        requestOptions,
-      );
-
-      if (response.ok) {
-        const user = await response.json();
-        return user as User;
-      } else {
-        return null;
-      }
+      const user = await postRequest(`${baseUrl}/auth/register`, payload);
+      return user;
     } catch (error) {
       console.log(error);
       return null;
@@ -42,46 +29,22 @@ class UserService {
 
   async login(email: string, password: string): Promise<User | null> {
     try {
-      const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      };
-
-      const response = await fetch(
-        `http://localhost:8080/auth/login`,
-        requestOptions,
-      );
-
-      if (response.ok) {
-        const user = await response.json();
-        return user as User;
-      } else {
-        return null;
-      }
+      const payload = { email, password };
+      const user = await postRequest(`${baseUrl}/auth/login`, payload);
+      return user;
     } catch (error) {
       console.log(error);
       return null;
     }
   }
 
-  async getUser(userId: string) {
+  async getUsername(userId: string) {
     try {
-      const response = await fetch(`http://localhost:8080/users/${userId}`);
-
-      if (response.ok) {
-        const userData = await response.json();
-        this.user.value = userData;
-      } else {
-        console.log("couldn't get user with id ,", userId);
-      }
+      const userData: User = await getRequest(`${baseUrl}/users/${userId}`);
+      return userData.username;
     } catch (error) {
       console.log(error);
     }
-  }
-
-  getUsername() {
-    return this.user.value ? this.user.value.username : '';
   }
 }
 

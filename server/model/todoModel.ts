@@ -25,14 +25,7 @@ const todoSchema: Schema = new Schema({
   },
   date: {
     type: Date,
-    default: () => {
-      const currentDate = new Date();
-      return new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth(),
-        currentDate.getDate()
-      );
-    },
+    default: new Date(),
   },
   isChecked: { type: Boolean, default: false },
   isEditing: { type: Boolean, default: false },

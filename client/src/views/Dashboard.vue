@@ -49,35 +49,28 @@ const userId = route.params.userId.toString();
 
 const username = ref<string>('');
 const todos = ref<Todo[]>([]);
+const filteredTodos = ref<Todo[]>([]);
 
 onMounted(async () => {
-  await todoService.getAllTodos(userId);
+  todos.value = await todoService.getTodos(
+    userId
+  );
+
   const fetchedUsername = await userService.getUsername(userId);
   if (fetchedUsername !== undefined) {
     username.value = fetchedUsername;
   }
-  todos.value = todoService.todos;
-});
-
-const filteredTodos = computed(() => {
-  if (!searchText.value) {
-    return todos.value;
-  }
-  return todos.value.filter(
-    (todo) =>
-      todo.title.toLowerCase().includes(searchText.value) ||
-      todo.description.toLowerCase().includes(searchText.value),
-  );
+  filteredTodos.value = todos.value;
 });
 
 const reversedTodos = computed(() => {
-  return filteredTodos.value.slice().reverse();
+  return todos.value.slice().reverse();
 });
 
 async function addTodo() {
   try {
-    const todo = await todoService.addTodo(userId);        
-    todos.value.push(todo);                
+    const todo = await todoService.addTodo(userId);
+    todos.value.push(todo);
   } catch (error) {
     console.log(error);
   }
@@ -95,19 +88,25 @@ async function deleteTodo(todoId: string) {
   }
 }
 
-function setEditState(todoId: string, value: boolean) {
-  const indexToUpdateAt = todos.value.findIndex((obj) => obj._id === todoId);
-  todos.value[indexToUpdateAt].isEditing = value;
-}
-
 async function updateTodo(newTodo: Todo, todoId: string) {
   try {
     setEditState(todoId, false);
+    if (newTodo.title === '') {
+      newTodo.title = 'Title';
+    }
+    if (newTodo.description === '') {
+      newTodo.description = 'Description';
+    }
     await todoService.updateTodo(todoId, newTodo);
     if (isSortingApplied.value) applySortBy(sortByField.value);
   } catch (error) {
     console.log(error);
   }
+}
+
+function setEditState(todoId: string, value: boolean) {
+  const indexToUpdateAt = todos.value.findIndex((obj) => obj._id === todoId);
+  todos.value[indexToUpdateAt].isEditing = value;
 }
 
 function handleCheckboxClick(todoId: number) {

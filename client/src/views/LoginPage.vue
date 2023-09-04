@@ -70,8 +70,7 @@ async function handleSubmit() {
 
     if (user) {
       const userId = user._id;
-      console.log(userId);
-      
+  
       router.push(`/todos/${userId}`);
     }
   } catch (error) {

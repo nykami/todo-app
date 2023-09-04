@@ -4,12 +4,10 @@ import { deleteRequest, getRequest, postRequest, putRequest } from './requests';
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
 class TodoService {
-  todos: Todo[] = [];
-
-  async getAllTodos(userId: string) {
+  async getTodos(userId: string) {
     try {
-      const todoData = await getRequest(`${baseUrl}/todos/${userId}`);
-      this.todos = todoData.map((todo: Todo) => {
+      const todoData = await getRequest(`${baseUrl}/${userId}`);
+      return todoData.map((todo: Todo) => {
         return {
           ...todo,
           date: new Date(todo.date),
@@ -22,8 +20,8 @@ class TodoService {
 
   async addTodo(userId: string) {
     try {
-      const todo = await postRequest(`${baseUrl}/todos/new/${userId}`, {});
-      todo.date = new Date(todo.date);      
+      const todo = await postRequest(`${baseUrl}/new/${userId}`, {});
+      todo.date = new Date(todo.date);
       return todo;
     } catch (error) {
       console.log(error);
@@ -32,7 +30,7 @@ class TodoService {
 
   async deleteTodo(todoId: string) {
     try {
-      await deleteRequest(`${baseUrl}/todos/delete/${todoId}`);
+      await deleteRequest(`${baseUrl}/delete/${todoId}`);
     } catch (error) {
       console.log(error);
     }
@@ -40,9 +38,7 @@ class TodoService {
 
   async updateTodo(todoId: string, updatedTodo: Todo) {
     try {
-      const requestOptions = {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+      const payload = {
         body: JSON.stringify({
           title: updatedTodo.title,
           description: updatedTodo.description,
@@ -51,7 +47,7 @@ class TodoService {
           isEditing: updatedTodo.isEditing,
         }),
       };
-      await putRequest(`${baseUrl}/todos/update/${todoId}`, requestOptions);
+      await putRequest(`${baseUrl}/update/${todoId}`, payload);
     } catch (error) {
       console.log(error);
     }

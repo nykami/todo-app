@@ -7,8 +7,8 @@ import {
 } from '../controller/todoController';
 
 export default (router: express.Router) => {
-  router.post('/todos/new/:userId', createDefaultTodo);
-  router.get('/todos/:userId', getAllTodos);
-  router.delete('/todos/delete/:todoId', deleteTodo);
-  router.put('/todos/update/:todoId', updateTodo);
+  router.post('/new/:userId', createDefaultTodo);
+  router.get('/:userId', getAllTodos);
+  router.delete('/delete/:todoId', deleteTodo);
+  router.put('/update/:todoId', updateTodo);
 };

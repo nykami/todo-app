@@ -1,9 +1,9 @@
 import express from 'express';
 import {
   deleteTodoById,
-  getTodoById,
   getTodos,
   createTodo,
+  updateTodoById,
 } from '../service/todoService';
 
 const sendSuccessResponse = <T>(
@@ -35,7 +35,7 @@ export const createDefaultTodo = async (
     const todo = await createTodo({
       userId: userId,
     });
-    
+
     return sendSuccessResponse(res, todo, 201);
   } catch (error) {
     return sendErrorResponse(
@@ -94,19 +94,20 @@ export const updateTodo = async (
       return sendErrorResponse(res, null, 'No fields to update.');
     }
 
-    const todo = await getTodoById(todoId);
-    if (!todo) {
+    const updateData: Record<string, any> = {};
+
+    if (title) updateData.title = title;
+    if (description) updateData.description = description;
+    if (priority) updateData.priority = priority;
+    if (date) updateData.date = new Date(date);
+
+    const updatedTodo = await updateTodoById(todoId, updateData);
+
+    if (!updatedTodo) {
       return sendErrorResponse(res, null, 'Todo to update not found.', 404);
     }
 
-    if (title) todo.title = title;
-    if (description) todo.description = description;
-    if (priority) todo.priority = priority;
-    if (date) todo.date = new Date(date);
-
-    await todo.save();
-
-    return sendSuccessResponse(res, todo);
+    return sendSuccessResponse(res, updatedTodo);
   } catch (error) {
     return sendErrorResponse(
       res,

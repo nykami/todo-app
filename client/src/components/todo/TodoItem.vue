@@ -4,8 +4,8 @@
     @click="setIsEditingTrue"
   >
     <div class="flex flex-col">
-      <div class="flex flex-row w-56 sm:w-152 sm:justify-between">
-        <TodoTitle :todoTitle="todo.title" />
+      <div class="flex w-56 flex-row sm:w-152 sm:justify-between">
+        <TodoTitle v-model="todo.title" :todoIsEditing="todo.isEditing" />
         <TodoPriority
           :todoPriority="todo.priority"
           :todoIsEditing="todo.isEditing"
@@ -15,7 +15,7 @@
     </div>
 
     <div
-      class="flex flex-col justify-between items-end sm:w-full sm:flex-row sm:py-3"
+      class="flex flex-col items-end justify-between sm:w-full sm:flex-row sm:py-3"
     >
       <TodoDescription
         v-model="todo.description"

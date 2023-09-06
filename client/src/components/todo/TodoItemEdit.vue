@@ -4,9 +4,8 @@
       <div class="flex flex-col">
         <div class="flex w-56 flex-row sm:w-152 sm:justify-between">
           <TodoTitle
-            :contenteditable="isEditable"
-            :todoTitle="todo.title"
-            @handleTitleInputChange="changeTitle"
+            v-model="todo.title"
+            :todoIsEditing="todo.isEditing"
           ></TodoTitle>
           <div class="flex flex-col">
             <TodoPriorityOptions
@@ -36,7 +35,6 @@
         <TodoDescription
           v-model="todo.description"
           :todoIsEditing="todo.isEditing"
-          @handleContentInputChange="changeContent"
         />
         <div
           v-if="isShowingOptions"
@@ -64,7 +62,6 @@
       <TodoDescription
         v-model="todo.description"
         :todoIsEditing="todo.isEditing"
-        @handleContentInputChange="changeContent"
       />
       <TodoButtons
         @handleDeleteButtonClick="handleDeleteButtonClick"
@@ -105,21 +102,12 @@ const emit = defineEmits([
 
 const todoEditRef = ref(null);
 
-const isEditable = ref(props.todo.isEditing);
 const editedTodo = reactive(props.todo);
 const isShowingOptions = ref(false);
 
 onClickOutside(todoEditRef, () => {
   emit('setIsEditingFalse');
 });
-
-function changeTitle(newTitle: string) {
-  editedTodo.title = newTitle;
-}
-
-function changeContent(newContent: string) {
-  editedTodo.description = newContent;
-}
 
 function changeImportance(importance: string) {
   editedTodo.priority = importance;

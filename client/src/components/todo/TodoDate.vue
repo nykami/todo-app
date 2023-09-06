@@ -14,6 +14,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import dayjs from 'dayjs';
 import DatePicker from './DatePicker.vue';
 import CalendarIcon from '../icons/CalendarIcon.vue';
 
@@ -35,11 +36,10 @@ function dateSelected(selectedDate: Date): void {
 const formattedDate = computed(() => {
   let dateStr = '';
   if (dateInput !== now) {
-    dateStr = dateInput.toLocaleDateString().slice(0, 10);
+    dateStr = dayjs(dateInput).format('YYYY.MM.DD');
   } else {
-    dateStr = props.todoDate.toLocaleDateString().slice(0, 10);
+    dateStr = dayjs(props.todoDate).format('YYYY.MM.DD');
   }
-  const [day, month, year] = dateStr.split('/');
-  return `${year}.${month}.${day}.`;
+  return dateStr;
 });
 </script>

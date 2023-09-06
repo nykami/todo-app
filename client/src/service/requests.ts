@@ -1,11 +1,9 @@
 async function sendRequest(endpoint: string, options: RequestInit) {
   try {
-    const response = await fetch(endpoint, options);
-
+    const response = await fetch(endpoint, options);    
     if (!response.ok) {
       throw new Error('Request failed');
-    }
-
+    }    
     return await response.json();
   } catch (error) {
     console.error(error);
@@ -31,6 +29,7 @@ export async function postRequest(
 export async function getRequest(endpoint: string, options?: RequestInit) {
   const defaultOptions = {
     method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
     ...options,
   };
 
@@ -40,6 +39,7 @@ export async function getRequest(endpoint: string, options?: RequestInit) {
 export async function deleteRequest(endpoint: string, options?: RequestInit) {
   const defaultOptions = {
     method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
     ...options,
   };
 

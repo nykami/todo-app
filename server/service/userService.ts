@@ -1,8 +1,17 @@
 import { userModel } from '../model/userModel';
 
-export const createUser = (values: Record<string, any>) =>
-  new userModel(values).save();
+class UserService {
+  async createUser(values: Record<string, any>) {
+    return new userModel(values).save();
+  }
 
-export const getUserById = (id: string) => userModel.findById(id);
+  async getUserById(id: string) {    
+    return userModel.findById(id);
+  }
 
-export const getUserByEmail = (email: string) => userModel.findOne({ email: email });
+  async getUserByEmail(email: string) {
+    return userModel.findOne({ email: email });
+  }
+}
+
+export default new UserService();

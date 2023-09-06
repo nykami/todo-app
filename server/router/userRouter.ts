@@ -1,6 +1,10 @@
-import express from 'express';
-import { getUser } from '../controller/userController';
+import { Router } from 'express';
+import userController from '../controller/userController';
+import todoRouter from './todoRouter';
 
-export default (router: express.Router) => {
-  router.get('/users/:userId', getUser);
-};
+const router = Router();
+
+router.get('/:userId', userController.getUser);
+router.use('/todos', todoRouter);
+
+export default router;

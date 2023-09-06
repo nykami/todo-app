@@ -3,6 +3,7 @@
 </template>
 
 <script setup lang="ts">
+import dayjs from 'dayjs';
 import { ref, computed } from 'vue';
 
 const props = defineProps({
@@ -21,9 +22,6 @@ function onDateInput(event: Event) {
 }
 
 const formattedDate = computed(() => {
-  if (dateValue.value) {
-    return dateValue.value.toISOString().slice(0, 10);
-  }
-  return '';
+  return dayjs(dateValue.value).format('YYYY-MM-DD');
 });
 </script>

@@ -15,7 +15,7 @@
             <InputField
               inputType="text"
               inputPlaceholder="Ana"
-              v-model="firstName"
+              v-model="formData.firstName"
               autocomplete="firstName"
             />
           </div>
@@ -26,7 +26,7 @@
             <InputField
               inputType="text"
               inputPlaceholder="Banana"
-              v-model="lastName"
+              v-model="formData.lastName"
               autocomplete="lastName"
             />
           </div>
@@ -37,7 +37,7 @@
             <InputField
               inputType="text"
               inputPlaceholder="anabanana"
-              v-model="username"
+              v-model="formData.username"
               autocomplete="username"
             />
           </div>
@@ -48,7 +48,7 @@
             <InputField
               inputType="email"
               inputPlaceholder="ana@gmail.com"
-              v-model="email"
+              v-model="formData.email"
               autocomplete="email"
             />
           </div>
@@ -59,7 +59,7 @@
             <InputField
               inputType="password"
               inputPlaceholder="••••••••"
-              v-model="password"
+              v-model="formData.password"
               autocomplete="password"
             />
           </div>
@@ -84,21 +84,17 @@ import UserService from '../service/UserService';
 const router = useRouter();
 const userService = new UserService();
 
-const firstName = ref<string>('');
-const lastName = ref<string>('');
-const username = ref<string>('');
-const email = ref<string>('');
-const password = ref<string>('');
+const formData = ref({
+  firstName: '',
+  lastName: '',
+  username: '',
+  email: '',
+  password: '',
+});
 
 async function handleSubmit() {
   try {
-    const user = await userService.signup(
-      firstName.value,
-      lastName.value,
-      username.value,
-      email.value,
-      password.value,
-    );
+    const user = await userService.signup(formData.value);
 
     if (user) {
       router.push(`/login`);

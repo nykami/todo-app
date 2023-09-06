@@ -6,13 +6,11 @@ const baseUrl = import.meta.env.VITE_BASE_URL;
 class TodoService {
   async getTodos(userId: string) {
     try {
-      const todoData = await getRequest(`${baseUrl}/${userId}`);
-      return todoData.map((todo: Todo) => {
-        return {
-          ...todo,
-          date: new Date(todo.date),
-        };
-      });
+      const todoData = await getRequest(`${baseUrl}/user/todos/${userId}`);
+      return todoData.map((todo: Todo) => ({
+        ...todo,
+        date: new Date(todo.date),
+      }));
     } catch (error) {
       console.log(error);
     }
@@ -20,7 +18,7 @@ class TodoService {
 
   async addTodo(userId: string) {
     try {
-      const todo = await postRequest(`${baseUrl}/new/${userId}`, {});
+      const todo = await postRequest(`${baseUrl}/user/todos/${userId}`, {});
       todo.date = new Date(todo.date);
       return todo;
     } catch (error) {
@@ -30,7 +28,7 @@ class TodoService {
 
   async deleteTodo(todoId: string) {
     try {
-      await deleteRequest(`${baseUrl}/delete/${todoId}`);
+      await deleteRequest(`${baseUrl}/user/todos/${todoId}`);
     } catch (error) {
       console.log(error);
     }
@@ -47,7 +45,7 @@ class TodoService {
           isEditing: updatedTodo.isEditing,
         }),
       };
-      await putRequest(`${baseUrl}/update/${todoId}`, payload);
+      await putRequest(`${baseUrl}/user/todos/${todoId}`, payload);
     } catch (error) {
       console.log(error);
     }

@@ -5,27 +5,40 @@ import cookieParser from 'cookie-parser';
 import http from 'http';
 import mongoose from 'mongoose';
 import router from './router';
-import "dotenv/config";
+import { env } from './config';
 
 const app = express();
 
 app.use(cors());
 app.use(cookieParser());
 app.use(bodyParser.json());
+app.use('/', router);
 
-const server = http.createServer(app);
+async function connectToDb() {
+  try {
+    const connectOptions: mongoose.ConnectOptions = {
+      dbName: env.db_name,
+    };
 
-server.listen(process.env.PORT, () =>
-  console.log(
-    `Server running on http://${process.env.HOST}:${process.env.PORT}/`
-  )
-);
+    await mongoose.connect(`${env.mongo_url}`, connectOptions);
+    console.log('MongoDB connected successfully');
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+  }
+}
 
-mongoose.Promise = Promise;
-const connectOptions: mongoose.ConnectOptions = {
-  dbName: 'todo_Nyitrai_Kamilla',
-};
-mongoose.connect(`${process.env.MONGO_URL}`, connectOptions);
-mongoose.connection.on('error', (error) => console.log(error));
+async function startServer() {
+  try {
+    await connectToDb();
 
-app.use('/', router());
+    const server = http.createServer(app);
+
+    server.listen(env.port, () =>
+      console.log(`Server running on http://${env.host}:${env.port}/`)
+    );
+  } catch (error) {
+    console.error('Server connection error:', error);
+  }
+}
+
+startServer();

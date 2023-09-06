@@ -52,14 +52,11 @@ const todos = ref<Todo[]>([]);
 const filteredTodos = ref<Todo[]>([]);
 
 onMounted(async () => {
-  todos.value = await todoService.getTodos(
-    userId
-  );
+  todos.value = await todoService.getTodos(userId);
 
   const fetchedUsername = await userService.getUsername(userId);
-  if (fetchedUsername !== undefined) {
-    username.value = fetchedUsername;
-  }
+  username.value = fetchedUsername || '';
+
   filteredTodos.value = todos.value;
 });
 
@@ -91,10 +88,10 @@ async function deleteTodo(todoId: string) {
 async function updateTodo(newTodo: Todo, todoId: string) {
   try {
     setEditState(todoId, false);
-    if (newTodo.title === '') {
+    if (!newTodo.title) {
       newTodo.title = 'Title';
     }
-    if (newTodo.description === '') {
+    if (!newTodo.description) {
       newTodo.description = 'Description';
     }
     await todoService.updateTodo(todoId, newTodo);
@@ -106,6 +103,7 @@ async function updateTodo(newTodo: Todo, todoId: string) {
 
 function setEditState(todoId: string, value: boolean) {
   const indexToUpdateAt = todos.value.findIndex((obj) => obj._id === todoId);
+  if (indexToUpdateAt === -1) return;
   todos.value[indexToUpdateAt].isEditing = value;
 }
 

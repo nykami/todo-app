@@ -31,7 +31,7 @@
             />
           </div>
           <div class="flex flex-col">
-              <AuthButton  buttonText="Log in" />
+            <AuthButton buttonText="Log in" />
             <hr class="my-4 border-gray-400" />
             <div class="flex justify-between">
               <p class="text-xs sm:text-sm">Don't have an account yet?</p>
@@ -67,11 +67,8 @@ const password = ref<string>('');
 async function handleSubmit() {
   try {
     const user = await userService.login(email.value, password.value);
-
-    if (user) {
-      const userId = user._id;
-  
-      router.push(`/todos/${userId}`);
+    if(user){
+      router.push(`/todos/${user._id}`);
     }
   } catch (error) {
     console.log(error);

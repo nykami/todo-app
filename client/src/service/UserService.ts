@@ -4,20 +4,16 @@ import { getRequest, postRequest } from './requests';
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
 class UserService {
-  async signup(
-    firstName: string,
-    lastName: string,
-    username: string,
-    email: string,
-    password: string,
-  ): Promise<User | null> {
+  async signup(formData: {
+    firstName: string;
+    lastName: string;
+    username: string;
+    email: string;
+    password: string;
+  }): Promise<User | null> {
     try {
       const payload = {
-        firstName,
-        lastName,
-        username,
-        email,
-        password,
+        ...formData
       };
       const user = await postRequest(`${baseUrl}/auth/register`, payload);
       return user;
@@ -39,8 +35,8 @@ class UserService {
   }
 
   async getUsername(userId: string) {
-    try {
-      const userData: User = await getRequest(`${baseUrl}/users/${userId}`);
+    try {      
+      const userData: User = await getRequest(`${baseUrl}/user/${userId}`);      
       return userData.username;
     } catch (error) {
       console.log(error);

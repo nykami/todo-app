@@ -1,37 +1,22 @@
-import express from 'express';
-import { getUserById } from '../service/userService';
+import { Request, Response } from 'express';
+import userService from '../service/userService';
+import { sendSuccessResponse, sendErrorResponse } from './response';
 
-const sendSuccessResponse = <T>(
-  res: express.Response,
-  data: T,
-  statusCode: number = 200
-) => {
-  res.status(statusCode).json(data);
-};
+class UserController {
+  async getUser(req: Request, res: Response) {
+    try {
+      const userId = req.params.userId;
+      const user = await userService.getUserById(userId);
 
-const sendErrorResponse = (
-  res: express.Response,
-  error: Error | null,
-  message: string,
-  statusCode: number = 400
-) => {
-  if (error) {
-    console.error(error);
+      return sendSuccessResponse(res, user);
+    } catch (error) {
+      sendErrorResponse(
+        res,
+        error as Error,
+        `An error occurred fetching the user.`
+      );
+    }
   }
-  res.status(statusCode).json({ error: message });
-};
+}
 
-export const getUser = async (req: express.Request, res: express.Response) => {
-  try {
-    const userId = req.params.userId;
-    const user = await getUserById(userId);
-
-    return sendSuccessResponse(res, user);
-  } catch (error) {
-    sendErrorResponse(
-      res,
-      error as Error,
-      `An error occurred fetching the user.`
-    );
-  }
-};
+export default new UserController();

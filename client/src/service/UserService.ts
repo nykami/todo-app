@@ -10,7 +10,7 @@ class UserService {
     username: string;
     email: string;
     password: string;
-  }): Promise<User | null> {
+  }){
     try {
       const payload = {
         ...formData
@@ -18,19 +18,17 @@ class UserService {
       const user = await postRequest(`${baseUrl}/auth/register`, payload);
       return user;
     } catch (error) {
-      console.log(error);
-      return null;
+      console.error(error);
     }
   }
 
-  async login(email: string, password: string): Promise<User | null> {
+  async login(email: string, password: string){
     try {
       const payload = { email, password };
       const user = await postRequest(`${baseUrl}/auth/login`, payload);
       return user;
     } catch (error) {
-      console.log(error);
-      return null;
+      console.error(error);
     }
   }
 
@@ -39,7 +37,7 @@ class UserService {
       const userData: User = await getRequest(`${baseUrl}/user/${userId}`);      
       return userData.username;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 }

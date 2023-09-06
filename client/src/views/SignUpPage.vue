@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col items-center justify-center font-custom">
-    <TodoLogin username="" button-name="Log in" path="/login" />
+    <TodoLogin button-name="Log in" path="/login" />
     <div
       class="relative mt-2 flex w-72 flex-col items-center justify-center bg-white sm:mt-10 sm:w-screen sm:flex-row"
     >

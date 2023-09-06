@@ -18,7 +18,7 @@
       class="flex flex-col justify-between items-end sm:w-full sm:flex-row sm:py-3"
     >
       <TodoDescription
-        :todoDescription="todo.description"
+        v-model="todo.description"
         :todoIsEditing="todo.isEditing"
       />
       <TodoCheckbox

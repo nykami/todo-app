@@ -27,19 +27,12 @@ const props = defineProps<Props>();
 
 const emit = defineEmits(['dateSelected']);
 
-const now = new Date();
-const dateInput: Date = now;
+const dateInput: Date = new Date();
 
 function dateSelected(selectedDate: Date): void {
   emit('dateSelected', selectedDate);
 }
 const formattedDate = computed(() => {
-  let dateStr = '';
-  if (dateInput !== now) {
-    dateStr = dayjs(dateInput).format('YYYY.MM.DD');
-  } else {
-    dateStr = dayjs(props.todoDate).format('YYYY.MM.DD');
-  }
-  return dateStr;
+  return dayjs(props.todoDate).format('YYYY.MM.DD');
 });
 </script>

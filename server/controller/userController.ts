@@ -6,6 +6,11 @@ class UserController {
   async getUser(req: Request, res: Response) {
     try {
       const userId = req.params.userId;
+
+      if (!userId) {
+        throw new Error('userId was not provided');
+      }
+
       const user = await userService.getUserById(userId);
 
       return sendSuccessResponse(res, user);

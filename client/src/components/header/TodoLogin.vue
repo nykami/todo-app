@@ -32,7 +32,7 @@ import RightArrowIcon from '../icons/RightArrowIcon.vue';
 interface Props {
   buttonName: string;
   path: string;
-  username: string;
+  username?: string;
 }
 
 defineProps<Props>();

@@ -34,8 +34,7 @@
         class="hidden w-152 items-start font-semibold sm:flex sm:justify-between sm:text-2xl"
       >
         <TodoDescription
-          :contenteditable="isEditable"
-          :todoDescription="todo.description"
+          v-model="todo.description"
           :todoIsEditing="todo.isEditing"
           @handleContentInputChange="changeContent"
         />
@@ -63,8 +62,7 @@
       class="flex flex-col items-start font-semibold text-neutral-500 sm:hidden"
     >
       <TodoDescription
-        :contenteditable="isEditable"
-        :todoDescription="todo.description"
+        v-model="todo.description"
         :todoIsEditing="todo.isEditing"
         @handleContentInputChange="changeContent"
       />

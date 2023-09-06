@@ -12,7 +12,7 @@ class TodoService {
         date: new Date(todo.date),
       }));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -22,7 +22,7 @@ class TodoService {
       todo.date = new Date(todo.date);
       return todo;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -30,7 +30,7 @@ class TodoService {
     try {
       await deleteRequest(`${baseUrl}/user/todos/${todoId}`);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -47,7 +47,7 @@ class TodoService {
       };
       await putRequest(`${baseUrl}/user/todos/${todoId}`, payload);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 }

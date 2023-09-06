@@ -1,31 +1,34 @@
 <template>
   <p
-    v-if="todoIsEditing"
-    class="fit my-2 w-64 break-all text-start text-black sm:block sm:w-112"
-    @input="handleContentInputChange"
-  >
-    {{ todoDescription }}
-  </p>
-  <p
-    v-else
+    v-if="!todoIsEditing"
     class="fit my-2 hidden break-all text-start font-semibold text-neutral-500 sm:block sm:w-112 sm:text-2xl"
   >
-    {{ todoDescription }}
+    {{ value }}
   </p>
+  <textarea
+    v-else
+    class="fit my-2 w-64 text-start text-black focus:outline-none sm:block sm:w-112"
+    v-model="value"
+    @input="handleInput"
+  ></textarea>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+
 interface Props {
-  todoDescription: string;
+  modelValue: string;
   todoIsEditing: boolean;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
-const emit = defineEmits(['handleContentInputChange']);
-function handleContentInputChange(event: Event) {
-  const newContent = (event.target as HTMLDivElement).innerText;
-  emit('handleContentInputChange', newContent);
+const emit = defineEmits(['update:modelValue']);
+
+const value = ref(props.modelValue);
+
+function handleInput() {
+  emit('update:modelValue', value.value);
 }
 </script>
 

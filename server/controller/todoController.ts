@@ -6,6 +6,11 @@ class TodoController {
   async createDefaultTodo(req: Request, res: Response) {
     try {
       const userId = req.params.userId;
+
+      if (!userId) {
+        throw new Error('userId was not provided');
+      }
+
       const todo = await todoService.createTodo({
         userId: userId,
       });
@@ -23,6 +28,11 @@ class TodoController {
   async getAllTodos(req: Request, res: Response) {
     try {
       const userId = req.params.userId;
+
+      if (!userId) {
+        throw new Error('userId was not provided');
+      }
+
       const todos = await todoService.getTodos(userId);
 
       return sendSuccessResponse(res, todos);
@@ -38,6 +48,11 @@ class TodoController {
   async deleteTodo(req: Request, res: Response) {
     try {
       const todoId = req.params.todoId;
+
+      if (!todoId) {
+        throw new Error('todoId was not provided');
+      }
+
       const deletedTodo = await todoService.deleteTodoById(todoId);
 
       return sendSuccessResponse(res, deletedTodo);
@@ -53,6 +68,11 @@ class TodoController {
   async updateTodo(req: Request, res: Response) {
     try {
       const todoId = req.params.todoId;
+
+      if (!todoId) {
+        throw new Error('todoId was not provided');
+      }
+
       const { title, description, priority, date } = req.body;
 
       const updateData: Record<string, any> = {};

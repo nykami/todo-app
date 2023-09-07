@@ -1,13 +1,13 @@
 <template>
   <div class="flex w-full items-start sm:flex sm:w-full sm:items-start">
     <Button
-      class="mr-2 border-emerald-200 bg-emerald-400 text-white sm:mr-4 sm:hover:bg-emerald-500"
+      class="mt-2 mr-2 flex h-7 w-16 items-center justify-center rounded-lg border border-emerald-200 bg-emerald-400 text-sm font-semibold text-white sm:mr-4 sm:h-12 sm:w-28 sm:rounded-2xl sm:text-lg sm:hover:bg-emerald-500"
       @click="handleSaveButtonClick"
       buttonText="Save"
     >
     </Button>
     <Button
-      class="border-neutral-200 bg-neutral-200 text-black sm:hover:bg-neutral-300"
+      class="mt-2 flex h-7 w-16 items-center justify-center rounded-lg border border-neutral-200 bg-neutral-200 text-sm font-semibold text-black sm:h-12 sm:w-28 sm:rounded-2xl sm:text-lg sm:hover:bg-neutral-300"
       @click="showPopup()"
       buttonText="Delete"
     >

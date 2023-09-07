@@ -1,6 +1,9 @@
 <template>
   <div class="mb-8 mt-20 flex w-72 items-center justify-between sm:w-160">
-    <div class="text-sm font-medium sm:text-2xl">Welcome to the app</div>
+    <div v-if="username" class="text-sm font-medium sm:text-2xl">
+      Welcome, {{ username }}
+    </div>
+    <div v-else class="text-sm font-medium sm:text-2xl">Welcome to the app</div>
     <router-link
       :to="path"
       class="flex h-12 w-12 items-center justify-center rounded-2xl border border-neutral-200 font-semibold sm:h-12 sm:w-28 sm:bg-neutral-200 sm:text-lg"
@@ -29,6 +32,7 @@ import RightArrowIcon from '../icons/RightArrowIcon.vue';
 interface Props {
   buttonName: string;
   path: string;
+  username?: string;
 }
 
 defineProps<Props>();

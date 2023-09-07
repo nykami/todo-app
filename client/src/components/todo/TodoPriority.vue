@@ -1,12 +1,10 @@
 <template>
   <div
-    class="ml-1 mt-2 flex h-3 w-3 items-center justify-center rounded-full sm:h-10 sm:w-32"
-    :class="colorMap[todoImportance]"
+    class="ml-1 mt-2 sm:mt-3 h-3 w-3 items-center justify-center rounded-full p-1 sm:ml-0 sm:flex sm:h-10 sm:w-32"
+    :class="colorMap[todoPriority]"
   >
-    <div
-      class="hidden items-center text-lg font-semibold text-white sm:flex"
-    >
-      {{ todoImportance }}
+    <div class="hidden items-center text-lg font-semibold text-white sm:flex">
+      {{ todoPriority }}
       <OptionsIcon v-if="todoIsEditing" class="ml-2" />
     </div>
   </div>
@@ -17,7 +15,7 @@ import OptionsIcon from '../icons/OptionsIcon.vue';
 import { ColorMap } from '../types/ColorMap.vue';
 
 interface Props {
-  todoImportance: string;
+  todoPriority: string;
   todoIsEditing: boolean;
 }
 

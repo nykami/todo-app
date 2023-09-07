@@ -2,23 +2,22 @@
   <div ref="todoEditRef">
     <div class="flex flex-row items-center justify-between sm:flex-col">
       <div class="flex flex-col">
-        <div class="flex flex-row sm:w-162 sm:justify-between">
+        <div class="flex w-56 flex-row sm:w-152 sm:justify-between">
           <TodoTitle
-            :contenteditable="isEditable"
-            :todoTitle="todo.title"
-            @handleTitleInputChange="changeTitle"
+            v-model="todo.title"
+            :todoIsEditing="todo.isEditing"
           ></TodoTitle>
-          <div class="flex flex-col items-end">
-            <TodoImportanceOptions
+          <div class="flex flex-col">
+            <TodoPriorityOptions
               v-if="isShowingOptions"
               :colorMap="colorMap"
-              :todoImportance="todo.importance"
+              :todoPriority="todo.priority"
               :todoIsEditing="todo.isEditing"
               @handleImportanceChangeClickMobile="changeImportance"
             />
-            <TodoImportance
+            <TodoPriority
               v-else
-              :todoImportance="todo.importance"
+              :todoPriority="todo.priority"
               :todoIsEditing="todo.isEditing"
               @click="toggleIsShowingOptions"
             />
@@ -31,17 +30,15 @@
         />
       </div>
       <div
-        class="hidden h-32 w-152 items-start font-semibold sm:flex sm:justify-between sm:text-2xl"
+        class="hidden w-152 items-start font-semibold sm:flex sm:justify-between sm:text-2xl"
       >
-        <TodoContent
-          :contenteditable="isEditable"
-          :todoContent="todo.content"
+        <TodoDescription
+          v-model="todo.description"
           :todoIsEditing="todo.isEditing"
-          @handleContentInputChange="changeContent"
         />
         <div
           v-if="isShowingOptions"
-          class="flex h-28 w-32 flex-col items-start justify-center rounded-xl border border-black pl-6 mr-3"
+          class="ml-3 flex h-28 w-32 flex-col items-start justify-center rounded-xl border border-black pl-6"
         >
           <div
             v-for="(_, levelOfImportance) in colorMap"
@@ -60,13 +57,11 @@
       />
     </div>
     <div
-      class="flex h-32 flex-col items-start pt-4 font-semibold text-neutral-500 sm:hidden"
+      class="flex flex-col items-start font-semibold text-neutral-500 sm:hidden"
     >
-      <TodoContent
-        :contenteditable="isEditable"
-        :todoContent="todo.content"
+      <TodoDescription
+        v-model="todo.description"
         :todoIsEditing="todo.isEditing"
-        @handleContentInputChange="changeContent"
       />
       <TodoButtons
         @handleDeleteButtonClick="handleDeleteButtonClick"
@@ -80,13 +75,13 @@
 import { reactive, ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import TodoTitle from './TodoTitle.vue';
-import TodoContent from './TodoContent.vue';
-import TodoImportance from '../todo/TodoImportance.vue';
-import TodoImportanceOptions from './TodoImportanceOptions.vue';
 import TodoButtons from './TodoButtons.vue';
 import TodoDate from './TodoDate.vue';
 import { Todo } from '../types/Todo.vue';
 import { ColorMap } from '../types/ColorMap.vue';
+import TodoPriority from './TodoPriority.vue';
+import TodoPriorityOptions from './TodoPriorityOptions.vue';
+import TodoDescription from './TodoDescription.vue';
 
 const colorMap: ColorMap = {
   High: 'bg-orange-600 border-orange-600',
@@ -107,7 +102,6 @@ const emit = defineEmits([
 
 const todoEditRef = ref(null);
 
-const isEditable = ref(props.todo.isEditing);
 const editedTodo = reactive(props.todo);
 const isShowingOptions = ref(false);
 
@@ -115,21 +109,13 @@ onClickOutside(todoEditRef, () => {
   emit('setIsEditingFalse');
 });
 
-function changeTitle(newTitle: string) {
-  editedTodo.title = newTitle;
-}
-
-function changeContent(newContent: string) {
-  editedTodo.content = newContent;
-}
-
 function changeImportance(importance: string) {
-  editedTodo.importance = importance;
+  editedTodo.priority = importance;
   isShowingOptions.value = false;
 }
 
 function handleImportanceChangeClick(event: Event) {
-  editedTodo.importance = (event.target as HTMLDivElement).innerText;
+  editedTodo.priority = (event.target as HTMLDivElement).innerText;
   isShowingOptions.value = false;
 }
 
@@ -138,18 +124,14 @@ function toggleIsShowingOptions() {
 }
 
 function handleSaveButtonClick() {
-  emit('handleSaveButtonClick', editedTodo, props.todo.id);
+  emit('handleSaveButtonClick', editedTodo, props.todo._id);
 }
 
 function handleDeleteButtonClick() {
-  emit('handleDeleteButtonClick', props.todo.id);
+  emit('handleDeleteButtonClick', props.todo._id);
 }
 
 function changeDate(newDate: Date) {
-  editedTodo.date = formattedDate(newDate);
-}
-
-function formattedDate(date: Date) {
-  return date.toLocaleDateString('en-GB').replace(/\//g, '.');
+  editedTodo.date = newDate;
 }
 </script>

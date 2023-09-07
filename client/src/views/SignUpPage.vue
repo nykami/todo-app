@@ -7,15 +7,16 @@
       <div
         class="w-64 rounded-xl border-2 bg-neutral-200 bg-opacity-60 p-7 shadow-lg sm:mb-10 sm:mr-60 sm:w-max sm:p-14"
       >
-        <form name="login-form" class="sm:w-64">
+        <form name="signup-form" class="sm:w-64" @submit.prevent="handleSubmit">
           <div class="mb-3 flex flex-col justify-between">
             <label for="first-name" class="text-xs font-semibold sm:text-sm"
               >First name</label
             >
             <InputField
               inputType="text"
-              id="first-name"
               inputPlaceholder="Ana"
+              v-model="formData.firstName"
+              autocomplete="firstName"
             />
           </div>
           <div class="mb-3 flex flex-col justify-between">
@@ -24,8 +25,9 @@
             >
             <InputField
               inputType="text"
-              id="last-name"
               inputPlaceholder="Banana"
+              v-model="formData.lastName"
+              autocomplete="lastName"
             />
           </div>
           <div class="mb-3 flex flex-col justify-between">
@@ -34,8 +36,9 @@
             >
             <InputField
               inputType="text"
-              id="email"
               inputPlaceholder="anabanana"
+              v-model="formData.username"
+              autocomplete="username"
             />
           </div>
           <div class="mb-3 flex flex-col justify-between">
@@ -44,8 +47,9 @@
             >
             <InputField
               inputType="email"
-              id="email"
-              inputPlaceholder="name@company.com"
+              inputPlaceholder="ana@gmail.com"
+              v-model="formData.email"
+              autocomplete="email"
             />
           </div>
           <div class="mb-4 flex flex-col justify-between sm:mb-8">
@@ -54,14 +58,13 @@
             >
             <InputField
               inputType="password"
-              id="password"
               inputPlaceholder="••••••••"
+              v-model="formData.password"
+              autocomplete="password"
             />
           </div>
           <div class="flex flex-col">
-            <router-link to="/login">
-              <AuthButton buttonText="Sign up" />
-            </router-link>
+            <AuthButton buttonText="Sign up" />
           </div>
         </form>
       </div>
@@ -75,4 +78,29 @@ import PlaceholderIcon from '../components/icons/PlaceholderIcon.vue';
 import TodoLogin from '../components/header/TodoLogin.vue';
 import InputField from '../components/base-components/InputField.vue';
 import AuthButton from '../components/base-components/AuthButton.vue';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import UserService from '../service/UserService';
+const router = useRouter();
+const userService = new UserService();
+
+const formData = ref({
+  firstName: '',
+  lastName: '',
+  username: '',
+  email: '',
+  password: '',
+});
+
+async function handleSubmit() {
+  try {
+    const user = await userService.signup(formData.value);
+
+    if (user) {
+      router.push(`/login`);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
 </script>

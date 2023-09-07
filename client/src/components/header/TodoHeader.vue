@@ -16,18 +16,6 @@ import PlusIcon from '../icons/PlusIcon.vue';
 const emit = defineEmits(['addTodo']);
 
 function addNewTodo() {
-  const defaultTodo = {
-    title: 'Title',
-    content: 'Description',
-    importance: 'Medium',
-    date: formattedtDate(),
-    isEditing: true,
-    isChecked: false,
-  };
-  emit('addTodo', defaultTodo);
-}
-
-function formattedtDate() {
-  return new Date().toLocaleDateString('en-GB').replace(/\//g, '.');
+  emit('addTodo');
 }
 </script>

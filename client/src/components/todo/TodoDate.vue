@@ -7,18 +7,19 @@
     />
     <div v-else class="flex">
       <CalendarIcon class="mr-1" />
-      {{ todoDate }}
+      {{ formattedDate }}
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed } from 'vue';
+import dayjs from 'dayjs';
 import DatePicker from './DatePicker.vue';
 import CalendarIcon from '../icons/CalendarIcon.vue';
 
 interface Props {
-  todoDate: string;
+  todoDate: Date;
   todoIsEditing: boolean;
 }
 
@@ -26,13 +27,12 @@ const props = defineProps<Props>();
 
 const emit = defineEmits(['dateSelected']);
 
-const dateParts = props.todoDate.split('.');
-const day = parseInt(dateParts[0], 10);
-const month = parseInt(dateParts[1], 10) - 1;
-const year = parseInt(dateParts[2], 10);
-const dateInput = ref(new Date(year, month, day));
+const dateInput: Date = new Date();
 
 function dateSelected(selectedDate: Date): void {
   emit('dateSelected', selectedDate);
 }
+const formattedDate = computed(() => {
+  return dayjs(props.todoDate).format('YYYY.MM.DD');
+});
 </script>

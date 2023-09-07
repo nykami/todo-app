@@ -1,10 +1,10 @@
 <script setup lang="ts">
 export interface Todo {
-  id: number;
+  _id: string;
   title: string;
-  content: string;
-  importance: string;
-  date: string;
+  description: string;
+  priority: string;
+  date: Date;
   isChecked: boolean;
   isEditing: boolean;
 }

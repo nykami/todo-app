@@ -1,15 +1,15 @@
 <template>
   <p
     v-if="!todoIsEditing"
-    class="break-all text-start text-lg font-semibold sm:my-2 sm:w-112 sm:text-4xl"
+    class="fit my-2 hidden break-all text-start font-semibold text-neutral-500 sm:block sm:w-112 sm:text-2xl"
   >
-    {{ computedTitle }}
+    {{ computedDescription }}
   </p>
-  <input
+  <textarea
     v-else
-    class="break-all text-start text-lg font-semibold focus:outline-none sm:my-2 sm:w-112 sm:text-4xl"
-    v-model="computedTitle"
-  />
+    class="fit my-2 w-64 text-start text-black focus:outline-none sm:block sm:w-112"
+    v-model="computedDescription"
+  ></textarea>
 </template>
 
 <script setup lang="ts">
@@ -24,10 +24,16 @@ const props = defineProps<Props>();
 
 const emit = defineEmits(['update:modelValue']);
 
-const computedTitle = computed({
+const computedDescription = computed({
   get: () => props.modelValue,
   set: (newValue: string) => {
     emit('update:modelValue', newValue);
   },
 });
 </script>
+
+<style>
+[contenteditable] {
+  outline: 0px solid transparent;
+}
+</style>

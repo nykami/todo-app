@@ -1,7 +1,8 @@
 <template>
-  <div id="app" class="font-custom">
-    <router-view />
+  <div id="app">
+      <RouterView />
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+</script>

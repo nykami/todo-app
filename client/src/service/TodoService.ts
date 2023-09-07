@@ -50,6 +50,14 @@ class TodoService {
       console.error(error);
     }
   }
+
+  async createArchive(todoId: string) {
+    try {
+      await postRequest(`http://localhost:8080/user/todos/archive/${todoId}`);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }
 
 export default TodoService;

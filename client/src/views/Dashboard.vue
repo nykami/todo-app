@@ -79,6 +79,7 @@ async function deleteTodo(todoId: string) {
     if (todoIndex !== -1) {
       todos.value.splice(todoIndex, 1);
     }
+    await todoService.createArchive(todoId);
     await todoService.deleteTodo(todoId);
   } catch (error) {
     console.log(error);

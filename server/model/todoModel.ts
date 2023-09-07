@@ -12,6 +12,7 @@ export interface ITodo extends Document {
   priority: string;
   date: Date;
   isChecked: boolean;
+  isEditing: boolean
   userId: Types.ObjectId;
 }
 

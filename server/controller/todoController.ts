@@ -97,6 +97,40 @@ class TodoController {
       );
     }
   }
+
+  async createArchivedTodo(req: Request, res: Response) {
+    try {
+      const todoId = req.params.todoId;
+
+      if (!todoId) {
+        throw new Error('todoId was not provided');
+      }
+
+      const todo = await todoService.getTodoById(todoId);
+
+      if (!todo) {
+        sendErrorResponse(res, null, 'Todo to archive not found.', 404);
+      }
+
+      const archivedTodo = await todoService.createArchive({
+        title: todo?.title,
+        description: todo?.description,
+        priority: todo?.priority,
+        date: todo?.date,
+        isChecked: todo?.isChecked,
+        todoId: todoId,
+        userId: todo?.userId,
+      });
+
+      return sendSuccessResponse(res, archivedTodo, 201);
+    } catch (error) {
+      return sendErrorResponse(
+        res,
+        error as Error,
+        'An error occurred while creating archived todo.'
+      );
+    }
+  }
 }
 
 export default new TodoController();

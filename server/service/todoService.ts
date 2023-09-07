@@ -1,3 +1,4 @@
+import { archiveModel } from '../model/archiveModel';
 import { todoModel } from '../model/todoModel';
 
 class TodoService {
@@ -19,6 +20,10 @@ class TodoService {
 
   async updateTodoById(id: string, values: Record<string, any>) {
     return todoModel.findByIdAndUpdate(id, values, { new: true });
+  }
+
+  async createArchive(values: Record<string, any>) {
+    return new archiveModel(values).save();
   }
 }
 

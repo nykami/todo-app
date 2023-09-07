@@ -10,12 +10,9 @@ class UserService {
     username: string;
     email: string;
     password: string;
-  }){
+  }) {
     try {
-      const payload = {
-        ...formData
-      };
-      const user = await postRequest(`${baseUrl}/auth/register`, payload);
+      const user = await postRequest(`${baseUrl}/auth/register`, formData);
       return user;
     } catch (error) {
       console.error(error);
@@ -33,8 +30,8 @@ class UserService {
   }
 
   async getUsername(userId: string) {
-    try {      
-      const userData: User = await getRequest(`${baseUrl}/user/${userId}`);      
+    try {
+      const userData: User = await getRequest(`${baseUrl}/user/${userId}`);
       return userData.username;
     } catch (error) {
       console.error(error);

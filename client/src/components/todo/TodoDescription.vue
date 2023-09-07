@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 
 interface Props {
   modelValue: string;
@@ -24,12 +24,9 @@ const props = defineProps<Props>();
 
 const emit = defineEmits(['update:modelValue']);
 
-const value = ref(props.modelValue);
-
 const computedDescription = computed({
-  get: () => value.value,
+  get: () => props.modelValue,
   set: (newValue: string) => {
-    value.value = newValue;
     emit('update:modelValue', newValue);
   },
 });

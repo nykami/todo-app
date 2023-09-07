@@ -4,9 +4,27 @@ import { deleteRequest, getRequest, postRequest, putRequest } from './requests';
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
 class TodoService {
-  async getTodos(userId: string) {
-    try {
-      const todoData = await getRequest(`${baseUrl}/user/todos/${userId}`);
+  async getTodos(
+    userId: string,
+    sortAttribute: string,
+    order: string,
+    searchInput: string,
+    isSortingApplied: boolean,
+  ) {
+    try {      
+      let todoData = await getRequest(
+        `${baseUrl}/user/todos/${userId}?sortingBy=${sortAttribute}&order=${order}&searchInput=${searchInput}`,
+      );
+
+      if (!isSortingApplied) {
+        const toTop: Todo[] = todoData.filter(
+          (todo: Todo) => todo.isChecked === false,
+        );
+        const toBottom: Todo[] = todoData.filter(
+          (todo: Todo) => todo.isChecked === true,
+        );
+        todoData = toBottom.concat(toTop);
+      }
       return todoData.map((todo: Todo) => ({
         ...todo,
         date: new Date(todo.date),

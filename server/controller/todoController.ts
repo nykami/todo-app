@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import todoService from '../service/todoService';
 import { sendSuccessResponse, sendErrorResponse } from './response';
+import { ITodo } from '../model/todoModel';
+import sorting from './sorting';
 
 class TodoController {
   async createDefaultTodo(req: Request, res: Response) {
@@ -25,7 +27,7 @@ class TodoController {
     }
   }
 
-  async getAllTodos(req: Request, res: Response) {
+  async getTodos(req: Request, res: Response) {
     try {
       const userId = req.params.userId;
 
@@ -33,9 +35,40 @@ class TodoController {
         throw new Error('userId was not provided');
       }
 
-      const todos = await todoService.getTodos(userId);
+      const sortAttribute = req.query.sortingBy as string;
+      const order = req.query.order as string;
+      const searchInput = req.query.searchInput as string;
 
-      return sendSuccessResponse(res, todos);
+      let filteredTodos: ITodo[] = [];
+
+      // apply search
+      if (searchInput)
+        filteredTodos = await todoService.getFilteredTodos(userId, searchInput);
+      else filteredTodos = await todoService.getTodos(userId);
+
+      if (!filteredTodos) {
+        return sendErrorResponse(
+          res,
+          null,
+          'An error occurred while fetching filtered todos.'
+        );
+      }
+
+      // apply sort if needed
+      if (!sortAttribute) return sendSuccessResponse(res, filteredTodos);
+      else {
+        var sortingMethods = {
+          title: sorting.sortByTitle,
+          description: sorting.sortByDescription,
+          date: sorting.sortByDate,
+          priority: sorting.sortByPriority,
+        };
+
+        const sortedTodos = sortingMethods[
+          sortAttribute as keyof typeof sortingMethods
+        ](filteredTodos, order);
+        return sendSuccessResponse(res, sortedTodos);
+      }
     } catch (error) {
       return sendErrorResponse(
         res,

@@ -25,6 +25,18 @@ class TodoService {
   async createArchive(values: Record<string, any>) {
     return new archiveModel(values).save();
   }
+
+  async getFilteredTodos(userId: string, searchInput: string) {
+    return todoModel
+      .find({
+        userId: userId,
+        $or: [
+          { title: { $regex: searchInput, $options: 'i' } },
+          { description: { $regex: searchInput, $options: 'i' } },
+        ],
+      })
+      .exec();
+  }
 }
 
 export default new TodoService();

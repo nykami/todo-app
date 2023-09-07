@@ -16,8 +16,8 @@
       >
       </SortButton>
       <SortButton
-        :class="getColorBySortType('importance')"
-        @click="handleClick('importance')"
+        :class="getColorBySortType('priority')"
+        @click="handleClick('priority')"
         buttonText="Priority"
       >
       </SortButton>
@@ -63,7 +63,7 @@ const emit = defineEmits(['handleSort', 'toggleSortType']);
 const clickCounter = ref<{ [key: string]: number }>({
   title: 0,
   description: 0,
-  importance: 0,
+  priority: 0,
   date: 0,
 });
 

@@ -37,10 +37,10 @@ import TodoService from '../service/TodoService';
 import UserService from '../service/UserService';
 import { useRoute } from 'vue-router';
 
-const searchText = ref<string>('');
+const searchInput = ref<string>('');
 const sortType = ref<string>('desc');
 const sortByField = ref<string>('');
-const isSortingApplied = ref(false);
+const isSortingApplied = ref<boolean>(false);
 
 const todoService = new TodoService();
 const userService = new UserService();
@@ -52,7 +52,13 @@ const todos = ref<Todo[]>([]);
 const filteredTodos = ref<Todo[]>([]);
 
 onMounted(async () => {
-  todos.value = await todoService.getTodos(userId);
+  todos.value = await todoService.getTodos(
+    userId,
+    sortByField.value,
+    sortType.value,
+    searchInput.value,
+    isSortingApplied.value,
+  );
 
   const fetchedUsername = await userService.getUsername(userId);
   username.value = fetchedUsername || '';
@@ -129,117 +135,39 @@ function handleCheckboxClick(todoId: number) {
   }
 }
 
-function filterTodos(searchInput: string) {
-  searchText.value = searchInput.toLowerCase();
+async function filterTodos(keyword: string) {
+  try {
+    searchInput.value = keyword;
+    todos.value = await todoService.getTodos(
+      userId,
+      sortByField.value,
+      sortType.value,
+      searchInput.value,
+      isSortingApplied.value,
+    );
+  } catch (error) {}
 }
 
-function sortByTitle() {
-  todos.value.sort((a, b) => {
-    const titleA = a.title.toLowerCase();
-    const titleB = b.title.toLowerCase();
-    return sortType.value === 'desc'
-      ? titleB.localeCompare(titleA)
-      : titleA.localeCompare(titleB);
-  });
-}
+async function applySortBy(field: string) {
+  try {
+    sortByField.value = field;
 
-function compareDateComponents(componentA: string, componentB: string) {
-  return sortType.value === 'desc'
-    ? componentB.localeCompare(componentA)
-    : componentA.localeCompare(componentB);
-}
+    isSortingApplied.value = sortByField.value ? true : false;
 
-function sortByDate() {
-  todos.value.sort((a, b) => {
-    const dateA = a.date.toLocaleDateString();
-
-    const dateB = b.date.toLocaleDateString();
-
-    const [dayA, monthA, yearA] = dateA.split('/');
-    const [dayB, monthB, yearB] = dateB.split('/');
-
-    const yearComparison = compareDateComponents(yearA, yearB);
-    if (yearComparison !== 0) {
-      return yearComparison;
-    }
-
-    const monthComparison = compareDateComponents(monthA, monthB);
-    if (monthComparison !== 0) {
-      return monthComparison;
-    }
-
-    return compareDateComponents(dayA, dayB);
-  });
-}
-
-function sortByPriority() {
-  const priorityValues: Record<string, number> = {
-    High: 3,
-    Medium: 2,
-    Low: 1,
-  };
-
-  todos.value.sort((a, b) => {
-    const priorityA = priorityValues[a.priority];
-    const priorityB = priorityValues[b.priority];
-    return sortType.value === 'desc'
-      ? priorityB - priorityA
-      : priorityA - priorityB;
-  });
-}
-
-function sortByDescription() {
-  todos.value.sort((a, b) => {
-    const descA = a.description.toLowerCase();
-    const descB = b.description.toLowerCase();
-    return sortType.value === 'desc'
-      ? descB.localeCompare(descA)
-      : descA.localeCompare(descB);
-  });
-}
-
-function stopSort() {
-  isSortingApplied.value = false;
-  filteredTodos.value.forEach((todo) => {
-    setTimeout(() => {
-      if (todo.isChecked) {
-        todo.isChecked = false;
-        handleCheckboxClick(parseInt(todo._id));
-      }
-    }, 300);
-  });
-}
-
-function applySortBy(field: string) {
-  sortByField.value = field;
-  if (sortByField.value === '') {
-    stopSort();
-    return;
-  }
-  isSortingApplied.value = true;
-  switch (field) {
-    case 'title': {
-      sortByTitle();
-      break;
-    }
-    case 'date': {
-      sortByDate();
-      break;
-    }
-    case 'importance': {
-      sortByPriority();
-      break;
-    }
-    case 'description': {
-      sortByDescription();
-      break;
-    }
+    todos.value = await todoService.getTodos(
+      userId,
+      sortByField.value,
+      sortType.value,
+      searchInput.value,
+      isSortingApplied.value,
+    );
+  } catch (error) {
+    console.log(error);
   }
 }
 
 function changeSortType(newType: string) {
   sortType.value = newType;
-
   applySortBy(sortByField.value);
 }
 </script>

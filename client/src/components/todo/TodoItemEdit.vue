@@ -13,7 +13,7 @@
               :colorMap="colorMap"
               :todoPriority="todo.priority"
               :todoIsEditing="todo.isEditing"
-              @handleImportanceChangeClickMobile="changeImportance"
+              @handlePriorityChangeClickMobile="changePriority"
             />
             <TodoPriority
               v-else
@@ -41,11 +41,11 @@
           class="ml-3 flex h-28 w-32 flex-col items-start justify-center rounded-xl border border-black pl-6"
         >
           <div
-            v-for="(_, levelOfImportance) in colorMap"
-            @click="handleImportanceChangeClick"
+            v-for="(_, levelOfPriority) in colorMap"
+            @click="handlePriorityChangeClick"
           >
             <div class="text-lg font-semibold">
-              {{ levelOfImportance }}
+              {{ levelOfPriority }}
             </div>
           </div>
         </div>
@@ -109,12 +109,12 @@ onClickOutside(todoEditRef, () => {
   emit('setIsEditingFalse');
 });
 
-function changeImportance(importance: string) {
-  editedTodo.priority = importance;
+function changePriority(priority: string) {
+  editedTodo.priority = priority;
   isShowingOptions.value = false;
 }
 
-function handleImportanceChangeClick(event: Event) {
+function handlePriorityChangeClick(event: Event) {
   editedTodo.priority = (event.target as HTMLDivElement).innerText;
   isShowingOptions.value = false;
 }

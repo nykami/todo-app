@@ -164,6 +164,34 @@ class TodoController {
       );
     }
   }
+
+  async updateIsChecked(req: Request, res: Response) {
+    try {
+      const todoId = req.params.todoId;
+
+      if (!todoId) {
+        throw new Error('todoId was not provided');
+      }
+
+      const todo = await todoService.getTodoById(todoId);
+
+      if (!todo) {
+        sendErrorResponse(res, null, 'Todo to update not found.', 404);
+      } else {
+        const updatedTodo = await todoService.updateTodoById(todoId, {
+          isChecked: !todo.isChecked,
+        });
+        return sendSuccessResponse(res, updatedTodo, 200);
+      }
+    } catch (error) {
+      console.log(error);
+      return sendErrorResponse(
+        res,
+        error as Error,
+        'An error occurred white updating isChecked'
+      );
+    }
+  }
 }
 
 export default new TodoController();

@@ -8,5 +8,6 @@ router.get('/:userId', todoController.getTodos);
 router.delete('/:todoId', todoController.deleteTodo);
 router.put('/:todoId', todoController.updateTodo);
 router.post('/archive/:todoId', todoController.createArchivedTodo);
+router.put('/check/:todoId', todoController.updateIsChecked);
 
 export default router;

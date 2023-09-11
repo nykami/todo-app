@@ -76,6 +76,17 @@ class TodoService {
       console.error(error);
     }
   }
+
+  async updateIsChecked(todoId: string) {
+    try {
+      const updatedTodo = await putRequest(
+        `http://localhost:8080/user/todos/check/${todoId}`,
+      );
+      return updatedTodo;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 export default TodoService;

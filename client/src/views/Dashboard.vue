@@ -1,16 +1,17 @@
 <template>
-  <div class="flex flex-col items-center justify-center font-custom">
+  <div
+    v-if="todos.length && filteredTodos.length"
+    class="flex flex-col items-center justify-center font-custom"
+  >
     <TodoLogin :username="username" path="/login" button-name="Log out" />
     <TodoHeader @addTodo="addTodo" />
-    <SearchBar v-if="todos.length" @filterTodos="filterTodos" />
+    <SearchBar @filterTodos="filterTodos" />
     <Sorting
-      v-if="todos.length"
       :sortType="sortType"
       :sortByField="sortByField"
       @handleSort="applySortBy"
       @toggleSortType="changeSortType"
     />
-    <TodoPlaceholder v-if="!todos.length" />
     <TodoList
       :reversedTodos="reversedTodos"
       @deleteTodo="deleteTodo"
@@ -18,9 +19,23 @@
       @setEditState="setEditState"
       @handleCheckboxClick="handleCheckboxClick"
     />
-    <div v-if="!filteredTodos.length && todos.length" class="text-center">
-      No todos found
-    </div>
+  </div>
+  <div
+    v-else-if="!todos.length && !filteredTodos.length"
+    class="flex flex-col items-center justify-center font-custom"
+  >
+    <TodoLogin :username="username" path="/login" button-name="Log out" />
+    <TodoHeader @addTodo="addTodo" />
+    <TodoPlaceholder />
+  </div>
+  <div
+    v-else-if="!filteredTodos.length && todos.length"
+    class="flex flex-col items-center justify-center font-custom"
+  >
+    <TodoLogin :username="username" path="/login" button-name="Log out" />
+    <TodoHeader @addTodo="addTodo" />
+    <SearchBar @filterTodos="filterTodos" />
+    <div class="text-center">No todos found</div>
   </div>
 </template>
 
@@ -62,12 +77,11 @@ onMounted(async () => {
 
   const fetchedUsername = await userService.getUsername(userId);
   username.value = fetchedUsername || '';
-
   filteredTodos.value = todos.value;
 });
 
 const reversedTodos = computed(() => {
-  return todos.value.slice().reverse();
+  return filteredTodos.value.slice().reverse();
 });
 
 async function addTodo() {
@@ -82,11 +96,24 @@ async function addTodo() {
 async function deleteTodo(todoId: string) {
   try {
     const todoIndex = todos.value.findIndex((todo) => todo._id === todoId);
-    if (todoIndex !== -1) {
-      todos.value.splice(todoIndex, 1);
-    }
+    if (todoIndex === -1) throw new Error('Todo not found in the todos list.');
+
+    todos.value.splice(todoIndex, 1);
+
     await todoService.createArchive(todoId);
     await todoService.deleteTodo(todoId);
+
+    // delete last todo from filtered todos
+    if (!todos.value.length) {
+      todos.value = await todoService.getTodos(
+        userId,
+        (sortByField.value = ''),
+        sortType.value,
+        (searchInput.value = ''),
+        isSortingApplied.value,
+      );
+      filteredTodos.value = todos.value;
+    }
   } catch (error) {
     console.log(error);
   }
@@ -114,38 +141,54 @@ function setEditState(todoId: string, value: boolean) {
   todos.value[indexToUpdateAt].isEditing = value;
 }
 
-function handleCheckboxClick(todoId: number) {
-  const indexToUpdateAt = todos.value.findIndex(
-    (todo) => parseInt(todo._id) === todoId,
-  );
-  const todoToMakeFloat = todos.value[indexToUpdateAt];
-  todoToMakeFloat.isChecked = !todoToMakeFloat.isChecked;
-  if (isSortingApplied.value) {
-    return;
-  } else {
-    setTimeout(() => {
-      if (todoToMakeFloat.isChecked) {
-        todos.value.splice(indexToUpdateAt, 1);
-        todos.value.unshift(todoToMakeFloat);
-      } else {
-        todos.value.splice(indexToUpdateAt, 1);
-        todos.value.push(todoToMakeFloat);
-      }
-    }, 500);
+async function handleCheckboxClick(todoId: string) {
+  try {
+    const updatedTodo = await todoService.updateIsChecked(todoId);
+
+    const indexToUpdateAt = todos.value.findIndex(
+      (todo) => todo._id === todoId,
+    );
+
+    if (indexToUpdateAt === -1)
+      throw new Error('Todo not found in the todos list.');
+
+    const todoToMakeFloat = todos.value[indexToUpdateAt];
+    todoToMakeFloat.isChecked = updatedTodo.isChecked;
+    if (isSortingApplied.value) {
+      return;
+    } else {
+      setTimeout(() => {
+        if (todoToMakeFloat.isChecked) {
+          todos.value.splice(indexToUpdateAt, 1);
+          todos.value.unshift(todoToMakeFloat);
+        } else {
+          todos.value.splice(indexToUpdateAt, 1);
+          todos.value.push(todoToMakeFloat);
+        }
+      }, 500);
+    }
+  } catch (error) {
+    console.log(error);
   }
 }
 
 async function filterTodos(keyword: string) {
   try {
     searchInput.value = keyword;
-    todos.value = await todoService.getTodos(
+    filteredTodos.value = await todoService.getTodos(
       userId,
       sortByField.value,
       sortType.value,
       searchInput.value,
       isSortingApplied.value,
     );
-  } catch (error) {}
+
+    if (filteredTodos.value.length) {
+      todos.value = filteredTodos.value;
+    }
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function applySortBy(field: string) {
@@ -161,6 +204,7 @@ async function applySortBy(field: string) {
       searchInput.value,
       isSortingApplied.value,
     );
+    filteredTodos.value = todos.value;
   } catch (error) {
     console.log(error);
   }

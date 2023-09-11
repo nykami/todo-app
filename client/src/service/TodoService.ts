@@ -71,7 +71,7 @@ class TodoService {
 
   async createArchive(todoId: string) {
     try {
-      await postRequest(`http://localhost:8080/user/todos/archive/${todoId}`);
+      await postRequest(`${baseUrl}/user/todos/archive/${todoId}`);
     } catch (error) {
       console.error(error);
     }
@@ -80,7 +80,7 @@ class TodoService {
   async updateIsChecked(todoId: string) {
     try {
       const updatedTodo = await putRequest(
-        `http://localhost:8080/user/todos/check/${todoId}`,
+        `${baseUrl}/user/todos/check/${todoId}`,
       );
       return updatedTodo;
     } catch (error) {

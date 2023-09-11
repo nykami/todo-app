@@ -96,8 +96,9 @@ async function addTodo() {
 async function deleteTodo(todoId: string) {
   try {
     const todoIndex = todos.value.findIndex((todo) => todo._id === todoId);
-    if (todoIndex === -1) throw new Error('Todo not found in the todos list.');
-
+    if (todoIndex === -1) {
+      throw new Error('Todo not found in the todos list.');
+    }
     todos.value.splice(todoIndex, 1);
 
     await todoService.createArchive(todoId);
@@ -129,7 +130,9 @@ async function updateTodo(newTodo: Todo, todoId: string) {
       newTodo.description = 'Description';
     }
     await todoService.updateTodo(todoId, newTodo);
-    if (isSortingApplied.value) applySortBy(sortByField.value);
+    if (isSortingApplied.value) {
+      applySortBy(sortByField.value);
+    }
   } catch (error) {
     console.log(error);
   }
@@ -137,7 +140,9 @@ async function updateTodo(newTodo: Todo, todoId: string) {
 
 function setEditState(todoId: string, value: boolean) {
   const indexToUpdateAt = todos.value.findIndex((obj) => obj._id === todoId);
-  if (indexToUpdateAt === -1) return;
+  if (indexToUpdateAt === -1) {
+    return;
+  }
   todos.value[indexToUpdateAt].isEditing = value;
 }
 
@@ -149,24 +154,24 @@ async function handleCheckboxClick(todoId: string) {
       (todo) => todo._id === todoId,
     );
 
-    if (indexToUpdateAt === -1)
+    if (indexToUpdateAt === -1) {
       throw new Error('Todo not found in the todos list.');
+    }
 
     const todoToMakeFloat = todos.value[indexToUpdateAt];
     todoToMakeFloat.isChecked = updatedTodo.isChecked;
     if (isSortingApplied.value) {
       return;
-    } else {
-      setTimeout(() => {
-        if (todoToMakeFloat.isChecked) {
-          todos.value.splice(indexToUpdateAt, 1);
-          todos.value.unshift(todoToMakeFloat);
-        } else {
-          todos.value.splice(indexToUpdateAt, 1);
-          todos.value.push(todoToMakeFloat);
-        }
-      }, 500);
     }
+    setTimeout(() => {
+      if (todoToMakeFloat.isChecked) {
+        todos.value.splice(indexToUpdateAt, 1);
+        todos.value.unshift(todoToMakeFloat);
+      } else {
+        todos.value.splice(indexToUpdateAt, 1);
+        todos.value.push(todoToMakeFloat);
+      }
+    }, 500);
   } catch (error) {
     console.log(error);
   }
@@ -195,7 +200,7 @@ async function applySortBy(field: string) {
   try {
     sortByField.value = field;
 
-    isSortingApplied.value = sortByField.value ? true : false;
+    isSortingApplied.value = !!sortByField.value;
 
     todos.value = await todoService.getTodos(
       userId,

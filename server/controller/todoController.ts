@@ -42,9 +42,11 @@ class TodoController {
       let filteredTodos: ITodo[] = [];
 
       // apply search
-      if (searchInput)
+      if (searchInput) {
         filteredTodos = await todoService.getFilteredTodos(userId, searchInput);
-      else filteredTodos = await todoService.getTodos(userId);
+      } else {
+        filteredTodos = await todoService.getTodos(userId);
+      }
 
       if (!filteredTodos) {
         return sendErrorResponse(
@@ -55,20 +57,21 @@ class TodoController {
       }
 
       // apply sort if needed
-      if (!sortAttribute) return sendSuccessResponse(res, filteredTodos);
-      else {
-        var sortingMethods = {
-          title: sorting.sortByTitle,
-          description: sorting.sortByDescription,
-          date: sorting.sortByDate,
-          priority: sorting.sortByPriority,
-        };
-
-        const sortedTodos = sortingMethods[
-          sortAttribute as keyof typeof sortingMethods
-        ](filteredTodos, order);
-        return sendSuccessResponse(res, sortedTodos);
+      if (!sortAttribute) {
+        return sendSuccessResponse(res, filteredTodos);
       }
+
+      var sortingMethods = {
+        title: sorting.sortByTitle,
+        description: sorting.sortByDescription,
+        date: sorting.sortByDate,
+        priority: sorting.sortByPriority,
+      };
+
+      const sortedTodos = sortingMethods[
+        sortAttribute as keyof typeof sortingMethods
+      ](filteredTodos, order);
+      return sendSuccessResponse(res, sortedTodos);
     } catch (error) {
       return sendErrorResponse(
         res,
@@ -110,10 +113,18 @@ class TodoController {
 
       const updateData: Record<string, any> = {};
 
-      if (title) updateData.title = title;
-      if (description) updateData.description = description;
-      if (priority) updateData.priority = priority;
-      if (date) updateData.date = new Date(date);
+      if (title) {
+        updateData.title = title;
+      }
+      if (description) {
+        updateData.description = description;
+      }
+      if (priority) {
+        updateData.priority = priority;
+      }
+      if (date) {
+        updateData.date = new Date(date);
+      }
 
       const updatedTodo = await todoService.updateTodoById(todoId, updateData);
 

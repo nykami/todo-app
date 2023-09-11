@@ -61,7 +61,7 @@ class TodoController {
         return sendSuccessResponse(res, filteredTodos);
       }
 
-      var sortingMethods = {
+      const sortingMethods = {
         title: sorting.sortByTitle,
         description: sorting.sortByDescription,
         date: sorting.sortByDate,

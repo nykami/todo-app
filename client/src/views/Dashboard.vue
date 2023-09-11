@@ -2,9 +2,9 @@
   <div class="flex flex-col items-center justify-center font-custom">
     <TodoLogin :username="username" path="/login" button-name="Log out" />
     <TodoHeader @addTodo="addTodo" />
-    <div v-if="todos.length">
+    <template v-if="todos.length">
       <SearchBar @filterTodos="filterTodos" />
-      <div v-if="filteredTodos.length">
+      <template v-if="filteredTodos.length">
         <Sorting
           :sortType="sortType"
           :sortByField="sortByField"
@@ -18,9 +18,9 @@
           @setEditState="setEditState"
           @handleCheckboxClick="handleCheckboxClick"
         />
-      </div>
-      <div v-else class="text-center">No todos found</div>
-    </div>
+      </template>
+      <template v-else class="text-center">No todos found</template>
+    </template>
     <TodoPlaceholder v-else />
   </div>
 </template>
@@ -41,7 +41,6 @@ import { useRoute } from 'vue-router';
 const searchInput = ref<string>('');
 const sortType = ref<string>('desc');
 const sortByField = ref<string>('');
-const isSortingApplied = ref<boolean>(false);
 
 const todoService = new TodoService();
 const userService = new UserService();
@@ -69,6 +68,10 @@ onMounted(async () => {
 const reversedTodos = computed(() => {
   return filteredTodos.value.slice().reverse();
 });
+
+const isSortingApplied = computed(() => {
+ return !!sortByField.value;
+})
 
 async function addTodo() {
   try {
@@ -185,9 +188,6 @@ async function filterTodos(keyword: string) {
 async function applySortBy(field: string) {
   try {
     sortByField.value = field;
-
-    isSortingApplied.value = !!sortByField.value;
-
     todos.value = await todoService.getTodos(
       userId,
       sortByField.value,

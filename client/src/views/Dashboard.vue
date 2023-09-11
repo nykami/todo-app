@@ -1,41 +1,27 @@
 <template>
-  <div
-    v-if="todos.length && filteredTodos.length"
-    class="flex flex-col items-center justify-center font-custom"
-  >
+  <div class="flex flex-col items-center justify-center font-custom">
     <TodoLogin :username="username" path="/login" button-name="Log out" />
     <TodoHeader @addTodo="addTodo" />
-    <SearchBar @filterTodos="filterTodos" />
-    <Sorting
-      :sortType="sortType"
-      :sortByField="sortByField"
-      @handleSort="applySortBy"
-      @toggleSortType="changeSortType"
-    />
-    <TodoList
-      :reversedTodos="reversedTodos"
-      @deleteTodo="deleteTodo"
-      @updateTodo="updateTodo"
-      @setEditState="setEditState"
-      @handleCheckboxClick="handleCheckboxClick"
-    />
-  </div>
-  <div
-    v-else-if="!todos.length && !filteredTodos.length"
-    class="flex flex-col items-center justify-center font-custom"
-  >
-    <TodoLogin :username="username" path="/login" button-name="Log out" />
-    <TodoHeader @addTodo="addTodo" />
-    <TodoPlaceholder />
-  </div>
-  <div
-    v-else-if="!filteredTodos.length && todos.length"
-    class="flex flex-col items-center justify-center font-custom"
-  >
-    <TodoLogin :username="username" path="/login" button-name="Log out" />
-    <TodoHeader @addTodo="addTodo" />
-    <SearchBar @filterTodos="filterTodos" />
-    <div class="text-center">No todos found</div>
+    <div v-if="todos.length">
+      <SearchBar @filterTodos="filterTodos" />
+      <div v-if="filteredTodos.length">
+        <Sorting
+          :sortType="sortType"
+          :sortByField="sortByField"
+          @handleSort="applySortBy"
+          @toggleSortType="changeSortType"
+        />
+        <TodoList
+          :reversedTodos="reversedTodos"
+          @deleteTodo="deleteTodo"
+          @updateTodo="updateTodo"
+          @setEditState="setEditState"
+          @handleCheckboxClick="handleCheckboxClick"
+        />
+      </div>
+      <div v-else class="text-center">No todos found</div>
+    </div>
+    <TodoPlaceholder v-else />
   </div>
 </template>
 

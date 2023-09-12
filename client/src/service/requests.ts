@@ -13,7 +13,7 @@ async function sendRequest(endpoint: string, options: RequestInit) {
 
 export async function postRequest(
   endpoint: string,
-  payload: any,
+  payload?: any,
   options?: RequestInit,
 ) {
   const defaultOptions = {

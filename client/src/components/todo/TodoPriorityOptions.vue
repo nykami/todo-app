@@ -11,9 +11,9 @@
     <div class="flex sm:hidden absolute left-14">
       <div
         class="-ml-7 h-3 w-3 rounded-full mt-1"
-        v-for="(_, importance) in colorMap"
-        :class="colorMap[importance]"
-        @click="handleImportanceChangeClickMobile(importance as string)"
+        v-for="(_, priority) in colorMap"
+        :class="colorMap[priority]"
+        @click="handlePriorityChangeClickMobile(priority as string)"
       ></div>
     </div>
   </div>
@@ -29,11 +29,11 @@ interface Props {
   colorMap: ColorMap;
 }
 
-const emit = defineEmits(['handleImportanceChangeClickMobile']);
+const emit = defineEmits(['handlePriorityChangeClickMobile']);
 
 defineProps<Props>();
 
-function handleImportanceChangeClickMobile(importance: string) {
-  emit('handleImportanceChangeClickMobile', importance);
+function handlePriorityChangeClickMobile(priority: string) {
+  emit('handlePriorityChangeClickMobile', priority);
 }
 </script>

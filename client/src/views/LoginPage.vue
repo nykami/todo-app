@@ -67,7 +67,7 @@ const password = ref<string>('');
 async function handleSubmit() {
   try {
     const user = await userService.login(email.value, password.value);
-    if(user){
+    if (user) {
       router.push(`/todos/${user._id}`);
     }
   } catch (error) {

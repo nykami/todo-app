@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import todoRouter from './todoRouter';
 import userRouter from './userRouter';
 import authRouter from './authRouter';
 

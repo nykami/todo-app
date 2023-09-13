@@ -12,14 +12,17 @@ class UserService {
     password: string;
   }) {
     try {
-      const user = await postRequest(`${baseUrl}/auth/register`, formData);
-      return user;
+      const userData = await postRequest(`${baseUrl}/auth/register`, formData);
+
+      localStorage.setItem('jwtToken', userData.token);
+
+      return userData.userData;
     } catch (error) {
       console.error(error);
     }
   }
 
-  async login(email: string, password: string){
+  async login(email: string, password: string) {
     try {
       const payload = { email, password };
       const user = await postRequest(`${baseUrl}/auth/login`, payload);

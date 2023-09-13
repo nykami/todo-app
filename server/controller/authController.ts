@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import userService from '../service/userService';
-import { sendSuccessResponse, sendErrorResponse } from './response';
+import { sendSuccessResponse, sendErrorResponse } from '../helpers/response';
 import { env } from '../config';
 import crypto from 'crypto';
 

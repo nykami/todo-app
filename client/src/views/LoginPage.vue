@@ -69,7 +69,7 @@ async function handleSubmit() {
     const user = await userService.login(email.value, password.value);
     
     if (user) {
-      router.push(`/dashboard/${user.user._id}`);
+      router.push(`/dashboard`);
     }
   } catch (error) {
     console.log(error);

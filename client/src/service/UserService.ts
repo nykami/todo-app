@@ -13,7 +13,7 @@ class UserService {
   }) {
     try {
       const userData = await postRequest(`${baseUrl}/auth/register`, formData);
-      
+
       localStorage.setItem('jwtToken', userData.token);
 
       return userData.user;
@@ -35,9 +35,9 @@ class UserService {
     }
   }
 
-  async getUsername(userId: string) {
+  async getUsername() {
     try {
-      const userData: User = await getRequest(`${baseUrl}/user/${userId}`);      
+      const userData: User = await getRequest(`${baseUrl}/user/`);
       return userData.username;
     } catch (error) {
       console.error(error);

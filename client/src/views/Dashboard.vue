@@ -41,7 +41,6 @@ import Sorting from '../components/Sorting.vue';
 import { Todo } from '../components/types/Todo.vue';
 import TodoService from '../service/TodoService';
 import UserService from '../service/UserService';
-import { useRoute } from 'vue-router';
 
 const searchInput = ref<string>('');
 const sortType = ref<string>('desc');
@@ -49,8 +48,6 @@ const sortByField = ref<string>('');
 
 const todoService = new TodoService();
 const userService = new UserService();
-const route = useRoute();
-const userId = route.params.userId.toString();
 
 const username = ref<string>('');
 const todos = ref<Todo[]>([]);
@@ -58,14 +55,13 @@ const filteredTodos = ref<Todo[]>([]);
 
 onMounted(async () => {
   todos.value = await todoService.getTodos(
-    userId,
     sortByField.value,
     sortType.value,
     searchInput.value,
     isSortingApplied.value,
   );
 
-  const fetchedUsername = await userService.getUsername(userId);
+  const fetchedUsername = await userService.getUsername();
   username.value = fetchedUsername || '';
   filteredTodos.value = todos.value;
 });
@@ -80,7 +76,7 @@ const isSortingApplied = computed(() => {
 
 async function addTodo() {
   try {
-    const todo = await todoService.addTodo(userId);
+    const todo = await todoService.addTodo();
     todos.value.push(todo);
   } catch (error) {
     console.log(error);
@@ -101,7 +97,6 @@ async function deleteTodo(todoId: string) {
     // delete last todo from filtered todos
     if (!todos.value.length) {
       todos.value = await todoService.getTodos(
-        userId,
         (sortByField.value = ''),
         sortType.value,
         (searchInput.value = ''),
@@ -175,7 +170,6 @@ async function filterTodos(keyword: string) {
   try {
     searchInput.value = keyword;
     filteredTodos.value = await todoService.getTodos(
-      userId,
       sortByField.value,
       sortType.value,
       searchInput.value,
@@ -194,7 +188,6 @@ async function applySortBy(field: string) {
   try {
     sortByField.value = field;
     todos.value = await todoService.getTodos(
-      userId,
       sortByField.value,
       sortType.value,
       searchInput.value,

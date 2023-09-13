@@ -5,7 +5,6 @@ const baseUrl = import.meta.env.VITE_BASE_URL;
 
 class TodoService {
   async getTodos(
-    userId: string,
     sortAttribute: string,
     order: string,
     searchInput: string,
@@ -13,9 +12,9 @@ class TodoService {
   ) {
     try {      
       let todoData = await getRequest(
-        `${baseUrl}/user/todos/${userId}?sortingBy=${sortAttribute}&order=${order}&searchInput=${searchInput}`,
+        `${baseUrl}/user/todos?sortingBy=${sortAttribute}&order=${order}&searchInput=${searchInput}`,
       );
-
+        
       if (!isSortingApplied) {
         const toTop: Todo[] = todoData.filter(
           (todo: Todo) => todo.isChecked === false,
@@ -34,9 +33,9 @@ class TodoService {
     }
   }
 
-  async addTodo(userId: string) {
+  async addTodo() {
     try {
-      const todo = await postRequest(`${baseUrl}/user/todos/${userId}`, {});
+      const todo = await postRequest(`${baseUrl}/user/todos`, {});
       todo.date = new Date(todo.date);
       return todo;
     } catch (error) {

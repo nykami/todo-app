@@ -1,6 +1,11 @@
 <template>
   <div class="flex flex-col items-center justify-center font-custom">
-    <TodoLogin :username="username" path="/login" button-name="Log out" />
+    <TodoLogin
+      :username="username"
+      path="/login"
+      button-name="Log out"
+      @click="logout"
+    />
     <TodoHeader @addTodo="addTodo" />
     <template v-if="todos.length">
       <SearchBar @filterTodos="filterTodos" />
@@ -70,8 +75,8 @@ const reversedTodos = computed(() => {
 });
 
 const isSortingApplied = computed(() => {
- return !!sortByField.value;
-})
+  return !!sortByField.value;
+});
 
 async function addTodo() {
   try {
@@ -204,5 +209,9 @@ async function applySortBy(field: string) {
 function changeSortType(newType: string) {
   sortType.value = newType;
   applySortBy(sortByField.value);
+}
+
+function logout() {
+  localStorage.clear();
 }
 </script>

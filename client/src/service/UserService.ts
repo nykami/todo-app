@@ -13,10 +13,10 @@ class UserService {
   }) {
     try {
       const userData = await postRequest(`${baseUrl}/auth/register`, formData);
-
+      
       localStorage.setItem('jwtToken', userData.token);
 
-      return userData.userData;
+      return userData.user;
     } catch (error) {
       console.error(error);
     }
@@ -25,8 +25,11 @@ class UserService {
   async login(email: string, password: string) {
     try {
       const payload = { email, password };
-      const user = await postRequest(`${baseUrl}/auth/login`, payload);
-      return user;
+      const userData = await postRequest(`${baseUrl}/auth/login`, payload);
+
+      localStorage.setItem('jwtToken', userData.token);
+
+      return userData;
     } catch (error) {
       console.error(error);
     }
@@ -34,7 +37,7 @@ class UserService {
 
   async getUsername(userId: string) {
     try {
-      const userData: User = await getRequest(`${baseUrl}/user/${userId}`);
+      const userData: User = await getRequest(`${baseUrl}/user/${userId}`);      
       return userData.username;
     } catch (error) {
       console.error(error);

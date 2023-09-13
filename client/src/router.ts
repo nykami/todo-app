@@ -5,8 +5,7 @@ import SignUpPage from './views/SignUpPage.vue';
 
 const routes = [
   { path: '/', redirect: '/login' },
-  { path: '/todos/:userId', component: Dashboard },
-  { path: '/todos/delete/:todoId', component: Dashboard },
+  { path: '/dashboard/:userId', component: Dashboard },
   { path: '/login', component: LoginPage },
   { path: '/register', component: SignUpPage },
 ];

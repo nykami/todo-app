@@ -17,6 +17,7 @@
               inputPlaceholder="Ana"
               v-model="formData.firstName"
               autocomplete="firstName"
+              required
             />
           </div>
           <div class="mb-3 flex flex-col justify-between">
@@ -28,6 +29,7 @@
               inputPlaceholder="Banana"
               v-model="formData.lastName"
               autocomplete="lastName"
+              required
             />
           </div>
           <div class="mb-3 flex flex-col justify-between">
@@ -39,7 +41,15 @@
               inputPlaceholder="anabanana"
               v-model="formData.username"
               autocomplete="username"
+              required
+              @blur="handleBlur('username')"
             />
+            <span
+              v-if="errorMessages.username"
+              class="text-xs text-red-700 sm:text-sm"
+            >
+              {{ errorMessages.username }}
+            </span>
           </div>
           <div class="mb-3 flex flex-col justify-between">
             <label for="email" class="text-xs font-semibold sm:text-sm"
@@ -50,7 +60,15 @@
               inputPlaceholder="ana@gmail.com"
               v-model="formData.email"
               autocomplete="email"
+              required
+              @blur="handleBlur('email')"
             />
+            <span
+              v-if="errorMessages.email"
+              class="text-xs text-red-700 sm:text-sm"
+            >
+              {{ errorMessages.email }}
+            </span>
           </div>
           <div class="mb-4 flex flex-col justify-between sm:mb-8">
             <label for="password" class="text-xs font-semibold sm:text-sm"
@@ -61,7 +79,15 @@
               inputPlaceholder="••••••••"
               v-model="formData.password"
               autocomplete="password"
+              required
+              @blur="handleBlur('password')"
             />
+            <span
+              v-if="errorMessages.password"
+              class="text-xs text-red-700 sm:text-sm"
+            >
+              {{ errorMessages.password }}
+            </span>
           </div>
           <div class="flex flex-col">
             <AuthButton buttonText="Sign up" />
@@ -81,6 +107,7 @@ import AuthButton from '../components/base-components/AuthButton.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import UserService from '../service/UserService';
+
 const router = useRouter();
 const userService = new UserService();
 
@@ -92,8 +119,27 @@ const formData = ref({
   password: '',
 });
 
+const validation = {
+  email: validateEmail,
+  username: validateUsername,
+  password: validatePassword,
+};
+
+const errorMessages = ref({
+  email: '',
+  password: '',
+  username: '',
+});
+
 async function handleSubmit() {
   try {
+    if (
+      errorMessages.value.email ||
+      errorMessages.value.username ||
+      errorMessages.value.password
+    ) {
+      return;
+    }
     const user = await userService.signup(formData.value);
 
     if (user) {
@@ -101,6 +147,35 @@ async function handleSubmit() {
     }
   } catch (error) {
     console.log(error);
+  }
+}
+
+function handleBlur(fieldName: string) {
+  validation[fieldName as keyof typeof validation]();
+}
+
+function validateUsername() {
+  if (formData.value.username.includes(' ')) {
+    errorMessages.value.username = 'Username cannot contain spaces';
+  } else {
+    errorMessages.value.username = '';
+  }
+}
+
+function validateEmail() {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(formData.value.email)) {
+    errorMessages.value.email = 'Invalid email address';
+  } else {
+    errorMessages.value.email = '';
+  }
+}
+
+function validatePassword() {
+  if (formData.value.password.length < 8) {
+    errorMessages.value.password = 'Password must be at least 8 characters';
+  } else {
+    errorMessages.value.password = '';
   }
 }
 </script>

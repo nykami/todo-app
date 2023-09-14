@@ -37,6 +37,7 @@ class TodoController {
       }
 
       const sortAttribute = req.query.sortingBy as string;
+      
       const order = req.query.order as string;
       const searchInput = req.query.searchInput as string;
 

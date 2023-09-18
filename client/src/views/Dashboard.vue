@@ -56,8 +56,7 @@ onMounted(async () => {
     isSortingApplied.value,
   );
 
-  const fetchedUsername = await userService.getUsername();
-  username.value = fetchedUsername || '';
+  username.value = userService.getUsername() || '';  
   filteredTodos.value = todos.value;
 });
 

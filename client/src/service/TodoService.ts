@@ -10,20 +10,28 @@ class TodoService {
     searchInput: string,
     isSortingApplied: boolean,
   ) {
-    try {      
-      let todoData = await getRequest(
-        `${baseUrl}/user/todos?sortingBy=${sortAttribute}&order=${order}&searchInput=${searchInput}`,
-      );
-        
+    try {
+      let url = `${baseUrl}/user/todos`;
+
+      if (sortAttribute) {
+        url += `?sortingBy=${sortAttribute}&order=${order}`;
+      }
+      if (searchInput) {
+        url += `${sortAttribute ? '&' : '?'}searchInput=${searchInput}`;
+      }
+
+      let todoData = await getRequest(`${url}`);
+
       if (!isSortingApplied) {
-        const toTop: Todo[] = todoData.filter(
-          (todo: Todo) => todo.isChecked === false,
-        );
-        const toBottom: Todo[] = todoData.filter(
-          (todo: Todo) => todo.isChecked === true,
-        );
+        const toTop: Todo[] = todoData.filter((todo: Todo) => {
+          return todo.isChecked === false;
+        });
+        const toBottom: Todo[] = todoData.filter((todo: Todo) => {
+          return todo.isChecked === true;
+        });
         todoData = toBottom.concat(toTop);
       }
+
       return todoData.map((todo: Todo) => ({
         ...todo,
         date: new Date(todo.date),

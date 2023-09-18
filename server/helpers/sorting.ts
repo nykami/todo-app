@@ -28,12 +28,13 @@ class Sorting {
   };
 
   sortByDate = (todos: ITodo[], order: string) => {
+    
     return todos.sort((a: ITodo, b: ITodo) => {
-      const dateA = a.date.toLocaleDateString().slice(0, 10);
-      const dateB = b.date.toLocaleDateString().slice(0, 10);
-
-      const [dayA, monthA, yearA] = dateA.split('/');
-      const [dayB, monthB, yearB] = dateB.split('/');
+      const dateA = a.date.toLocaleDateString().slice(0, 14);
+      const dateB = b.date.toLocaleDateString().slice(0, 14);
+      
+      const [dayA, monthA, yearA] = dateA.split('. ');
+      const [dayB, monthB, yearB] = dateB.split('. ');
 
       const yearComparison = this.compareComponents(yearA, yearB, order);
       if (yearComparison !== 0) {

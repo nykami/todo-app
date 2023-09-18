@@ -14,12 +14,21 @@ class TodoService {
     return todoModel.findById(id);
   }
 
-  async deleteTodoById(id: string) {
-    return todoModel.findByIdAndDelete(id, { new: true });
+  async deleteTodoById(id: string, userId: string) {
+    return todoModel.findOneAndDelete(
+      { _id: id, userId: userId },
+      { new: true }
+    );
   }
 
-  async updateTodoById(id: string, values: Record<string, any>) {
-    return todoModel.findByIdAndUpdate(id, values, { new: true });
+  async updateTodoById(
+    id: string,
+    userId: string,
+    values: Record<string, any>
+  ) {
+    return todoModel.findOneAndUpdate({ _id: id, userId: userId }, values, {
+      new: true,
+    });
   }
 
   async createArchive(values: Record<string, any>) {

@@ -19,7 +19,7 @@
               autocomplete="email"
             />
           </div>
-          <div class="mb-4 flex flex-col justify-between sm:mb-8">
+          <div class="flex flex-col justify-between sm:mb-2">
             <label for="password" class="text-xs font-semibold sm:text-sm"
               >Password</label
             >
@@ -30,8 +30,14 @@
               autocomplete="current-password"
             />
           </div>
+          <div class="h-6">
+            <span v-if="errorMessage" class="text-xs text-red-700 sm:text-sm">{{
+              errorMessage
+            }}</span>
+          </div>
           <div class="flex flex-col">
             <AuthButton buttonText="Log in" />
+
             <hr class="my-4 border-gray-400" />
             <div class="flex justify-between">
               <p class="text-xs sm:text-sm">Don't have an account yet?</p>
@@ -63,12 +69,15 @@ const userService = new UserService();
 
 const email = ref<string>('');
 const password = ref<string>('');
+const errorMessage = ref('');
 
 async function handleSubmit() {
   try {
     const user = await userService.login(email.value, password.value);
     if (user) {
-      router.push(`/todos/${user._id}`);
+      router.push(`/dashboard`);
+    } else {
+      errorMessage.value = 'Invalid credentials';
     }
   } catch (error) {
     console.log(error);

@@ -8,7 +8,7 @@
       :to="path"
       class="flex h-12 w-12 items-center justify-center rounded-2xl border border-neutral-200 font-semibold sm:h-12 sm:w-28 sm:bg-neutral-200 sm:text-lg"
     >
-      <button class="hidden sm:relative sm:flex">
+      <button @click="handleClick" class="hidden sm:relative sm:flex">
         <div class="w-16">{{ buttonName }}</div>
         <span class="relative flex h-3 w-3">
           <span
@@ -35,5 +35,11 @@ interface Props {
   username?: string;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+function handleClick(){
+  if(props.buttonName === 'Log out'){
+    localStorage.clear();
+  }
+}
 </script>

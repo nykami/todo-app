@@ -1,9 +1,17 @@
 async function sendRequest(endpoint: string, options: RequestInit) {
   try {
-    const response = await fetch(endpoint, options);    
+    const token = localStorage.getItem('jwtToken');
+    
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
+
+    const response = await fetch(endpoint, { ...options, headers });
+
     if (!response.ok) {
       throw new Error('Request failed');
-    }    
+    }
     return await response.json();
   } catch (error) {
     console.error(error);
@@ -18,7 +26,6 @@ export async function postRequest(
 ) {
   const defaultOptions = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
     ...options,
   };
@@ -29,7 +36,6 @@ export async function postRequest(
 export async function getRequest(endpoint: string, options?: RequestInit) {
   const defaultOptions = {
     method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
     ...options,
   };
 
@@ -39,7 +45,6 @@ export async function getRequest(endpoint: string, options?: RequestInit) {
 export async function deleteRequest(endpoint: string, options?: RequestInit) {
   const defaultOptions = {
     method: 'DELETE',
-    headers: { 'Content-Type': 'application/json' },
     ...options,
   };
 
@@ -49,7 +54,6 @@ export async function deleteRequest(endpoint: string, options?: RequestInit) {
 export async function putRequest(endpoint: string, options?: RequestInit) {
   const defaultOptions = {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
     ...options,
   };
 

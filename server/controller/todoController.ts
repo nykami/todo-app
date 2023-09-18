@@ -1,13 +1,14 @@
 import { Request, Response } from 'express';
 import todoService from '../service/todoService';
-import { sendSuccessResponse, sendErrorResponse } from './response';
+import { sendSuccessResponse, sendErrorResponse } from '../helpers/response';
 import { ITodo } from '../model/todoModel';
-import sorting from './sorting';
+import sorting from '../helpers/sorting';
+import { get } from 'lodash';
 
 class TodoController {
   async createDefaultTodo(req: Request, res: Response) {
     try {
-      const userId = req.params.userId;
+      const userId = get(req, 'currentUser._id');
 
       if (!userId) {
         throw new Error('userId was not provided');
@@ -29,13 +30,14 @@ class TodoController {
 
   async getTodos(req: Request, res: Response) {
     try {
-      const userId = req.params.userId;
+      const userId = get(req, 'currentUser._id');
 
       if (!userId) {
         throw new Error('userId was not provided');
       }
 
       const sortAttribute = req.query.sortingBy as string;
+      
       const order = req.query.order as string;
       const searchInput = req.query.searchInput as string;
 
@@ -83,13 +85,14 @@ class TodoController {
 
   async deleteTodo(req: Request, res: Response) {
     try {
+      const userId = get(req, 'currentUser._id') || '';
       const todoId = req.params.todoId;
 
       if (!todoId) {
         throw new Error('todoId was not provided');
       }
 
-      const deletedTodo = await todoService.deleteTodoById(todoId);
+      const deletedTodo = await todoService.deleteTodoById(todoId, userId);
 
       return sendSuccessResponse(res, deletedTodo);
     } catch (error) {
@@ -104,6 +107,7 @@ class TodoController {
   async updateTodo(req: Request, res: Response) {
     try {
       const todoId = req.params.todoId;
+      const userId = get(req, 'currentUser._id') || '';
 
       if (!todoId) {
         throw new Error('todoId was not provided');
@@ -126,7 +130,11 @@ class TodoController {
         updateData.date = new Date(date);
       }
 
-      const updatedTodo = await todoService.updateTodoById(todoId, updateData);
+      const updatedTodo = await todoService.updateTodoById(
+        todoId,
+        userId,
+        updateData
+      );
 
       if (!updatedTodo) {
         return sendErrorResponse(res, null, 'Todo to update not found.', 404);
@@ -179,6 +187,7 @@ class TodoController {
   async updateIsChecked(req: Request, res: Response) {
     try {
       const todoId = req.params.todoId;
+      const userId = get(req, 'currentUser._id') || '';
 
       if (!todoId) {
         throw new Error('todoId was not provided');
@@ -189,7 +198,7 @@ class TodoController {
       if (!todo) {
         sendErrorResponse(res, null, 'Todo to update not found.', 404);
       } else {
-        const updatedTodo = await todoService.updateTodoById(todoId, {
+        const updatedTodo = await todoService.updateTodoById(todoId, userId, {
           isChecked: !todo.isChecked,
         });
         return sendSuccessResponse(res, updatedTodo, 200);

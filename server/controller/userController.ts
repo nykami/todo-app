@@ -1,11 +1,12 @@
 import { Request, Response } from 'express';
 import userService from '../service/userService';
-import { sendSuccessResponse, sendErrorResponse } from './response';
+import { sendSuccessResponse, sendErrorResponse } from '../helpers/response';
+import { get } from 'lodash';
 
 class UserController {
   async getUser(req: Request, res: Response) {
     try {
-      const userId = req.params.userId;
+      const userId = get(req, 'currentUser._id');
 
       if (!userId) {
         throw new Error('userId was not provided');

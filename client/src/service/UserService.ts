@@ -1,5 +1,4 @@
-import { User } from '../components/types/User.vue';
-import { getRequest, postRequest } from './requests';
+import { postRequest } from './requests';
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
@@ -12,27 +11,34 @@ class UserService {
     password: string;
   }) {
     try {
-      const user = await postRequest(`${baseUrl}/auth/register`, formData);
-      return user;
+      const userData = await postRequest(`${baseUrl}/auth/register`, formData);
+
+      localStorage.setItem('jwtToken', userData.token);
+      localStorage.setItem('username', userData.user.username);
+
+      return userData.user;
     } catch (error) {
       console.error(error);
     }
   }
 
-  async login(email: string, password: string){
+  async login(email: string, password: string) {
     try {
       const payload = { email, password };
-      const user = await postRequest(`${baseUrl}/auth/login`, payload);
-      return user;
+      const userData = await postRequest(`${baseUrl}/auth/login`, payload);
+
+      localStorage.setItem('jwtToken', userData.token);
+      localStorage.setItem('username', userData.user.username);
+
+      return userData;
     } catch (error) {
       console.error(error);
     }
   }
 
-  async getUsername(userId: string) {
+  getUsername() {
     try {
-      const userData: User = await getRequest(`${baseUrl}/user/${userId}`);
-      return userData.username;
+      return localStorage.getItem('username');
     } catch (error) {
       console.error(error);
     }
